@@ -28,8 +28,12 @@ menu:
   home: /
   categories: /categories
   archives: /archives
-  tags: /tags             # 添加位置
-  tools: /tools
+  tags: /tags                    # 标签
+  translations: /translations    # 译文
+  tools: /tools                  # 工具
+  projects: /projects            # 项目
+  books: /books                  # 书单
+  links: /links                  # 链接
   about: /about
   commonweal: /404.html   # 腾讯公益404页面, 新建 404.html 页面，放到主题的 source 目录下
 

@@ -11,6 +11,10 @@ menu:
   categories: 分类
   tags: 标签
   tools: 工具           # add
+  translations: 译文
+  projects: 项目
+  books: 书单
+  links: 链接
   about: 关于
   search: 搜索
   commonweal: 公益404
