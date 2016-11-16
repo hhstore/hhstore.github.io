@@ -19,7 +19,7 @@ tags: [Mac, vscode, Golang, IDE]
 
 ### 1.2 对比 IDE:
 
-- 之前一直使用: pycharm +go 插件, 搭配开发 golang.
+- 之前一直使用: pycharm + go 插件, 搭配开发 golang.
 - 优点: 
     - go 插件的 debug 功能,比较强大
     - pycharm 的有强大的代码跳转,补全功能.
@@ -28,6 +28,36 @@ tags: [Mac, vscode, Golang, IDE]
     - 启动比较笨重, 有些时候只是写测试代码, 不太需要启动 IDE.
 - vscode 的优点, 刚好可以弥补 pycharm 的不足.
 - 以后搭配2者作开发.很方便.
+
+### 1.3 技巧操作:
+
+- 列编辑模式: ultraedit 中特色功能
+    - 快捷键: `shift + alt + 鼠标左键`
+    - vscode 版本 > 1.2.0
+- Ctrl+P 模式: (Mac 是 `CMD+P`)
+    - 直接输入文件名，快速打开文件
+    - `:` 跳转到`行数`，也可以`Ctrl+G`直接进入(Mac 是 `CMD+G`)
+    - `@` 跳转到symbol（搜索变量或者函数），也可以Ctrl+Shift+O直接进入
+    - `@:`根据分类跳转symbol，查找属性或函数，也可以Ctrl+Shift+O后输入:进入
+    - `#` 根据名字查找symbol，也可以Ctrl+T
+- 编辑:
+    - 上下移动一行： `Alt+Up` 或 `Alt+Down`
+    - 向上向下复制一行： `Shift+Alt+Up` 或 `Shift+Alt+Down`
+    - 代码格式化：`Shift+Alt+F`，或 `Ctrl+Shift+P` 后输入 `format code`
+    - 更改代码文件语言模式: 显示-->状态栏显示.
+- 代码重构:
+    - 跳转到定义处：`F12`
+    - 列出所有的引用：`Shift+F12`
+    - 重命名：比如要修改一个方法名，可以选中后按F2，输入新的名字，回车，会发现所有的文件都修改过了。
+- 显示相关:
+    - 侧边栏显/隐：`Ctrl+B`
+    - 预览markdown: `Ctrl+Shift+V`
+    - 双栏对比: `Ctrl+\`
+- 皮肤预览:
+    - f1后输入 theme 回车，然后上下键即可预览
+- [学会用好 Visual Studio Code](https://nshen.net/article/2015-11-20/vscode/)
+- [VS Code tips and tricks 翻译](http://geek.csdn.net/news/detail/94108)
+- [VS Code Tips and Tricks](https://github.com/Microsoft/vscode-tips-and-tricks)
 
 ## 2 vscode 安装:
 
