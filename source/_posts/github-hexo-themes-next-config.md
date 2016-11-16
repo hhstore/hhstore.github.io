@@ -1,7 +1,7 @@
 title: Hexo博客优化 - Next主题个性化定制
 date: 2015-06-24 21:15:31
 categories: Hexo
-tags: [Hexo, Next]
+tags: [Hexo, Next, Github]
 
 ---
 

@@ -1,6 +1,6 @@
 title: "Github + Hexo搭建博客教程"
 date: 2015-06-24 21:15:30
-categories: Git
+categories: Hexo
 tags: [Github, Hexo, Blog, Git, Nodejs]
 
 ---

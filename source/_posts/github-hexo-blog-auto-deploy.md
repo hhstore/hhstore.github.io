@@ -1,5 +1,5 @@
 title: "使用Travis CI自动部署你的Hexo博客到Github"
-date: 2016-11-15 21:15:31
+date: 2016-11-16 14:15:31
 categories: Hexo
 tags: [Hexo, Next, github, blog, TravisCI]
 

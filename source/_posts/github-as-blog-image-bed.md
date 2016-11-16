@@ -1,6 +1,6 @@
 title: "Github + Hexo 搭建博客教程: 使用 Github 本身做图床"
 date: 2016-08-12 10:12:10
-categories: Tools
+categories: Git
 tags: [Github, Hexo, Blog]
 ---
 本篇介绍如何使用 github 做博客图床.
