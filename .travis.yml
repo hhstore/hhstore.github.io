@@ -1,0 +1,30 @@
+language: node_js
+node_js: stable
+
+# S: Build Lifecycle
+install:
+  - npm install
+
+
+#before_script:
+ # - npm install -g gulp
+
+script:
+  - hexo g
+
+after_script:
+  - cd ./public
+  - git init
+  - git config user.name "hhstore"
+  - git config user.email "hhstore@qq.com"
+  - git add .
+  - git commit -m "Update docs"
+  - git push --force --quiet "https://${GIT_AUTH_TOKEN}@${GITHUB_REF}" master:master
+# E: Build LifeCycle
+
+branches:
+  only:
+    - blog-source
+env:
+ global:
+   - GITHUB_REF: git@github.com:hhstore/hhstore.github.io.git
