@@ -26,5 +26,7 @@ branches:
   only:
     - blog_source
 env:
- global:
-   - GITHUB_REF: git@github.com:hhstore/hhstore.github.io.git
+  global:
+    # bugfix: use https, not git.
+    # https://github.com/hhstore/hhstore.github.io.git
+    - GITHUB_REF: github.com/hhstore/hhstore.github.io.git
