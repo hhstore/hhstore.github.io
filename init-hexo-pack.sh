@@ -53,7 +53,16 @@ npm i --no-optional
 # 发布: 
 # hexo d -g
 
+############################################
+#           博客资源 - 分支管理
+############################################
+# 本地创建 博客资源分支:
+# git checkout -b blog_source
 
+# 添加博客资源分支:
+# git remote add blog_source git@github.com:hhstore/hhstore.github.io.git
 
+# 推送:
+# git push blog_source blog_source
 
 
