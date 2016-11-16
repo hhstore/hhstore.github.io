@@ -18,7 +18,7 @@ after_script:
   - git config user.name "hhstore"
   - git config user.email "hhstore@qq.com"
   - git add .
-  - git commit -m "Update docs"
+  - git commit -m "Update - auto deploy by Travis CI."
   - git push --force --quiet "https://${GIT_AUTH_TOKEN}@${GITHUB_REF}" master:master
 # E: Build LifeCycle
 
