@@ -24,7 +24,7 @@ after_script:
 
 branches:
   only:
-    - blog-source
+    - blog_source
 env:
  global:
    - GITHUB_REF: git@github.com:hhstore/hhstore.github.io.git
