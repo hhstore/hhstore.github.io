@@ -9,6 +9,13 @@ tags: [Hexo, Next, github, blog, TravisCI]
 
 <!-- more -->
 
+## 部署提醒:
+
+- 参考下面那篇博客部署, 基本没问题.
+- 需要注意, 有个小坑:
+- .travis.yml 文件里最后的 git 仓库访问配置是 HTTTPS 方式, 不是 GIT 方式.
+- 详细的可参考我博客仓库: [blog_source](https://github.com/hhstore/hhstore.github.io/tree/blog_source) 分支里的配置文件.
+
 
 ## 参考:
 
