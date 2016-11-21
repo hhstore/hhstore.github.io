@@ -166,6 +166,27 @@ http://localhost:8888/source/
 ![效果图](https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161121-004.png?raw=true)
 
 
+### 容器关闭/清理:
+
+```bash
+
+# 查看:
+-> % docker ps
+CONTAINER ID        IMAGE                  COMMAND               CREATED             STATUS              PORTS                    NAMES
+0a75d4fe98d1        scue/docker-opengrok   "/scripts/start.sh"   5 hours ago         Up 5 hours          0.0.0.0:8888->8080/tcp   opengrok-server
+
+# 退出:
+-> % docker stop opengrok-server
+opengrok-server
+
+# 删除容器:
+#   - 并不会删除源代码挂载目录
+-> % docker rm -v opengrok-server
+opengrok-server
+
+```
+
+
 
 ## 示例访问项目:
 
@@ -192,11 +213,14 @@ http://localhost:8888/source/
 - 缺点:
     - 当前版本, 对 Python 支持并不好, 对 Golang 不支持(计划在下一版本中)
     - Python, Nodejs 等项目, 需要从项目根目录开始建索引.(不友好)
+    - 索引资源, 几百 MB 吧. 并不比 pycharm 等好到哪里去.
 - 对于新工具, 要去了解, 尝试.
     - 只有使用之后, 才有发言权.
     - 究竟是更好, 还是没那么好. 用过才知道.
     - 探索的过程, 哪怕并没有预期那么好, 也仍然是有收获的.
-    
+- 综合评价:
+    - 当前的版本, 仍然不值得用.
+    - 对比: pycharm 等, 无明显亮点.
 
 ## 参考:
 - [Ubuntu下OpenGrok的安装配置](http://www.voidcn.com/blog/u013656962/article/p-6131858.html)

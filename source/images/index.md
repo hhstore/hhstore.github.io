@@ -21,7 +21,7 @@ https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/08/XXXXXXXX
 - 示例:
 ![测试图片](https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/08/20160812-001.jpg?raw=true)
 
-![效果图](https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161121-003.png?raw=true)
+![测试效果图](https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161121-003.png?raw=true)
 
 
 
