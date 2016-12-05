@@ -1,0 +1,912 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="alDgEpeIzoLpI3vCAsOEfs6B1RFOuiKueg8-tTxG8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="hhstore's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇介绍Python的 WSGI 规范.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python拾遗 - WSGI规范">
+<meta property="og:url" content="http://hhstore.github.io/2015/09/01/python-note-wsgi/index.html">
+<meta property="og:site_name" content="hhstore's blog">
+<meta property="og:description" content="本篇介绍Python的 WSGI 规范.">
+<meta property="og:updated_time" content="2016-12-05T08:11:13.965Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python拾遗 - WSGI规范">
+<meta name="twitter:description" content="本篇介绍Python的 WSGI 规范.">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Python拾遗 - WSGI规范 | hhstore's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?50c15455e37f70aea674ff4a663eef27";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <!----------- add Fork me on Github ------------>
+    
+    <a href="https://github.com/hhstore"><img style="position: absolute; top: 500; left: 0; border: 0;" src="https://camo.githubusercontent.com/8b6b8ccc6da3aa5722903da7b58eb5ab1081adee/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png"></a>
+    
+    <!----------- add Fork me on Github ------------>   
+    
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">hhstore's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Python, Golang 开发</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-translations">
+          <a href="/translations" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            译文
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tools">
+          <a href="/tools" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            工具
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-projects">
+          <a href="/projects" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            项目
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'LvGMYBjz-8ZVB7BazNT_','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python拾遗 - WSGI规范
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-09-01T17:12:10+00:00" content="2015-09-01">
+              2015-09-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/09/01/python-note-wsgi/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/01/python-note-wsgi/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇介绍Python的 WSGI 规范.</p>
+<a id="more"></a>
+<h2 id="1-关于-WSGI-规范"><a href="#1-关于-WSGI-规范" class="headerlink" title="1. 关于 WSGI 规范."></a>1. 关于 WSGI 规范.</h2><h3 id="WSGI定义"><a href="#WSGI定义" class="headerlink" title="WSGI定义:"></a>WSGI定义:</h3><ul>
+<li>WSGI 全称是Web Server Gateway Interface，翻译是Python Web服务器网关接口。</li>
+<li>是一个描述Web服务器和Web应用之间如何通信的规范。</li>
+<li>定义了Web服务器如何与Python应用程序进行交互，使得使用Python写的Web应用程序可以和Web服务器对接起来。</li>
+<li>WSGI一开始是在PEP-0333中定义的，最新版本是在Python的PEP-3333定义的。</li>
+</ul>
+<h3 id="WSGI-和-CGI-FastCGI-SCGI-区别和联系"><a href="#WSGI-和-CGI-FastCGI-SCGI-区别和联系" class="headerlink" title="WSGI 和 CGI(FastCGI,SCGI) 区别和联系:"></a>WSGI 和 CGI(FastCGI,SCGI) 区别和联系:</h3><ul>
+<li>WSGI 是 Python Web 服务器网关接口，完成不同协议之间的转换工作。</li>
+<li>CGI（Common Gateway Interface）是Web应用程序和Web Server的底层通信协议，是Web开发过程中需要遵守的标准和规范，不同语言如PHP、Java、Python等完成的Web应用程序均依据此通信协议完成与Web Server的交互。</li>
+<li>CGI的设计存在性能缺陷，因为每次Web Server接受请求的时候总要重新开启一个CGI进程，进程的初始化既费时间又耗资源，对于少量请求的情况，可以容忍此开销，但是若遇到了大量的请求，服务器的性能则会非常低下。</li>
+<li>为了解决CGI的性能缺陷问题，后来出现了 FastCGI 和 SCGI，它们能够有效地解决服务器性能问题，FastCGI不同于CGI的设计之处在于FastCGI要求CGI处理进程常驻内存中，有请求时处理，没有请求时等待，免去了进程初始化带来的开销。SCGI即Simple  CGI，相对FastCGI来说是一种更加简单的实现。目前的Web底层通信机制已经被FastCGI和SCGI所取代。</li>
+<li>WSGI也是为了解决Web应用程序和Web Server之间的交互而提出的一种规范，不过这种规范是以CGI为基础（因为CGI是底层通信协议），位于CGI的上一层更好地去解决应用程序和服务器之间的配合问题。</li>
+</ul>
+<h2 id="2-WSGI-的用途"><a href="#2-WSGI-的用途" class="headerlink" title="2. WSGI 的用途:"></a>2. WSGI 的用途:</h2><ul>
+<li>WSGI相当于是Web服务器和Python应用程序之间的桥梁。</li>
+<li>让Web服务器,知道如何调用Python应用程序，并且把用户的请求,告诉应用程序。</li>
+<li>让Python应用程序,知道用户的具体请求是什么，以及如何返回结果,给Web服务器。</li>
+</ul>
+<h2 id="3-WSGI-的结构"><a href="#3-WSGI-的结构" class="headerlink" title="3. WSGI 的结构:"></a>3. WSGI 的结构:</h2><h3 id="3个角色"><a href="#3个角色" class="headerlink" title="3个角色:"></a>3个角色:</h3><ul>
+<li>Web服务器端 称为server或者gateway，</li>
+<li>WSGI Middleware（中间件）</li>
+<li>应用程序端 称为application或者framework</li>
+</ul>
+<h3 id="3者关系"><a href="#3者关系" class="headerlink" title="3者关系:"></a>3者关系:</h3><ul>
+<li>Server认为middleware是一个application。</li>
+<li>Application认为middleware是一个server。</li>
+<li>Middleware可以有多层。</li>
+</ul>
+<h3 id="3层解耦"><a href="#3层解耦" class="headerlink" title="3层解耦:"></a>3层解耦:</h3><ul>
+<li>Application/Framework层 只需要实现一个callable就可以了；</li>
+<li>Server/Gateway层，只需要把客户端的请求处理成environ，然后传给Application/Framework就可以了；</li>
+<li>Middleware 层，基本上相当于是一个装饰器，同样也是高内聚低耦合的。</li>
+<li>三个部分之间几乎没有依赖，使得使用Python开发和部署Web应用变得十分灵活。</li>
+</ul>
+<h3 id="WSGI的实现"><a href="#WSGI的实现" class="headerlink" title="WSGI的实现:"></a>WSGI的实现:</h3><ul>
+<li><p>Application端:</p>
+<ul>
+<li>实现一般是由Python的各种框架来实现的，比如Django, web.py等，</li>
+<li>一般开发者不需要关心WSGI的实现，框架会提供接口，让开发者获取HTTP请求的内容以及发送HTTP响应。</li>
+</ul>
+</li>
+<li><p>Server端:</p>
+<ul>
+<li>实现会比较复杂一点，这个主要是因为软件架构的原因。</li>
+<li>一般常用的Web服务器，如Apache和nginx，都不会内置WSGI的支持，而是通过扩展来完成。</li>
+<li>Apache服务器，会通过扩展模块mod_wsgi来支持WSGI。Apache和mod_wsgi之间通过程序内部接口传递信息，mod_wsgi会实现WSGI的server端、进程管理以及对application的调用。</li>
+<li>Nginx上一般是用proxy的方式，用nginx的协议将请求封装好，发送给应用服务器，比如uWSGI，应用服务器会实现WSGI的服务端、进程管理以及对application的调用。</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-扩展阅读"><a href="#4-扩展阅读" class="headerlink" title="4. 扩展阅读."></a>4. 扩展阅读.</h2><ul>
+<li>需要完整看完.<a href="https://github.com/mainframer/PEP333-zh-CN" target="_blank" rel="external">WSGI 规范 - PEP333 翻译</a></li>
+<li><a href="https://www.python.org/dev/peps/pep-0333/" target="_blank" rel="external">PEP 0333 – Python Web Server Gateway Interface v1.0</a></li>
+<li><a href="https://pep-3333-wsgi.readthedocs.org/en/latest/" target="_blank" rel="external">Python Web 服务器网关接口</a></li>
+<li><a href="http://wsgi.readthedocs.org/en/latest/" target="_blank" rel="external">WSGI - EN</a></li>
+<li>推荐<a href="http://segmentfault.com/a/1190000003069785" target="_blank" rel="external">WSGI简介</a></li>
+<li><a href="http://segmentfault.com/a/1190000002717571" target="_blank" rel="external">WSGI规范笔记</a></li>
+<li><a href="http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386832689740b04430a98f614b6da89da2157ea3efe2000" target="_blank" rel="external">廖雪峰 - WSGI接口</a></li>
+<li><a href="https://skyline75489.github.io/post/2014-9-8_python-wsgi-learning.html" target="_blank" rel="external">Python WSGI学习笔记</a></li>
+<li><a href="https://jasonlvhit.github.io/articles/wsgi/" target="_blank" rel="external">Python中的WSGI</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatpay.png" alt="hhstore WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/25/python-interview-test/" rel="next" title="Python面试题汇总">
+                <i class="fa fa-chevron-left"></i> Python面试题汇总
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/02/python-lib-requests/" rel="prev" title="Python常用包 - requests">
+                Python常用包 - requests <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/09/01/python-note-wsgi/"
+           data-title="Python拾遗 - WSGI规范" data-url="http://hhstore.github.io/2015/09/01/python-note-wsgi/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="hhstore" />
+          <p class="site-author-name" itemprop="name">hhstore</p>
+          <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">61</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hhstore" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="selfrefactor@gmail.com" target="_blank" title="邮箱">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  邮箱
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/darkforce/" target="_blank" title="DouBan">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DouBan
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hhstore" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ZhiHu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-关于-WSGI-规范"><span class="nav-number">1.</span> <span class="nav-text">1. 关于 WSGI 规范.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WSGI定义"><span class="nav-number">1.1.</span> <span class="nav-text">WSGI定义:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WSGI-和-CGI-FastCGI-SCGI-区别和联系"><span class="nav-number">1.2.</span> <span class="nav-text">WSGI 和 CGI(FastCGI,SCGI) 区别和联系:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-WSGI-的用途"><span class="nav-number">2.</span> <span class="nav-text">2. WSGI 的用途:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-WSGI-的结构"><span class="nav-number">3.</span> <span class="nav-text">3. WSGI 的结构:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3个角色"><span class="nav-number">3.1.</span> <span class="nav-text">3个角色:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3者关系"><span class="nav-number">3.2.</span> <span class="nav-text">3者关系:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3层解耦"><span class="nav-number">3.3.</span> <span class="nav-text">3层解耦:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WSGI的实现"><span class="nav-number">3.4.</span> <span class="nav-text">WSGI的实现:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-扩展阅读"><span class="nav-number">4.</span> <span class="nav-text">4. 扩展阅读.</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hhstore</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数 <i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量 <i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hhstore"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

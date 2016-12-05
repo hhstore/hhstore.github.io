@@ -1,0 +1,1524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>hhstore&#39;s blog</title>
+  <subtitle>Python, Golang 开发</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://hhstore.github.io/"/>
+  <updated>2016-12-05T08:11:13.965Z</updated>
+  <id>http://hhstore.github.io/</id>
+  
+  <author>
+    <name>hhstore</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 Docker 部署 Seafile</title>
+    <link href="http://hhstore.github.io/2016/12/05/deploy-seafile-by-docker/"/>
+    <id>http://hhstore.github.io/2016/12/05/deploy-seafile-by-docker/</id>
+    <published>2016-12-05T15:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍: 通过 Docker 部署 Seafile.</p>
+<a id="more"></a>
+<h2 id="Seafile-简介"><a href="#Seafile-简介" class="headerlink" title="Seafile 简介:"></a>Seafile 简介:</h2><ul>
+<li><a href="https://www.seafile.com/home/" target="_blank" rel="external">Seafile 官网</a><ul>
+<li><a href="https://www.seafile.com/download/" target="_blank" rel="external">download</a></li>
+<li><a href="http://download-cn.seafile.com/seafile-client-6.0.0.dmg" target="_blank" rel="external">Mac 客户端</a></li>
+<li><a href="https://manual-cn.seafile.com/" target="_blank" rel="external">seafile 帮助文档</a></li>
+</ul>
+</li>
+<li>海文云盘：安全、可靠、快速的企业文件云存储</li>
+<li>Seafile 服务器内核由 C 语言编写。运行起来小巧快速。</li>
+</ul>
+<h2 id="使用-docker-部署"><a href="#使用-docker-部署" class="headerlink" title="使用 docker 部署:"></a>使用 docker 部署:</h2><h3 id="拉取-docker-镜像"><a href="#拉取-docker-镜像" class="headerlink" title="拉取 docker 镜像:"></a>拉取 docker 镜像:</h3><ul>
+<li><a href="https://github.com/JensErat/docker-seafile" target="_blank" rel="external">JensErat/docker-seafile</a></li>
+<li><a href="https://hub.docker.com/r/jenserat/seafile/" target="_blank" rel="external">seafile - DockerHub</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull jenserat/seafile</div></pre></td></tr></table></figure>
+<h3 id="容器启动"><a href="#容器启动" class="headerlink" title="容器启动:"></a>容器启动:</h3><ul>
+<li>新建容器共享目录: <code>/iDockerShare/seafile</code></li>
+<li>当前 seafile 官网最新服务器端版本: seafile-server-6.0.6</li>
+<li>关键细节:<ul>
+<li>此容器本身并未打包 seafile 代码.</li>
+<li>容器启动后, 需手动执行命令, 去 seafile 官网拉取最新代码.</li>
+<li>容器中, 执行安装命令, 配置服务器.</li>
+<li>容器中, 手动添加 admin 用户帐号, 密码.</li>
+<li>当前版本, 8082 端口, 不可随便映射, 否则上传时会出错.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div></pre></td><td class="code"><pre><div class="line">#</div><div class="line"># -v : 目录映射:</div><div class="line"># -p 8000:8000 服务访问端口</div><div class="line"># -p 8082:8082 此端口, 不可随便映射, 因为代码写死的, 映射成其他端口, 无法上传文件</div><div class="line"># 建议都使用默认的端口映射, 防止出错.</div><div class="line">docker run -d \</div><div class="line">  --name seafile-server \</div><div class="line">  -p 10001:10001 \</div><div class="line">  -p 12001:12001 \</div><div class="line">  -p 8900:8000 \</div><div class="line">  -p 8980:8080 \</div><div class="line">  -p 8082:8082 \</div><div class="line">  -v /iDockerShare/seafile:/opt/seafile \</div><div class="line">  -e autostart=true \</div><div class="line">  jenserat/seafile</div><div class="line"></div><div class="line"></div><div class="line"># 登录容器配置:</div><div class="line">docker exec -it seafile-server /bin/bash</div><div class="line"></div><div class="line">################################################</div><div class="line">#         如下部分, 在 docker 容器中操作</div><div class="line">################################################</div><div class="line"></div><div class="line"># 下载最新代码:</div><div class="line">docker &gt;: download-seafile</div><div class="line"></div><div class="line"># 执行安装:</div><div class="line">docker &gt;: /opt/seafile/seafile-server-5.*/setup-seafile.sh</div><div class="line">docker &gt;: /opt/seafile/seafile-server-6.*/setup-seafile.sh</div><div class="line"></div><div class="line"># 安装日志:</div><div class="line">root@11f5e9ad841a:/opt/seafile/seafile-server-6.0.6#  ./setup-seafile.sh</div><div class="line">-----------------------------------------------------------------</div><div class="line">This script will guide you to config and setup your seafile server.</div><div class="line"></div><div class="line">Make sure you have read seafile server manual at</div><div class="line"></div><div class="line">	https://github.com/haiwen/seafile/wiki</div><div class="line"></div><div class="line">Note: This script will guide your to setup seafile server using sqlite3,</div><div class="line">which may have problems if your disk is on a NFS/CIFS/USB.</div><div class="line">In these cases, we sugguest you setup seafile server using MySQL.</div><div class="line"></div><div class="line">Press [ENTER] to continue</div><div class="line">-----------------------------------------------------------------</div><div class="line"></div><div class="line"></div><div class="line">Checking packages needed by seafile ...</div><div class="line"></div><div class="line">Checking python on this machine ...</div><div class="line">Find python: python2.7</div><div class="line"></div><div class="line">  Checking python module: setuptools ... Done.</div><div class="line">  Checking python module: python-imaging ... Done.</div><div class="line">  Checking python module: python-sqlite3 ... Done.</div><div class="line"></div><div class="line">Checking for sqlite3 ...Done.</div><div class="line"></div><div class="line">Checking Done.</div><div class="line"></div><div class="line"></div><div class="line">What would you like to use as the name of this seafile server?</div><div class="line">Your seafile users will be able to see the name in their seafile client.</div><div class="line">You can use a-z, A-Z, 0-9, _ and -, and the length should be 3 ~ 15</div><div class="line">[server name]: jolly-seafile</div><div class="line"></div><div class="line">What is the ip or domain of this server?</div><div class="line">For example, www.mycompany.com, or, 192.168.1.101</div><div class="line"></div><div class="line">[This server&apos;s ip or domain]: 192.168.0.100</div><div class="line"></div><div class="line">Where would you like to store your seafile data?</div><div class="line">Note: Please use a volume with enough free space.</div><div class="line">[default: /opt/seafile/seafile-data ]</div><div class="line"></div><div class="line">What tcp port do you want to use for seafile fileserver?</div><div class="line">8082 is the recommended port.</div><div class="line">[default: 8082 ]</div><div class="line"></div><div class="line"></div><div class="line">This is your config information:</div><div class="line"></div><div class="line">server name:        jolly-seafile</div><div class="line">server ip/domain:   192.168.0.100</div><div class="line">seafile data dir:   /opt/seafile/seafile-data</div><div class="line">fileserver port:    8082</div><div class="line"></div><div class="line">If you are OK with the configuration, press [ENTER] to continue.</div><div class="line"></div><div class="line">Generating ccnet configuration in /opt/seafile/ccnet...</div><div class="line"></div><div class="line">done</div><div class="line">Successly create configuration dir /opt/seafile/ccnet.</div><div class="line"></div><div class="line">Generating seafile configuration in /opt/seafile/seafile-data ...</div><div class="line"></div><div class="line">Done.</div><div class="line"></div><div class="line">-----------------------------------------------------------------</div><div class="line">Seahub is the web interface for seafile server.</div><div class="line">Now let&apos;s setup seahub configuration. Press [ENTER] to continue</div><div class="line">-----------------------------------------------------------------</div><div class="line"></div><div class="line">Creating seahub database now, it may take one minute, please wait...</div><div class="line"></div><div class="line">Done.</div><div class="line"></div><div class="line">creating seafile-server-latest symbolic link ... done</div><div class="line"></div><div class="line"></div><div class="line">-----------------------------------------------------------------</div><div class="line">Your seafile server configuration has been completed successfully.</div><div class="line">-----------------------------------------------------------------</div><div class="line"></div><div class="line">run seafile server:     ./seafile.sh &#123; start | stop | restart &#125;</div><div class="line">run seahub  server:     ./seahub.sh  &#123; start &lt;port&gt; | stop | restart &lt;port&gt; &#125;</div><div class="line"></div><div class="line">-----------------------------------------------------------------</div><div class="line">If the server is behind a firewall, remember to open these tcp ports:</div><div class="line">-----------------------------------------------------------------</div><div class="line"></div><div class="line">port of seafile fileserver:   8082</div><div class="line">port of seahub:               8000</div><div class="line"></div><div class="line">When problems occur, refer to</div><div class="line"></div><div class="line">      https://github.com/haiwen/seafile/wiki</div><div class="line"></div><div class="line">for more information.</div><div class="line"></div><div class="line"></div><div class="line"># 容器中启动服务: start the seafile controller process.</div><div class="line">docker &gt;: /opt/seafile/seafile-server-6.*/seafile.sh start</div><div class="line"></div><div class="line">root@11f5e9ad841a:/opt/seafile/seafile-server-6.0.6# /opt/seafile/seafile-server-6.*/seafile.sh start</div><div class="line"></div><div class="line">Seafile controller is already running, pid 1935</div><div class="line"></div><div class="line"></div><div class="line"># 容器中启动服务: for configuring the web UI.</div><div class="line">docker &gt;: /opt/seafile/seafile-server-6.*/seahub.sh start</div><div class="line"></div><div class="line">root@11f5e9ad841a:/opt/seafile/seafile-server-6.0.6# /opt/seafile/seafile-server-6.*/seahub.sh start</div><div class="line"></div><div class="line">LANG is not set in ENV, set to en_US.UTF-8</div><div class="line">LC_ALL is not set in ENV, set to en_US.UTF-8</div><div class="line">Seahub is already running.</div><div class="line"></div><div class="line"></div><div class="line"># 设置管理员帐号:(重置用户)</div><div class="line">docker &gt;: /opt/seafile/seafile-server-6.*/reset-admin.sh</div><div class="line"></div><div class="line">root@11f5e9ad841a:/opt/seafile/seafile-server-6.0.6# ./reset-admin.sh</div><div class="line">E-mail address: admin@admin.com</div><div class="line">Password:</div><div class="line">Password (again):</div><div class="line">Superuser created successfully.</div><div class="line"></div><div class="line"></div><div class="line"># 配置完成, 退出容器:</div><div class="line">docker &gt;: exit</div><div class="line"></div><div class="line"># 浏览器访问:</div><div class="line"># localhost:8900</div></pre></td></tr></table></figure>
+<h3 id="浏览器登录访问"><a href="#浏览器登录访问" class="headerlink" title="浏览器登录访问:"></a>浏览器登录访问:</h3><ul>
+<li><a href="http://0.0.0.0:8900/accounts/login/?next=/" target="_blank" rel="external">0.0.0.0:8900</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># 查看容器状态:</div><div class="line">-&gt; % docker ps</div><div class="line">CONTAINER ID        IMAGE                           COMMAND                  CREATED             STATUS              PORTS                                                                                                                        NAMES</div><div class="line">11f5e9ad841a        jenserat/seafile                &quot;/sbin/my_init&quot;          3 hours ago         Up 3 hours          0.0.0.0:10001-&gt;10001/tcp, 0.0.0.0:12001-&gt;12001/tcp, 0.0.0.0:8900-&gt;8000/tcp, 0.0.0.0:8980-&gt;8080/tcp, 0.0.0.0:8982-&gt;8082/tcp   seafile-server</div><div class="line"></div><div class="line"># 关闭容器:</div><div class="line">-&gt; % docker stop seafile-server</div><div class="line"></div><div class="line"># 启动容器:</div><div class="line">-&gt; % docker start seafile-server</div></pre></td></tr></table></figure>
+<h3 id="常用配置参数修改"><a href="#常用配置参数修改" class="headerlink" title="常用配置参数修改:"></a>常用配置参数修改:</h3><ul>
+<li><a href="https://manual-cn.seafile.com/config/seafile-conf.html" target="_blank" rel="external">seafile.conf 配置 </a></li>
+<li>/opt/seafile/conf/seafile.conf</li>
+</ul>
+<ul>
+<li>上传/下载大小限制：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">[fileserver]</div><div class="line">port=8082</div><div class="line">#port=10062</div><div class="line"></div><div class="line">###################################</div><div class="line"></div><div class="line">[history]</div><div class="line"># 文件修改历史保存期限（单位为“天”）</div><div class="line">keep_days = 150</div><div class="line"></div><div class="line"></div><div class="line">[quota]</div><div class="line"># 用户默认空间上限</div><div class="line"># 单位为 GB</div><div class="line">default = 20</div><div class="line"></div><div class="line"></div><div class="line">[fileserver]</div><div class="line"># 上传文件最大为2000M.</div><div class="line">max_upload_size=2000</div><div class="line"></div><div class="line"># 最大下载目录限制为2000M.</div><div class="line">max_download_dir_size=2000</div></pre></td></tr></table></figure>
+<ul>
+<li>邮件通知配置:</li>
+<li><a href="https://manual-cn.seafile.com/config/sending_email.html" target="_blank" rel="external">发送邮件提醒</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"># QQ 邮箱示例:</div><div class="line"></div><div class="line">EMAIL_USE_TLS = False</div><div class="line">EMAIL_HOST = &apos;smtp.exmail.qq.com&apos;</div><div class="line">EMAIL_HOST_USER = &apos;username@domain.com&apos;</div><div class="line">EMAIL_HOST_PASSWORD = &apos;password&apos;</div><div class="line">EMAIL_PORT = &apos;25&apos;</div><div class="line">DEFAULT_FROM_EMAIL = EMAIL_HOST_USER</div><div class="line">SERVER_EMAIL = EMAIL_HOST_USER</div></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考:"></a>参考:</h2><ul>
+<li><a href="http://www.jianshu.com/p/bd4b55b6d0cd" target="_blank" rel="external">云服务器之个人云存储的搭建(docker+seafile)</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍: 通过 Docker 部署 Seafile.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Docker" scheme="http://hhstore.github.io/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="http://hhstore.github.io/tags/Docker/"/>
+    
+      <category term="Seafile" scheme="http://hhstore.github.io/tags/Seafile/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用 Docker 部署 opengrok</title>
+    <link href="http://hhstore.github.io/2016/11/21/deploy-opengrok-by-docker/"/>
+    <id>http://hhstore.github.io/2016/11/21/deploy-opengrok-by-docker/</id>
+    <published>2016-11-21T15:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍: 通过 Docker 部署 opengrok.</p>
+<a id="more"></a>
+<h2 id="OpenGrok-简介"><a href="#OpenGrok-简介" class="headerlink" title="OpenGrok 简介:"></a>OpenGrok 简介:</h2><ul>
+<li>OpenGrok特点:<ul>
+<li>OpenGrok 是 一套开源的源码阅读工具, B/S 架构.</li>
+<li>需要搭建服务器, 通过浏览器方式访问.</li>
+</ul>
+</li>
+<li>部署方式:<ul>
+<li>鉴于部署过程略繁琐, 且在 Mac/Windows 平台下, 不如 Linux 方便</li>
+<li>很自然想到使用 docker 来解决.</li>
+</ul>
+</li>
+<li><a href="http://opengrok.github.io/OpenGrok/" target="_blank" rel="external">OpenGrok</a></li>
+<li>其他源码阅读工具:<ul>
+<li>IDE:<ul>
+<li>VS (win, 近期有 Mac 版本要放出)</li>
+<li>JB 家全家桶 (跨平台)</li>
+<li>eclipse (跨平台)</li>
+</ul>
+</li>
+<li>source insight (win)</li>
+</ul>
+</li>
+<li><a href="https://www.zhihu.com/question/33505693/answer/132224974" target="_blank" rel="external">有没有好的大型项目代码浏览工具？- 知乎</a><ul>
+<li>此回答, <code>韦大</code>安利.</li>
+<li>顺手来测试一下效果.</li>
+</ul>
+</li>
+</ul>
+<h2 id="docker-镜像拉取"><a href="#docker-镜像拉取" class="headerlink" title="docker 镜像拉取:"></a>docker 镜像拉取:</h2><ul>
+<li><a href="https://store.docker.com/community/images/scue/docker-opengrok" target="_blank" rel="external">docker-opengrok 镜像地址:</a><ul>
+<li><a href="https://github.com/scue/docker-opengrok" target="_blank" rel="external">docker-opengrok - github</a></li>
+<li>参考说明文档</li>
+</ul>
+</li>
+<li>国内直接拉取 docker 官方 store 的镜像非常慢.使用国内加速器. <ul>
+<li><a href="https://www.daocloud.io/mirror#accelerator-doc" target="_blank" rel="external">daocloud - 配置 Docker 加速器</a><ul>
+<li>本文使用 daocloud 加速拉取, 仅保证当前 daocloud 服务是 OK 的.</li>
+<li>如不可用, 可尝试国内其他几家代理加速.</li>
+</ul>
+</li>
+<li><a href="https://c.163.com/wiki/index.php?title=DockerHub%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F" target="_blank" rel="external">网易-DockerHub镜像加速</a></li>
+<li><a href="http://blog.csdn.net/bwlab/article/details/50542261" target="_blank" rel="external">阿里云加速</a></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 镜像拉取:</span></div><div class="line">docker pull scue/docker-opengrok:latest</div><div class="line"></div><div class="line"><span class="comment"># 使用 daocloud 代理加速拉取, 比想象的快.</span></div><div class="line"><span class="comment"># 查看拉取结果:</span></div><div class="line">-&gt; % docker images</div><div class="line">REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE</div><div class="line">scue/docker-opengrok        latest              93c3cb01d8cb        15 months ago       387 MB</div></pre></td></tr></table></figure>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署:"></a>部署:</h2><h3 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器:"></a>启动容器:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 运行一次, 退出时,自动删除容器:</span></div><div class="line"><span class="comment">#   - 此容器, 默认挂载了源码目录, 自动建索引</span></div><div class="line"><span class="comment">#   - 注意:</span></div><div class="line"><span class="comment">#       - 此镜像构建的容器, 当挂载了源码目录, 会自动建索引</span></div><div class="line"><span class="comment">#       - 故不要挂载太大的目录, 不然建索引很慢.</span></div><div class="line"><span class="comment">#       - 非常耗 CPU.</span></div><div class="line">sudo docker run --rm \</div><div class="line">    -v /path/to/<span class="built_in">source</span>:/src \</div><div class="line">    -v /path/to/opengrok_data:/data \</div><div class="line">    -p 8888:8080 \</div><div class="line">    scue/docker-opengrok</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">###################################################</span></div><div class="line"><span class="comment">#          容器启动方式 1: 运行完, 自动删除</span></div><div class="line"><span class="comment"># 适合:</span></div><div class="line"><span class="comment">#   - 单个项目阅读</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># 挂载目录:</span></div><div class="line"><span class="comment">#   - 项目源码目录: /Users/hhstore/iGit/iGitRepoRead</span></div><div class="line"><span class="comment">#   - 索引目录: /Users/hhstore/iGit/iSpace/iDocker/shareDir/opengrok</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment">###################################################</span></div><div class="line">sudo docker run --rm \</div><div class="line">    -v /Users/hhstore/iGit/iGitRepoRead/iPython/Libs/aiohttp:/src \</div><div class="line">    -v /Users/hhstore/iGit/iSpace/iDocker/shareDir/opengrok:/data \</div><div class="line">    -p 8889:8080 \</div><div class="line">    scue/docker-opengrok</div><div class="line"></div><div class="line"></div><div class="line">docker run  --name opengrok-server \</div><div class="line">    -v /Users/hhstore/iGit/iGitRepoRead:/src \</div><div class="line">    -v /Users/hhstore/iGit/iSpace/iDocker/shareDir/opengrok:/data \</div><div class="line">    -p 8888:8080 \</div><div class="line">    <span class="_">-d</span> scue/docker-opengrok </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">###################################################</span></div><div class="line"><span class="comment">#          容器启动方式 2: 长期保持</span></div><div class="line"><span class="comment"># 适合:</span></div><div class="line"><span class="comment">#   - 批量项目阅读</span></div><div class="line"><span class="comment">#   - 建索引非常耗时, 耗 CPU</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># 挂载目录:</span></div><div class="line"><span class="comment">#   - 项目源码目录: /Users/hhstore/iGit/iGitRepoRead</span></div><div class="line"><span class="comment">#   - 索引目录: /Users/hhstore/iGit/iSpace/iDocker/shareDir/opengrok</span></div><div class="line"><span class="comment">###################################################</span></div><div class="line"></div><div class="line"><span class="comment"># 后台进程方式启动:</span></div><div class="line">docker run  --name opengrok-server \</div><div class="line">    -v /Users/hhstore/iGit/iGitRepoRead:/src \</div><div class="line">    -v /Users/hhstore/iGit/iSpace/iDocker/shareDir/opengrok:/data \</div><div class="line">    -p 8888:8080 \</div><div class="line">    <span class="_">-d</span> scue/docker-opengrok </div><div class="line"></div><div class="line"><span class="comment"># 浏览器查看是否正常启动</span></div><div class="line"></div><div class="line"><span class="comment">###################################################</span></div><div class="line"><span class="comment">#               容器中处理:</span></div><div class="line"><span class="comment">###################################################</span></div><div class="line"><span class="comment"># 登录到已创建容器:</span></div><div class="line">docker <span class="built_in">exec</span> -it opengrok-server bash</div><div class="line"></div><div class="line"><span class="comment"># 容器中操作:</span></div><div class="line">root@0a75d4fe98d1:/usr/<span class="built_in">local</span>/tomcat<span class="comment"># pwd</span></div><div class="line">/usr/<span class="built_in">local</span>/tomcat</div><div class="line"></div><div class="line"><span class="comment"># 切换到 opengrok 目录:</span></div><div class="line"><span class="built_in">cd</span> /opengrok*</div><div class="line">root@0a75d4fe98d1:/opengrok-0.12.1.5<span class="comment">#</span></div><div class="line"></div><div class="line"><span class="comment"># 容器中源码目录为:</span></div><div class="line"><span class="comment">#   - /src 下</span></div><div class="line"><span class="comment">#   - 示例目录: /src/iPython/Libs/aiohttp</span></div><div class="line"></div><div class="line"><span class="comment"># 源码初始化索引:</span></div><div class="line">/opengrok-0.12.1.5/bin/OpenGrok index /src</div><div class="line"></div><div class="line"><span class="comment"># 单个具体项目源码:</span></div><div class="line">/opengrok-0.12.1.5/bin/OpenGrok index /src/iPython/Libs/aiohttp</div></pre></td></tr></table></figure>
+<h3 id="浏览器访问"><a href="#浏览器访问" class="headerlink" title="浏览器访问:"></a>浏览器访问:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 浏览器:</div><div class="line">http://localhost:8888/.</div><div class="line"></div><div class="line">#</div><div class="line">http://localhost:8888/source/</div></pre></td></tr></table></figure>
+<ul>
+<li><p>docker 容器启动成功<br><img src="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161121-001.png?raw=true" alt="效果图"></p>
+</li>
+<li><p>项目源码阅读目录:</p>
+</li>
+</ul>
+<p><img src="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161121-002.png?raw=true" alt="效果图"></p>
+<ul>
+<li>代码阅读效果:</li>
+</ul>
+<p><img src="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161121-004.png?raw=true" alt="效果图"></p>
+<h3 id="容器关闭-清理"><a href="#容器关闭-清理" class="headerlink" title="容器关闭/清理:"></a>容器关闭/清理:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 查看:</span></div><div class="line">-&gt; % docker ps</div><div class="line">CONTAINER ID        IMAGE                  COMMAND               CREATED             STATUS              PORTS                    NAMES</div><div class="line">0a75d4fe98d1        scue/docker-opengrok   <span class="string">"/scripts/start.sh"</span>   5 hours ago         Up 5 hours          0.0.0.0:8888-&gt;8080/tcp   opengrok-server</div><div class="line"></div><div class="line"><span class="comment"># 退出:</span></div><div class="line">-&gt; % docker stop opengrok-server</div><div class="line">opengrok-server</div><div class="line"></div><div class="line"><span class="comment"># 删除容器:</span></div><div class="line"><span class="comment">#   - 并不会删除源代码挂载目录</span></div><div class="line">-&gt; % docker rm -v opengrok-server</div><div class="line">opengrok-server</div></pre></td></tr></table></figure>
+<h2 id="示例访问项目"><a href="#示例访问项目" class="headerlink" title="示例访问项目:"></a>示例访问项目:</h2><ul>
+<li><a href="https://github.com/KeepSafe/aiohttp/" target="_blank" rel="external">aiohttp - github</a><ul>
+<li><a href="http://aiohttp.readthedocs.io/en/stable/" target="_blank" rel="external">aiohttp - 官方文档</a></li>
+<li>python 项目</li>
+<li>git clone 方式获取.</li>
+<li>docker 中对应路径: <code>/src/iPython/Libs/aiohttp</code></li>
+<li>注意<code>opengrok</code> 建立好索引之后的目录结构, 与此对应</li>
+</ul>
+</li>
+<li><p>原本以为需要单独在容器中启动建索引命令, 后发现该 image 会自动执行.</p>
+</li>
+<li><p>示例项目目录截图:<br><img src="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161121-003.png?raw=true" alt="效果图"></p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h2><ul>
+<li>使用体验并没有比 source insight / understand / pycharm 等JB 全家桶更好.</li>
+<li>优点:<ul>
+<li>浏览器打开, 似乎是可以iPad, 手机等阅读? (意义不大)</li>
+<li>搜索功能比较完善, 不过还不是 语义分析, 跟 pycharm 比, 弱爆</li>
+<li>对 PHP, Ruby 等支持较好</li>
+</ul>
+</li>
+<li>缺点:<ul>
+<li>当前版本, 对 Python 支持并不好, 对 Golang 不支持(计划在下一版本中)</li>
+<li>Python, Nodejs 等项目, 需要从项目根目录开始建索引.(不友好)</li>
+<li>索引资源, 几百 MB 吧. 并不比 pycharm 等好到哪里去.</li>
+</ul>
+</li>
+<li>对于新工具, 要去了解, 尝试.<ul>
+<li>只有使用之后, 才有发言权.</li>
+<li>究竟是更好, 还是没那么好. 用过才知道.</li>
+<li>探索的过程, 哪怕并没有预期那么好, 也仍然是有收获的.</li>
+</ul>
+</li>
+<li>综合评价:<ul>
+<li>当前的版本, 仍然不值得用.</li>
+<li>对比: pycharm 等, 无明显亮点.</li>
+</ul>
+</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考:"></a>参考:</h2><ul>
+<li><a href="http://www.voidcn.com/blog/u013656962/article/p-6131858.html" target="_blank" rel="external">Ubuntu下OpenGrok的安装配置</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍: 通过 Docker 部署 opengrok.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Docker" scheme="http://hhstore.github.io/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="http://hhstore.github.io/tags/Docker/"/>
+    
+      <category term="opengrok" scheme="http://hhstore.github.io/tags/opengrok/"/>
+    
+      <category term="code-reading" scheme="http://hhstore.github.io/tags/code-reading/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用Travis CI自动部署你的Hexo博客到Github</title>
+    <link href="http://hhstore.github.io/2016/11/16/github-hexo-blog-auto-deploy/"/>
+    <id>http://hhstore.github.io/2016/11/16/github-hexo-blog-auto-deploy/</id>
+    <published>2016-11-16T14:15:31.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇详细介绍使用 Travis CI 自动部署 Hexo 博客到 Github.</p>
+<a id="more"></a>
+<h2 id="部署说明"><a href="#部署说明" class="headerlink" title="部署说明:"></a>部署说明:</h2><ul>
+<li>本博客, 当前已成功使用 <code>Travis CI</code> 配合 <code>github</code> 多分支, 实现自动部署.</li>
+<li>详细参考我博客仓库: <ul>
+<li><a href="https://github.com/hhstore/hhstore.github.io/tree/blog_source" target="_blank" rel="external">blog_source 分支</a> </li>
+<li>本分支, 包含博客全部资源文件, 配置文件.</li>
+</ul>
+</li>
+</ul>
+<h3 id="博客仓库结构"><a href="#博客仓库结构" class="headerlink" title="博客仓库结构:"></a>博客仓库结构:</h3><ul>
+<li><code>hhstore.github.io</code> 仓库:<ul>
+<li><code>master</code> 分支: 自动发布分支, <code>Travis CI</code> 自动生成.</li>
+<li><code>blog_source</code> 分支: 博客源文件.</li>
+</ul>
+</li>
+</ul>
+<h3 id="博客发布流程"><a href="#博客发布流程" class="headerlink" title="博客发布流程:"></a>博客发布流程:</h3><pre><code>- 本地 git 仓库, 拉取 `blog_source` 分支
+- 在此分支, 编辑博客文档.
+- 推送本地文档, 到 github.
+- `Travis CI` 通过钩子, 自动触发`发布流程`.
+- `Travis CI` 自动把最新博客发布到 `master` 分支.
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 执行推送, 其他全自动:</span></div><div class="line">git push blog_source blog_source</div></pre></td></tr></table></figure>
+<h2 id="部署参考"><a href="#部署参考" class="headerlink" title="部署参考:"></a>部署参考:</h2><ul>
+<li>具体部署过程, 请参考此篇, 步骤非常详细, 没有问题.<ul>
+<li><a href="http://www.jianshu.com/p/e22c13d85659" target="_blank" rel="external">手把手教你使用Travis CI自动部署你的Hexo博客到Github上</a></li>
+</ul>
+</li>
+<li>可参考我博客的 <code>blog_source</code> 分支配置文件.</li>
+</ul>
+<h2 id="部署提醒"><a href="#部署提醒" class="headerlink" title="部署提醒:"></a>部署提醒:</h2><ul>
+<li>个人博客, 对 博客分支的 <code>token 环境变量</code>, 作了修改.</li>
+<li>小坑: <ul>
+<li>.travis.yml 文件里最后的 git 仓库访问配置是 HTTTPS 方式, 不是 GIT 方式.</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇详细介绍使用 Travis CI 自动部署 Hexo 博客到 Github.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Hexo" scheme="http://hhstore.github.io/categories/Hexo/"/>
+    
+    
+      <category term="Hexo" scheme="http://hhstore.github.io/tags/Hexo/"/>
+    
+      <category term="github" scheme="http://hhstore.github.io/tags/github/"/>
+    
+      <category term="Next" scheme="http://hhstore.github.io/tags/Next/"/>
+    
+      <category term="blog" scheme="http://hhstore.github.io/tags/blog/"/>
+    
+      <category term="TravisCI" scheme="http://hhstore.github.io/tags/TravisCI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hexo 部署博客踩坑记录</title>
+    <link href="http://hhstore.github.io/2016/11/15/github-hexo-update-shits/"/>
+    <id>http://hhstore.github.io/2016/11/15/github-hexo-update-shits/</id>
+    <published>2016-11-15T21:15:31.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇详细介绍 Hexo 部署博客, 踩坑记录.</p>
+<a id="more"></a>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言:"></a>前言:</h2><ul>
+<li>使用 github + hexo 部署的博客1年多, 稳定运行很久.</li>
+<li>博客访问量也有 5000 +.</li>
+<li>结果最近本地电脑的目录, 不明原因的被误删除很多文件.</li>
+<li>部分项目的 lib 出问题, 包括这个博客.</li>
+<li>结果, hexo 不能用, 想都没想, 就重装了下 hexo, 然后, 像往常一样 <code>hexo -g d</code>, 推博客, 推上去, 发现博客挂了.</li>
+<li>妈蛋, 用 chrome 看了下, 怀疑是 ES6 语法不认的问题.</li>
+<li>考虑回滚, 结果默默奇妙的发现, 某次 push 之后, github 本参考的 commit 提交记录变成 2条. 之前的 几十条 commit 被吃了!</li>
+<li>what a fuck !</li>
+</ul>
+<h2 id="问题根源"><a href="#问题根源" class="headerlink" title="问题根源:"></a>问题根源:</h2><ul>
+<li>github 自己的 bug.GitHub Pages 更新 Jekyll 3.3</li>
+<li><a href="https://github.com/blog/2277-what-s-new-in-github-pages-with-jekyll-3-3" target="_blank" rel="external">What’s new in GitHub Pages with Jekyll 3.3</a></li>
+<li>导致 hexo 的 <code>Next 主题</code> 插件目录: <code>venders目录</code> 被屏蔽, 目录资源变404</li>
+</ul>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法:"></a>解决办法:</h2><ul>
+<li><code>Next 主题</code>插件, issue 里, 有小伙伴给 github 官方去邮件, 回复解决办法: <a href="https://github.com/iissnan/hexo-theme-next/issues/1220" target="_blank" rel="external">issue 1220</a></li>
+<li>回顾:<a href="https://github.com/iissnan/hexo-theme-next/issues/1214#issuecomment-260843583" target="_blank" rel="external">hexo-theme-next : issue1214</a></li>
+<li>看 issue 快爆炸了, 被坑的人不再少数. 莫名喜感.</li>
+<li><a href="https://jetyu.github.io/2016/11/04/20161104/" target="_blank" rel="external">Hexo博客部署到主页只显示部分内容</a><ul>
+<li>这哥们是 11-04 号踩坑, 我是15号. ==!</li>
+</ul>
+</li>
+<li>折腾这一番, 顺便把 hexo 和 Next 主题等都升级到最新版本了. 增加了些新功能.</li>
+</ul>
+<h2 id="Next-v5-0-1-主题配置"><a href="#Next-v5-0-1-主题配置" class="headerlink" title="Next v5.0.1 主题配置:"></a>Next v5.0.1 主题配置:</h2><h3 id="配置统计"><a href="#配置统计" class="headerlink" title="配置统计:"></a>配置统计:</h3><ul>
+<li>如下配置, 都可以在新版本通过配置选项开启.</li>
+<li><a href="http://theme-next.iissnan.com/third-party-services.html#analytics-busuanzi" target="_blank" rel="external">不蒜子统计</a><ul>
+<li>开启配置选项</li>
+</ul>
+</li>
+<li><a href="http://theme-next.iissnan.com/getting-started.html#sidebar-settings" target="_blank" rel="external">设置「侧栏」</a><ul>
+<li>永久开启侧栏</li>
+</ul>
+</li>
+<li><a href="http://theme-next.iissnan.com/getting-started.html#comment-system-duoshuo" target="_blank" rel="external">多说评论</a></li>
+<li><a href="http://theme-next.iissnan.com/theme-settings.html#duoshuo-ua" target="_blank" rel="external">多说评论显示 UA</a></li>
+<li><a href="http://theme-next.iissnan.com/theme-settings.html#reward" target="_blank" rel="external">打赏功能</a><ul>
+<li>微信打赏</li>
+</ul>
+</li>
+<li><a href="http://theme-next.iissnan.com/getting-started.html#search-system-swiftype" target="_blank" rel="external">Swiftype 搜索</a></li>
+<li><a href="http://theme-next.iissnan.com/theme-settings.html#volunteer-404" target="_blank" rel="external">腾讯公益404页面</a></li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考:"></a>参考:</h2><ul>
+<li><a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="external">Hexo - Next 主题官方文档</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇详细介绍 Hexo 部署博客, 踩坑记录.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Hexo" scheme="http://hhstore.github.io/categories/Hexo/"/>
+    
+    
+      <category term="Hexo" scheme="http://hhstore.github.io/tags/Hexo/"/>
+    
+      <category term="github" scheme="http://hhstore.github.io/tags/github/"/>
+    
+      <category term="Next" scheme="http://hhstore.github.io/tags/Next/"/>
+    
+      <category term="blog" scheme="http://hhstore.github.io/tags/blog/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mac 平台: 使用 vscode 搭建 Golang 开发环境</title>
+    <link href="http://hhstore.github.io/2016/11/15/mac-osx-use-vscode-config-golang-env/"/>
+    <id>http://hhstore.github.io/2016/11/15/mac-osx-use-vscode-config-golang-env/</id>
+    <published>2016-11-15T16:42:13.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍 Mac 平台 使用 virtual studio code 搭建 golang 开发环境, 包含 debug 环境的配置.</p>
+<a id="more"></a>
+<h2 id="1-vscode-简介"><a href="#1-vscode-简介" class="headerlink" title="1. vscode 简介:"></a>1. vscode 简介:</h2><h3 id="1-1-vscode-亮点"><a href="#1-1-vscode-亮点" class="headerlink" title="1.1 vscode 亮点:"></a>1.1 vscode 亮点:</h3><ul>
+<li>Microsoft 开发, 高质量, 高颜值</li>
+<li>启动速度比 atom 快, 资源占用少</li>
+<li>插件比 atom 好用, 官方插件库下载安装快</li>
+<li>对 Python, golang 支持够好</li>
+<li>集成终端好用</li>
+<li>debug 功能好用(简直是 mini 的 IDE)</li>
+</ul>
+<h3 id="1-2-对比-IDE"><a href="#1-2-对比-IDE" class="headerlink" title="1.2 对比 IDE:"></a>1.2 对比 IDE:</h3><ul>
+<li>之前一直使用: pycharm + go 插件, 搭配开发 golang.</li>
+<li>优点: <ul>
+<li>go 插件的 debug 功能,比较强大</li>
+<li>pycharm 的有强大的代码跳转,补全功能.</li>
+</ul>
+</li>
+<li>缺点:<ul>
+<li>pycharm 每次建立项目索引比较慢.</li>
+<li>启动比较笨重, 有些时候只是写测试代码, 不太需要启动 IDE.</li>
+</ul>
+</li>
+<li>vscode 的优点, 刚好可以弥补 pycharm 的不足.</li>
+<li>以后搭配2者作开发.很方便.</li>
+</ul>
+<h3 id="1-3-技巧操作"><a href="#1-3-技巧操作" class="headerlink" title="1.3 技巧操作:"></a>1.3 技巧操作:</h3><ul>
+<li>列编辑模式: ultraedit 中特色功能<ul>
+<li>快捷键: <code>shift + alt + 鼠标左键</code></li>
+<li>vscode 版本 &gt; 1.2.0</li>
+</ul>
+</li>
+<li>Ctrl+P 模式: (Mac 是 <code>CMD+P</code>)<ul>
+<li>直接输入文件名，快速打开文件</li>
+<li><code>:</code> 跳转到<code>行数</code>，也可以<code>Ctrl+G</code>直接进入(Mac 是 <code>CMD+G</code>)</li>
+<li><code>@</code> 跳转到symbol（搜索变量或者函数），也可以Ctrl+Shift+O直接进入</li>
+<li><code>@:</code>根据分类跳转symbol，查找属性或函数，也可以Ctrl+Shift+O后输入:进入</li>
+<li><code>#</code> 根据名字查找symbol，也可以Ctrl+T</li>
+</ul>
+</li>
+<li>编辑:<ul>
+<li>上下移动一行： <code>Alt+Up</code> 或 <code>Alt+Down</code></li>
+<li>向上向下复制一行： <code>Shift+Alt+Up</code> 或 <code>Shift+Alt+Down</code></li>
+<li>代码格式化：<code>Shift+Alt+F</code>，或 <code>Ctrl+Shift+P</code> 后输入 <code>format code</code></li>
+<li>更改代码文件语言模式: 显示–&gt;状态栏显示.</li>
+</ul>
+</li>
+<li>代码重构:<ul>
+<li>跳转到定义处：<code>F12</code></li>
+<li>列出所有的引用：<code>Shift+F12</code></li>
+<li>重命名：比如要修改一个方法名，可以选中后按F2，输入新的名字，回车，会发现所有的文件都修改过了。</li>
+</ul>
+</li>
+<li>显示相关:<ul>
+<li>侧边栏显/隐：<code>Ctrl+B</code></li>
+<li>预览markdown: <code>Ctrl+Shift+V</code></li>
+<li>双栏对比: <code>Ctrl+\</code></li>
+</ul>
+</li>
+<li>皮肤预览:<ul>
+<li>f1后输入 theme 回车，然后上下键即可预览</li>
+</ul>
+</li>
+<li><a href="https://nshen.net/article/2015-11-20/vscode/" target="_blank" rel="external">学会用好 Visual Studio Code</a></li>
+<li><a href="http://geek.csdn.net/news/detail/94108" target="_blank" rel="external">VS Code tips and tricks 翻译</a></li>
+<li><a href="https://github.com/Microsoft/vscode-tips-and-tricks" target="_blank" rel="external">VS Code Tips and Tricks</a></li>
+</ul>
+<h2 id="2-vscode-安装"><a href="#2-vscode-安装" class="headerlink" title="2 vscode 安装:"></a>2 vscode 安装:</h2><ul>
+<li>官网下载安装: <a href="https://code.visualstudio.com/" target="_blank" rel="external">vscode 官网</a></li>
+<li>brew cask 安装:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 安装:</span></div><div class="line">brew cask install visual-studio-code</div><div class="line"></div><div class="line"><span class="comment"># 查看 vscode 信息:</span></div><div class="line">-&gt; % brew cask info visual-studio-code</div><div class="line"></div><div class="line">visual-studio-code: 1.3.1,e6b4afa53e9c0f54edef1673de9001e9f0f547ae</div><div class="line">Microsoft Visual Studio Code, VS Code</div><div class="line">https://code.visualstudio.com/</div><div class="line">Not installed</div><div class="line">https://github.com/caskroom/homebrew-cask/blob/master/Casks/visual-studio-code.rb</div><div class="line">==&gt; Contents</div><div class="line">  Visual Studio Code.app (app)</div><div class="line">  /Applications/Visual Studio Code.app/Contents/Resources/app/bin/code (binary)</div></pre></td></tr></table></figure>
+<h2 id="3-vscode-常用插件安装"><a href="#3-vscode-常用插件安装" class="headerlink" title="3 vscode 常用插件安装:"></a>3 vscode 常用插件安装:</h2><ul>
+<li>基础插件:<ul>
+<li>vscode-icons: 颜值, 彩色文件,目录</li>
+<li>Material Theme Kit: 编辑器 UI 主题</li>
+<li>visual studio code settings sync: 同步 vscode 配置文件</li>
+</ul>
+</li>
+<li>开发必备:<ul>
+<li>code runner: 执行 go, python,各种代码</li>
+<li>beautify : 格式化代码</li>
+<li>git history:</li>
+<li>go: 开发必备</li>
+<li>python: 开发必备</li>
+<li>docker support:</li>
+<li>debugger for chrome:</li>
+<li>bootstrap3 snippets: </li>
+<li>html snippets: 各种 补全用的 snippets, 官方插件库搜索添加.</li>
+</ul>
+</li>
+<li>补充: <a href="https://www.zhihu.com/question/40640654" target="_blank" rel="external">Visual Studio Code有哪些你常用的插件？- 知乎</a></li>
+</ul>
+<h2 id="4-vscode-配置-golang-开发环境"><a href="#4-vscode-配置-golang-开发环境" class="headerlink" title="4. vscode 配置 golang 开发环境:"></a>4. vscode 配置 golang 开发环境:</h2><h3 id="4-1-安装-golang"><a href="#4-1-安装-golang" class="headerlink" title="4.1 安装 golang:"></a>4.1 安装 golang:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 安装:</div><div class="line">brew install go</div><div class="line"></div><div class="line"># 查看安装成功:</div><div class="line">-&gt; % go version</div><div class="line">go version go1.7.3 darwin/amd64</div></pre></td></tr></table></figure>
+<h3 id="4-2-配置-golang-环境变量"><a href="#4-2-配置-golang-环境变量" class="headerlink" title="4.2 配置 golang 环境变量:"></a>4.2 配置 golang 环境变量:</h3><ul>
+<li><code>GOPATH</code> : 必须设置</li>
+<li><code>GOBIN</code>: 非必需, 但通常顺手设置.</li>
+<li>设置办法: 添加到 zsh 的配置文件: <code>~/.zprofile</code></li>
+<li>参考如下配置 <code>~/.zprofile</code>:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#######################################################</div><div class="line">#                 for Golang:</div><div class="line">#######################################################</div><div class="line"></div><div class="line">#-------------------------------</div><div class="line"># set GOPATH:</div><div class="line">#-------------------------------</div><div class="line"></div><div class="line"># go lib path:</div><div class="line">GO_LIB_PATH=$&#123;HOME&#125;/iGit/iSpace/iGo/libdir</div><div class="line"></div><div class="line"># go user workspace:</div><div class="line">GO_WORK_PATH=$&#123;HOME&#125;/iGit/iSpace/iGo/workdir</div><div class="line"></div><div class="line">export GOPATH=$&#123;GO_LIB_PATH&#125;:$&#123;GO_WORK_PATH&#125;</div><div class="line"></div><div class="line">#-------------------------------</div><div class="line"># set GOBIN:</div><div class="line">#-------------------------------</div><div class="line"></div><div class="line">export GOBIN=&quot;$&#123;GO_LIB_PATH&#125;/bin:$&#123;GO_WORK_PATH&#125;/bin&quot;</div><div class="line">export PATH=&quot;$&#123;PATH&#125;:$&#123;GOBIN&#125;&quot;</div></pre></td></tr></table></figure>
+<ul>
+<li>检查 golang 环境变量设置成功:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 查看环境变量:</span></div><div class="line"><span class="comment"># 关键看 GOPATH 和 GOBIN,  GOROOT</span></div><div class="line">-&gt; % go env</div><div class="line"></div><div class="line">GOARCH=<span class="string">"amd64"</span></div><div class="line">GOBIN=<span class="string">"/Users/hhstore/iGit/iSpace/iGo/libdir/bin:/Users/hhstore/iGit/iSpace/iGo/workdir/bin"</span></div><div class="line">GOEXE=<span class="string">""</span></div><div class="line">GOHOSTARCH=<span class="string">"amd64"</span></div><div class="line">GOHOSTOS=<span class="string">"darwin"</span></div><div class="line">GOOS=<span class="string">"darwin"</span></div><div class="line">GOPATH=<span class="string">"/Users/hhstore/iGit/iSpace/iGo/libdir:/Users/hhstore/iGit/iSpace/iGo/workdir"</span></div><div class="line">GORACE=<span class="string">""</span></div><div class="line">GOROOT=<span class="string">"/usr/local/Cellar/go/1.7.3/libexec"</span></div><div class="line">GOTOOLDIR=<span class="string">"/usr/local/Cellar/go/1.7.3/libexec/pkg/tool/darwin_amd64"</span></div><div class="line">CC=<span class="string">"clang"</span></div><div class="line">GOGCCFLAGS=<span class="string">"-fPIC -m64 -pthread -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -gno-record-gcc-switches -fno-common"</span></div><div class="line">CXX=<span class="string">"clang++"</span></div><div class="line">CGO_ENABLED=<span class="string">"1"</span></div></pre></td></tr></table></figure>
+<h3 id="4-3-配置-golang-开发-debug-模式"><a href="#4-3-配置-golang-开发-debug-模式" class="headerlink" title="4.3 配置 golang 开发 debug 模式:"></a>4.3 配置 golang 开发 debug 模式:</h3><h4 id="4-3-1-安装-golang-debug-插件-delve"><a href="#4-3-1-安装-golang-debug-插件-delve" class="headerlink" title="4.3.1 安装 golang debug 插件 delve:"></a>4.3.1 安装 golang debug 插件 delve:</h4><ul>
+<li>golang 调试工具: delve</li>
+<li>安装 <code>delve</code>: <a href="https://github.com/derekparker/delve/blob/master/Documentation/installation/osx/install.md" target="_blank" rel="external">Installation on OSX</a></li>
+<li>Mac 平台: <ul>
+<li><code>必须用 brew 安装</code>, </li>
+<li><code>不要直接使用 go get 安装</code>, 会出现签名, 权限问题, 导致 无法使用 <code>dlv</code> 调试工具.</li>
+</ul>
+</li>
+<li>请严格参考 <code>delve</code> 项目官方安装文档.这一步最容易出问题.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 安装 delev 工具:</span></div><div class="line">brew install go-delve/delve/delve</div></pre></td></tr></table></figure>
+<ul>
+<li>查看安装情况:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 查看安装路径: (go get 安装路径, 必然不是这个)</span></div><div class="line">-&gt; % <span class="built_in">which</span> dlv</div><div class="line">/usr/<span class="built_in">local</span>/bin/dlv</div><div class="line"></div><div class="line"><span class="comment"># 查看 dlv 版本:</span></div><div class="line">-&gt; % dlv version</div><div class="line">Delve Debugger</div><div class="line">Version: 0.11.0-alpha</div><div class="line">Build: v0.11.0</div><div class="line"></div><div class="line"><span class="comment"># 查看安装情况:</span></div><div class="line">-&gt; % brew info delve</div><div class="line"></div><div class="line">go-delve/delve/delve: stable 0.11.0, HEAD</div><div class="line">Debugger <span class="keyword">for</span> the Go programming language.</div><div class="line">https://github.com/derekparker/delve</div><div class="line">/usr/<span class="built_in">local</span>/Cellar/delve/0.11.0 (6 files, 7.4M) *</div><div class="line">  Built from <span class="built_in">source</span> on 2016-11-15 at 14:14:07</div><div class="line">From: https://github.com/go-delve/homebrew-delve/blob/master/Formula/delve.rb</div><div class="line">==&gt; Dependencies</div><div class="line">Build: go ✔</div><div class="line">==&gt; Caveats</div><div class="line">If you get <span class="string">"could not launch process: could not fork/exec"</span>, you need to try</div><div class="line"><span class="keyword">in</span> a new terminal.</div><div class="line"></div><div class="line">When uninstalling, to remove the dlv-cert certificate, run this <span class="built_in">command</span>:</div><div class="line"></div><div class="line">    $ sudo security delete-certificate -t -c dlv-cert /Library/Keychains/System.keychain</div><div class="line"></div><div class="line">Alternatively, you may want to delete from the Keychain (with the Imported private key).</div></pre></td></tr></table></figure>
+<ul>
+<li>配置问题解决:<ul>
+<li>error: could not launch process: could not fork/exec<ul>
+<li>原因: 没有使用 brew 安装, 请使用 brew 安装, </li>
+</ul>
+</li>
+<li>error: <a href="https://github.com/derekparker/delve/issues/159" target="_blank" rel="external">delve/issues/159</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="4-3-2-使用-vscode-自动安装-debug-必备的插件"><a href="#4-3-2-使用-vscode-自动安装-debug-必备的插件" class="headerlink" title="4.3.2 使用 vscode 自动安装 debug 必备的插件:"></a>4.3.2 使用 vscode 自动安装 debug 必备的插件:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 如下工具: vscode 会自动安装:</span></div><div class="line"><span class="comment"># 基本不会出现问题:</span></div><div class="line">go get -u -v github.com/nsf/gocode</div><div class="line">go get -u -v github.com/rogpeppe/godef</div><div class="line">go get -u -v github.com/golang/lint/golint</div><div class="line">go get -u -v github.com/lukehoban/go-outline</div><div class="line">go get -u -v sourcegraph.com/sqs/goreturns</div><div class="line">go get -u -v golang.org/x/tools/cmd/gorename</div><div class="line">go get -u -v github.com/tpng/gopkgs</div><div class="line">go get -u -v github.com/newhook/go-symbols</div><div class="line">go get -u -v golang.org/x/tools/cmd/guru</div></pre></td></tr></table></figure>
+<h4 id="4-3-3-自定义配置-vscode"><a href="#4-3-3-自定义配置-vscode" class="headerlink" title="4.3.3 自定义配置 vscode:"></a>4.3.3 自定义配置 vscode:</h4><ul>
+<li>修改: 首选项/用户设置:</li>
+<li>添加如下配置:<ul>
+<li><code>settings.json</code></li>
+</ul>
+</li>
+<li>关键修改: <ul>
+<li><code>go.gopath</code></li>
+<li><code>go.goroot</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// 将设置放入此文件中以覆盖默认设置</div><div class="line">&#123;</div><div class="line">    &quot;files.autoSave&quot;: &quot;afterDelay&quot;,</div><div class="line">    // 以像素为单位控制字号。</div><div class="line">    &quot;editor.fontSize&quot;: 14,</div><div class="line"></div><div class="line">    // 自定义要在 OS X 上运行的终端应用程序。</div><div class="line">    &quot;terminal.external.osxExec&quot;: &quot;iterm.app&quot;,</div><div class="line"></div><div class="line"></div><div class="line">// Go configuration</div><div class="line">    // Specifies the GOPATH to use when no environment variable is set.</div><div class="line">    // 这是我个人的 GOPATH, 设置2个, 首个为 lib 路径, 次个为个人开发工作区</div><div class="line">    &quot;go.gopath&quot;: &quot;/Users/hhstore/iGit/iSpace/iGo/libdir:/Users/hhstore/iGit/iSpace/iGo/workdir&quot;,</div><div class="line">     // Specifies the GOROOT to use when no environment variable is set.</div><div class="line">    &quot;go.goroot&quot;: &quot;/usr/local/Cellar/go/1.7.3/libexec&quot;,</div><div class="line"></div><div class="line">    &quot;workbench.statusBar.visible&quot;: false</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="4-3-4-测试-golang-debug-效果"><a href="#4-3-4-测试-golang-debug-效果" class="headerlink" title="4.3.4 测试 golang debug 效果:"></a>4.3.4 测试 golang debug 效果:</h4><ul>
+<li>修改: launch.json<ul>
+<li>此文件在执行 debug 时, 会根据提示, 自动生成.</li>
+<li>生成在项目根目录下: <code>/Users/hhstore/iGit/iSpace/iGo/.vscode/launch.json</code></li>
+</ul>
+</li>
+<li>根据具体情况, 修改: <code>program</code> 参数值.</li>
+<li><p>具体参考如下图示.</p>
+</li>
+<li><p>debug 代码目录:<br><img src="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161115-002.png?raw=true" alt="测试图片"></p>
+</li>
+</ul>
+<ul>
+<li>debug 断点效果图:<br><img src="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161115-001.png?raw=true" alt="测试图片"></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍 Mac 平台 使用 virtual studio code 搭建 golang 开发环境, 包含 debug 环境的配置.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://hhstore.github.io/categories/Tools/"/>
+    
+    
+      <category term="Mac" scheme="http://hhstore.github.io/tags/Mac/"/>
+    
+      <category term="vscode" scheme="http://hhstore.github.io/tags/vscode/"/>
+    
+      <category term="Golang" scheme="http://hhstore.github.io/tags/Golang/"/>
+    
+      <category term="IDE" scheme="http://hhstore.github.io/tags/IDE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Github 国内加速访问</title>
+    <link href="http://hhstore.github.io/2016/11/01/github-fast-host/"/>
+    <id>http://hhstore.github.io/2016/11/01/github-fast-host/</id>
+    <published>2016-11-01T17:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍如何通过修改本机 host, 提升 github 访问速度.</p>
+<a id="more"></a>
+<h2 id="前述"><a href="#前述" class="headerlink" title="前述:"></a>前述:</h2><ul>
+<li>最近发现 github 访问非常慢.</li>
+<li>办公网络: <ul>
+<li>100M 电信共享, 测试 VPN 访问很慢. git clone 没法用.</li>
+<li>100M 联通独享, 测试 VPN 访问很慢. git clone 较快.</li>
+</ul>
+</li>
+<li>猜测是 github 的 部分 CDN 被墙了.</li>
+<li>搜索找到解决办法, 记录如下, 备复查.</li>
+</ul>
+<h2 id="Mac-修改方法"><a href="#Mac-修改方法" class="headerlink" title="Mac 修改方法:"></a>Mac 修改方法:</h2><h3 id="修改-etc-hosts"><a href="#修改-etc-hosts" class="headerlink" title="修改 /etc/hosts:"></a>修改 /etc/hosts:</h3><ul>
+<li>特别提醒:<ul>
+<li>网上找到的 host, 不要轻易添加.</li>
+<li>先通过 ping 查看一下. 是否 ping 的通, 且速度是否够快.</li>
+<li>添加了 不同的 host IP, 反而会使访问速度更慢.</li>
+<li>上述 IP, 是在联通网络下, 访问非常快. 使用前, 请自行测试.</li>
+</ul>
+</li>
+<li>添加如下内容:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###################################</div><div class="line">#       Github:</div><div class="line">###################################</div><div class="line">103.245.222.249 github.global.ssl.fastly.net</div><div class="line"></div><div class="line">103.245.222.133 assets-cdn.github.com</div><div class="line">23.235.47.133   assets-cdn.github.com</div><div class="line"></div><div class="line">185.31.19.133   avatars1.githubusercontent.com</div></pre></td></tr></table></figure>
+<h3 id="修改-etc-resolv-conf"><a href="#修改-etc-resolv-conf" class="headerlink" title="修改 /etc/resolv.conf"></a>修改 /etc/resolv.conf</h3><ul>
+<li>添加如下内容:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"># add for github:</div><div class="line">nameserver 8.8.8.8</div><div class="line">nameserver 8.8.4.4</div><div class="line">nameserver 114.114.114.114</div></pre></td></tr></table></figure>
+<h3 id="刷新-NDS-使之生效"><a href="#刷新-NDS-使之生效" class="headerlink" title="刷新 NDS, 使之生效:"></a>刷新 NDS, 使之生效:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo dscacheutil -flushcache</div></pre></td></tr></table></figure>
+<h2 id="Linux-修改方法"><a href="#Linux-修改方法" class="headerlink" title="Linux 修改方法:"></a>Linux 修改方法:</h2><ul>
+<li><p>同样修改:</p>
+<ul>
+<li>/etc/hosts</li>
+<li>/etc/resolv.conf</li>
+</ul>
+</li>
+<li><p>刷新启动命令:</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo /etc/init.d/networking restart</div></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考:"></a>参考:</h2><ul>
+<li><a href="http://chenxuhua.com/technology/githubjia-su-fang-wen" target="_blank" rel="external">GitHub加速访问</a></li>
+<li><a href="http://www.jianshu.com/p/a578963f10f0" target="_blank" rel="external">Github访问很慢的解决方法</a></li>
+<li><a href="https://segmentfault.com/a/1190000004171536" target="_blank" rel="external">GtiHub访问慢解决办法</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍如何通过修改本机 host, 提升 github 访问速度.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://hhstore.github.io/categories/Tools/"/>
+    
+    
+      <category term="github" scheme="http://hhstore.github.io/tags/github/"/>
+    
+      <category term="vpn" scheme="http://hhstore.github.io/tags/vpn/"/>
+    
+      <category term="host" scheme="http://hhstore.github.io/tags/host/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Apache Web 服务器配置网站二级域名</title>
+    <link href="http://hhstore.github.io/2016/10/11/xampp-config-sub-domain/"/>
+    <id>http://hhstore.github.io/2016/10/11/xampp-config-sub-domain/</id>
+    <published>2016-10-11T22:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍如何配置 Apache, 设置网站二级域名.</p>
+<a id="more"></a>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考:"></a>参考:</h2><ul>
+<li><a href="http://www.voidcn.com/blog/u011447828/article/p-6192616.html" target="_blank" rel="external">apache 二级域名设置完整步骤</a></li>
+</ul>
+<h2 id="设置"><a href="#设置" class="headerlink" title="设置:"></a>设置:</h2><h3 id="1-域名解析商解析二级域名"><a href="#1-域名解析商解析二级域名" class="headerlink" title="1. 域名解析商解析二级域名:"></a>1. 域名解析商解析二级域名:</h3><ul>
+<li>阿里云-万网, 解析域名:</li>
+<li>oa.abc.com    指向 服务器 IP (阿里云主机 IP)</li>
+<li>pms.abc.com   指向 服务器 IP (阿里云主机 IP)</li>
+</ul>
+<h3 id="2-主机-Apache-配置"><a href="#2-主机-Apache-配置" class="headerlink" title="2. 主机 Apache 配置:"></a>2. 主机 Apache 配置:</h3><ul>
+<li>修改: httpd.conf<ul>
+<li>Ubuntu 下路径: /opt/lampp/etc/httpd.conf</li>
+</ul>
+</li>
+<li>修改: httpd-vhosts.conf<ul>
+<li>Ubuntu 下路径: /opt/lampp/etc/extra/httpd-vhosts.conf</li>
+</ul>
+</li>
+<li></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line">➜ cat /etc/hosts</div><div class="line">127.0.0.1 localhost</div><div class="line">127.0.1.1       localhost.localdomain   localhost</div><div class="line"></div><div class="line"><span class="comment"># The following lines are desirable for IPv6 capable hosts</span></div><div class="line">::1     localhost ip6-localhost ip6-loopback</div><div class="line">ff02::1 ip6-allnodes</div><div class="line">ff02::2 ip6-allrouters</div><div class="line">10.116.112.62 iZ94l9zg66aZ</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># /opt/lampp/etc/httpd.conf</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&lt;Directory /&gt;</div><div class="line">    AllowOverride none</div><div class="line">    Require all denied</div><div class="line">&lt;/Directory&gt;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 改为:</span></div><div class="line">&lt;Directory /&gt;</div><div class="line">Options FollowSymLinks</div><div class="line">AllowOverride All</div><div class="line">Order deny,allow</div><div class="line">Deny from all</div><div class="line">&lt;/Directory&gt;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Virtual hosts</span></div><div class="line"><span class="comment">#Include etc/extra/httpd-vhosts.conf</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">各个参数含义说明</div><div class="line">ServerAdmin  管理员邮箱</div><div class="line">DocumentRoot 所需指向路径</div><div class="line">ServerName   域名名称</div><div class="line">ServerAlias  域名别名 可要可不要</div><div class="line">ErrorLog     错误日志</div><div class="line">CustomLog    访问日志</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># restart:</span></div><div class="line"></div><div class="line">sudo /opt/lampp/lampp restart</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍如何配置 Apache, 设置网站二级域名.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://hhstore.github.io/categories/Tools/"/>
+    
+    
+      <category term="Apache" scheme="http://hhstore.github.io/tags/Apache/"/>
+    
+      <category term="web" scheme="http://hhstore.github.io/tags/web/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Golang 开发环境搭建</title>
+    <link href="http://hhstore.github.io/2016/09/01/go-mac-dev-env-config/"/>
+    <id>http://hhstore.github.io/2016/09/01/go-mac-dev-env-config/</id>
+    <published>2016-09-01T22:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍如何搭建 Golang 的开发环境, 以及推荐一些 go 的项目资源.</p>
+<a id="more"></a>
+<h2 id="golang-简介"><a href="#golang-简介" class="headerlink" title="golang 简介:"></a>golang 简介:</h2><ul>
+<li><a href="https://golang.org/" target="_blank" rel="external">golang 官网</a></li>
+<li><a href="https://go-zh.org/" target="_blank" rel="external">golang 中文官网</a></li>
+<li><a href="https://go-zh.org/doc/install" target="_blank" rel="external">go 官方中文安装指南</a><ul>
+<li>参考此中文文档,基本不需要多介绍,就可以搭建好环境.</li>
+</ul>
+</li>
+<li><a href="https://github.com/golang/go" target="_blank" rel="external">go - github</a></li>
+<li>go 的一些安利:<ul>
+<li>go 是 C 语言他爸, 又一个儿子. C 他爸的设计水平,不用怀疑.<ul>
+<li>这里多说一句, 语言发明人本身的背景, 其实很关键.</li>
+<li>很多语言设计上先天不足, 都跟语言发明人的背景有关.</li>
+<li>比如 PHP, 发明人是个业余开发者, 缺少科学训练, 导致 PHP 早期设计上有很多缺陷, 靠后天打补丁, 是无法改变本质的不足的.</li>
+<li>比如 Python 他爸是搞数学的, 数学系的思维, 通常喜欢简化, 追求极简的解题思路, 喜欢追求最优解. 所以, Python 追求极简, 追求单一最优解.</li>
+<li>对比 Ruby 他爸是日本人, 喜欢炫技(茴香豆的茴有16种写法,这种无聊的事,爱干) 这些小聪明, 消磨太多人的精力, 除了自娱自乐, 与他人无益.</li>
+<li>c 语言, 自然不必多说, 工业级排第一位的应用, c++, java等都受其影响, 而 c 他爹是正经的科班博士, 贝尔实验室的大咖.由此可见.</li>
+<li>go 是 c 他爸, 几十年后又一发明, 其他几位合作者, 都是大咖中的大咖, 背靠 Google 这个大树, 还要说啥?</li>
+</ul>
+</li>
+<li>go 有 google 干爹.</li>
+<li>go 的 1.6 版本之后, 性能已优化到很好</li>
+<li>go 的设计理念: 更偏向工程的务实, 而不是学院派炫技.</li>
+<li>go 天然支持并发编程, 这方面 Python 先天缺陷</li>
+<li>go 现在在云计算领域很火, docker 等项目,多用 go</li>
+<li>国内企业实践: <ul>
+<li>七牛大量使用</li>
+<li>BAT 很多业务部门在用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>围观 go 的过程:<ul>
+<li>从2013年到今天(2016年), 围观了 go 多个版本, 以及国内很多公司的实践</li>
+<li>目前这个节点,切入 go,还是比较理想的.</li>
+<li>雨痕等菊苣, 多是2012年切入, 之所以现在切入, 差不少是精力投入成本最低的</li>
+<li>现在 go 的生态圈已比较完善, 各种中文资料也比较丰富, 开源的 go 项目也多</li>
+<li>在大量开发者使用 go 的过程中, 慢慢有了 go 的最佳实践,可供参考.</li>
+<li>所以, 吃瓜群众,决定入坑了.</li>
+</ul>
+</li>
+</ul>
+<h2 id="go-适合谁"><a href="#go-适合谁" class="headerlink" title="go 适合谁?"></a>go 适合谁?</h2><ul>
+<li>python 等脚本语言开发者:<ul>
+<li>崇尚简介, go 的实践理念跟 Python 一致</li>
+<li>不喜欢 c++ 的复杂</li>
+<li>讨厌 java 的冗长语法</li>
+<li>对 ruby 低性能, 又提不起兴致</li>
+<li>苦于 Python 的性能瓶颈</li>
+<li>所以, 学一门 go 防身, 是必要的</li>
+</ul>
+</li>
+<li>web 后端开发者:<ul>
+<li>未来 Python 更适合快速的原型创建</li>
+<li>性能瓶颈, 用 go 重写替代</li>
+</ul>
+</li>
+</ul>
+<h2 id="Mac-安装-golang"><a href="#Mac-安装-golang" class="headerlink" title="Mac 安装 golang:"></a>Mac 安装 golang:</h2><ul>
+<li>推荐 homebrew 方式安装:</li>
+<li>当前 golang 最新版本: 1.7.1</li>
+<li>设置 shell 环境变量:<ul>
+<li>本机是 zsh 环境.所以修改: ~/.zprofile 文件</li>
+<li>如果是 brew 方式安装, 不需要设置 GOROOT 环境变量值.</li>
+<li>添加GOPATH环境变量:<ul>
+<li>此环境变量用途: 是个人的 go 开发目录(必须)</li>
+<li>用来存放个人开发代码, 以及下载的 go 第三方包等</li>
+<li>我个人的 go 开发目录: ~/iGit/iGoSpace</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 初次安装 go:</span></div><div class="line">-&gt; % brew install go</div><div class="line"></div><div class="line"><span class="comment"># 查看过期安装包:</span></div><div class="line">-&gt; % brew outdated</div><div class="line">go (1.6.3) &lt; 1.7.1</div><div class="line"></div><div class="line"><span class="comment"># 更新 go 版本:</span></div><div class="line">-&gt; % brew upgrade go</div><div class="line"></div><div class="line">...</div><div class="line">You may wish to add the GOROOT-based install location to your PATH:</div><div class="line">  <span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/<span class="built_in">local</span>/opt/go/libexec/bin</div><div class="line">==&gt; Summary</div><div class="line">🍺  /usr/<span class="built_in">local</span>/Cellar/go/1.7.1: 6,436 files, 250.6M</div><div class="line"></div><div class="line"><span class="comment"># 安装路径:如上</span></div><div class="line"></div><div class="line"><span class="comment"># 检查是否安装成功:</span></div><div class="line">-&gt; % go version</div><div class="line">go version go1.7.1 darwin/amd64</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#################################</span></div><div class="line"><span class="comment"># 配置环境变量:</span></div><div class="line"><span class="comment">#   - zsh: 修改 ~/.zprofile</span></div><div class="line"><span class="comment">#   - bash: 修改 ~/.bash_profile</span></div><div class="line"><span class="comment">#################################</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 添加 go 环境变量:</span></div><div class="line">vim ~/.zprofile</div><div class="line"></div><div class="line"><span class="comment">#################################</span></div><div class="line"><span class="comment"># 如下添加到 ~/.zprofile</span></div><div class="line"><span class="comment"># Golang Config:</span></div><div class="line"><span class="built_in">export</span> GOPATH=<span class="variable">$&#123;HOME&#125;</span>/iGit/iGoSpace</div><div class="line"></div><div class="line"><span class="comment">#################################</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 刷新环境变量:</span></div><div class="line"><span class="built_in">source</span> ~/.zprofile</div><div class="line"></div><div class="line"><span class="comment"># 查看环境变量是否生效:</span></div><div class="line">-&gt; % <span class="built_in">echo</span> <span class="variable">$GOPATH</span></div><div class="line">/Users/hhstore/iGit/iGoSpace</div><div class="line"></div><div class="line"><span class="comment"># 看到上面的路径, 可知已生效.</span></div></pre></td></tr></table></figure>
+<h2 id="Windows-安装-golang"><a href="#Windows-安装-golang" class="headerlink" title="Windows 安装 golang:"></a>Windows 安装 golang:</h2><ul>
+<li>参考: <a href="https://go-zh.org/doc/install" target="_blank" rel="external">go 官方中文安装指南</a></li>
+</ul>
+<h2 id="Go-开发-IDE-选择"><a href="#Go-开发-IDE-选择" class="headerlink" title="Go 开发 IDE 选择:"></a>Go 开发 IDE 选择:</h2><ul>
+<li>jetbrains 家 IDE 全家桶 + go 插件<ul>
+<li>我常用 pycharm + go 插件</li>
+<li>IDEA, PhpStorm, RubyMine等都可用</li>
+</ul>
+</li>
+<li>sublime text3 + go 插件</li>
+<li><a href="https://github.com/golang/go/wiki/IDEsAndTextEditorPlugins" target="_blank" rel="external">这有个IDE参考列表</a></li>
+<li>雨痕菊苣, 建议多用 命令行来编写,调试 go.深以为然,应该多多练习一下.</li>
+</ul>
+<h2 id="Go-学习资源"><a href="#Go-学习资源" class="headerlink" title="Go 学习资源:"></a>Go 学习资源:</h2><ul>
+<li><a href="https://go-zh.org/doc/" target="_blank" rel="external">官方中文文档</a><ul>
+<li><a href="https://go-tour-zh.appspot.com/welcome/1" target="_blank" rel="external">Go 指南 - 必读</a><ul>
+<li>这个指南, 可以在线编辑,运行 go 代码, 必读</li>
+</ul>
+</li>
+<li>go 官方中文文档,很完善, 对用户很友好</li>
+</ul>
+</li>
+<li><a href="https://github.com/astaxie/build-web-application-with-golang" target="_blank" rel="external">build-web-application-with-golang</a><ul>
+<li>中文教程</li>
+</ul>
+</li>
+<li><a href="https://github.com/qyuhen/book" target="_blank" rel="external">go 笔记 - 雨痕</a><ul>
+<li>必读, 高质量</li>
+</ul>
+</li>
+</ul>
+<h2 id="Go-热门项目"><a href="#Go-热门项目" class="headerlink" title="Go 热门项目:"></a>Go 热门项目:</h2><ul>
+<li>热门项目的价值:<ul>
+<li>学习语言本身</li>
+<li>学习最佳实践</li>
+<li>学习各种技术: 数据库, 并发, 网络等</li>
+</ul>
+</li>
+<li><a href="https://github.com/golang/go/wiki/Projects" target="_blank" rel="external">go-project-list</a></li>
+<li><a href="https://github.com/avelino/awesome-go" target="_blank" rel="external">awesome-go</a><ul>
+<li>列举了大量 go 项目, 可以在这里扒拉各种.</li>
+</ul>
+</li>
+<li>感兴趣的项目:<ul>
+<li><a href="https://github.com/astaxie/beego" target="_blank" rel="external">beego - github</a></li>
+<li><a href="http://beego.me/" target="_blank" rel="external">beego - 官网</a><ul>
+<li>用途: go web 框架</li>
+<li>作者:国人</li>
+</ul>
+</li>
+<li><a href="https://github.com/docker/docker" target="_blank" rel="external">docker - github</a><ul>
+<li>热门应用, 很喜欢用</li>
+</ul>
+</li>
+<li><a href="https://github.com/lunny/tango" target="_blank" rel="external">tango</a><ul>
+<li>用途: web 框架</li>
+<li>作者: 国人</li>
+</ul>
+</li>
+<li><a href="https://github.com/go-xorm/xorm" target="_blank" rel="external">xorm</a><ul>
+<li>用途: 数据库 ORM</li>
+<li>作者: 国人</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍如何搭建 Golang 的开发环境, 以及推荐一些 go 的项目资源.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://hhstore.github.io/categories/Tools/"/>
+    
+    
+      <category term="golang" scheme="http://hhstore.github.io/tags/golang/"/>
+    
+      <category term="mac" scheme="http://hhstore.github.io/tags/mac/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Tornado 最佳实践</title>
+    <link href="http://hhstore.github.io/2016/08/25/tornado-tips/"/>
+    <id>http://hhstore.github.io/2016/08/25/tornado-tips/</id>
+    <published>2016-08-25T22:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍 Tornado 最佳实践相关内容.</p>
+<a id="more"></a>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考:"></a>参考:</h2><ul>
+<li><a href="https://www.v2ex.com/t/88797" target="_blank" rel="external">有关Tornado 异步的讨论</a><ul>
+<li>reply12回答</li>
+</ul>
+</li>
+<li><p><a href="https://github.com/mher/tornado-celery/" target="_blank" rel="external">tornado-celery 项目</a></p>
+<ul>
+<li>搭配 celery 实现便捷异步 IO</li>
+</ul>
+</li>
+<li><p><a href="http://kjam.org/cn/tornado-prespective.html" target="_blank" rel="external">Tornado最佳实践</a></p>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍 Tornado 最佳实践相关内容.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://hhstore.github.io/categories/Tools/"/>
+    
+    
+      <category term="Python" scheme="http://hhstore.github.io/tags/Python/"/>
+    
+      <category term="Tornado" scheme="http://hhstore.github.io/tags/Tornado/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用 Mweb 配合 hexo 编写 github 博客</title>
+    <link href="http://hhstore.github.io/2016/08/25/mweb-hexo-blog-config/"/>
+    <id>http://hhstore.github.io/2016/08/25/mweb-hexo-blog-config/</id>
+    <published>2016-08-25T22:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍如何使用 Mweb 配合 hexo 编写 github 博客.</p>
+<a id="more"></a>
+<h2 id="MWeb-简介"><a href="#MWeb-简介" class="headerlink" title="MWeb 简介:"></a>MWeb 简介:</h2><ul>
+<li>Mac 下目前最好用的 markdown 编辑器</li>
+<li>亮点:<ul>
+<li>所见即所得</li>
+<li>直接复制粘贴图片到编辑框,自动生成图片 URL</li>
+<li>支持上传各种图床</li>
+<li>支持发布到各种博客网站</li>
+</ul>
+</li>
+<li>简单搜索了一下,找到配合 hexo 在 github 上写博客的办法.</li>
+</ul>
+<h2 id="MWeb-配置"><a href="#MWeb-配置" class="headerlink" title="MWeb 配置:"></a>MWeb 配置:</h2><h3 id="1-打开-MWeb-外部模式"><a href="#1-打开-MWeb-外部模式" class="headerlink" title="1. 打开 MWeb 外部模式:"></a>1. 打开 MWeb 外部模式:</h3><ul>
+<li>mweb 中, <code>CMD+E</code>快捷键激活</li>
+</ul>
+<h3 id="2-导入原-github-博客仓库资源目录"><a href="#2-导入原-github-博客仓库资源目录" class="headerlink" title="2. 导入原 github 博客仓库资源目录:"></a>2. 导入原 github 博客仓库资源目录:</h3><ul>
+<li>找到本机的 github 仓库目录</li>
+<li>点击 <code>引入文件夹</code>, 把 github 博客的 <code>source</code> 目录导入, 如截图所示.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">~/iGithub/iB<span class="built_in">log</span></div><div class="line"></div><div class="line"><span class="comment"># 查看 我的 github 博客项目目录:</span></div><div class="line">-&gt; % tree iB<span class="built_in">log</span> -L 1</div><div class="line">iB<span class="built_in">log</span></div><div class="line">├── _config.yml</div><div class="line">├── cfg_backup.yml</div><div class="line">├── db.json</div><div class="line">├── node_modules</div><div class="line">├── package.json</div><div class="line">├── public</div><div class="line">├── readme.mdown</div><div class="line">├── scaffolds</div><div class="line">├── <span class="built_in">source</span>      <span class="comment"># 博客源目录, 导入此目录</span></div><div class="line">└── themes</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 找到 source 目录.</span></div><div class="line">-&gt; % tree <span class="built_in">source</span> -L 1</div><div class="line"><span class="built_in">source</span></div><div class="line">├── CNAME</div><div class="line">├── _posts</div><div class="line">├── about</div><div class="line">├── books</div><div class="line">├── categories</div><div class="line">├── images</div><div class="line">├── links</div><div class="line">├── media       <span class="comment"># 默认 Mweb 保存图片的路径.</span></div><div class="line">├── projects</div><div class="line">├── tags</div><div class="line">├── tools</div><div class="line">└── translations</div></pre></td></tr></table></figure>
+<p><img src="/media/14732178319341.jpg" alt=""></p>
+<h3 id="3-设置-source-目录属性"><a href="#3-设置-source-目录属性" class="headerlink" title="3. 设置 source 目录属性:"></a>3. 设置 <code>source</code> 目录属性:</h3><ul>
+<li><code>source</code> 文件夹,右键,找到<code>编辑</code>.</li>
+<li>设置 图片保存路径,默认 <code>media</code> 文件夹,并改成<code>绝对位置</code></li>
+</ul>
+<p><img src="/media/14732182875227.jpg" alt=""></p>
+<p><img src="/media/14732184402723.jpg" alt=""></p>
+<ul>
+<li>保存成功后,就可以愉快的在 MWeb 编辑器里写博客了.</li>
+</ul>
+<h3 id="4-写一篇博客测试"><a href="#4-写一篇博客测试" class="headerlink" title="4. 写一篇博客测试:"></a>4. 写一篇博客测试:</h3><p><img src="/media/14732186698429.jpg" alt=""></p>
+<h3 id="5-发布到-github"><a href="#5-发布到-github" class="headerlink" title="5. 发布到 github"></a>5. 发布到 github</h3><ul>
+<li>首先, Mweb 编辑的博客文件,是保存在原 github 博客仓库路径下,所以, 按照正常的发布流程来.</li>
+<li>切换到 项目目录.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 发布命令</span></div><div class="line">[~/xx/xx/iB<span class="built_in">log</span>] [master *]</div><div class="line">-&gt; % hexo g <span class="_">-d</span></div></pre></td></tr></table></figure>
+<h3 id="6-查看"><a href="#6-查看" class="headerlink" title="6. 查看:"></a>6. 查看:</h3><ul>
+<li>打开博客地址, 查看: <a href="http://hhstore.github.io">http://hhstore.github.io</a> </li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考:"></a>参考:</h2><ul>
+<li><a href="https://joilence.github.io/2016/07/14/improve-blog/" target="_blank" rel="external">Hexo 博客进阶配置与常见问题</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍如何使用 Mweb 配合 hexo 编写 github 博客.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://hhstore.github.io/categories/Tools/"/>
+    
+    
+      <category term="github" scheme="http://hhstore.github.io/tags/github/"/>
+    
+      <category term="blog" scheme="http://hhstore.github.io/tags/blog/"/>
+    
+      <category term="hexo" scheme="http://hhstore.github.io/tags/hexo/"/>
+    
+      <category term="mweb" scheme="http://hhstore.github.io/tags/mweb/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>网络编程socket IO核心概念对比: 阻塞,非阻塞,同步,异步, select, epoll</title>
+    <link href="http://hhstore.github.io/2016/08/24/socket-io-programming/"/>
+    <id>http://hhstore.github.io/2016/08/24/socket-io-programming/</id>
+    <published>2016-08-24T22:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍 socket 编程最核心的概念区别.</p>
+<a id="more"></a>
+<h2 id="高质量参考"><a href="#高质量参考" class="headerlink" title="高质量参考:"></a>高质量参考:</h2><ul>
+<li><a href="">Unix 网络编程 - 第6章</a><ul>
+<li>权威参考,网上各种博客,大都摘抄自此.</li>
+</ul>
+</li>
+<li><a href="">Linux/Unix 系统编程手册-  第63章</a></li>
+<li><a href="http://blog.csdn.net/historyasamirror/article/details/5778378" target="_blank" rel="external">IO - 同步，异步，阻塞，非阻塞 （亡羊补牢篇）</a></li>
+<li><a href="https://segmentfault.com/a/1190000003063859" target="_blank" rel="external">Linux IO模式及 select、poll、epoll详解</a><ul>
+<li>写的比较通俗</li>
+</ul>
+</li>
+<li><a href="http://python.jobbole.com/86097/" target="_blank" rel="external">tornado源码解析之IOLoop</a></li>
+</ul>
+<h2 id="socket-编程几个核心概念"><a href="#socket-编程几个核心概念" class="headerlink" title="socket 编程几个核心概念:"></a>socket 编程几个核心概念:</h2><ul>
+<li>阻塞: blocking</li>
+<li>非阻塞: non-blocking</li>
+<li>同步: synchronous</li>
+<li>异步: asynchronous</li>
+</ul>
+<h2 id="IO模式"><a href="#IO模式" class="headerlink" title="IO模式:"></a>IO模式:</h2><ul>
+<li>IO 读两阶段:<ul>
+<li><ol>
+<li>等待数据准备 (Waiting for the data to be ready)</li>
+</ol>
+</li>
+<li><ol>
+<li>将数据从内核拷贝到进程中 (Copying the data from the kernel to the process)</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>由此产生的5种网络模式:<ul>
+<li>阻塞 I/O（blocking IO）</li>
+<li>非阻塞 I/O（nonblocking IO）</li>
+<li>I/O 多路复用（ IO multiplexing）</li>
+<li>信号驱动 I/O（ signal driven IO）: 不常用,略过.</li>
+<li>异步 I/O（asynchronous IO）</li>
+</ul>
+</li>
+</ul>
+<h2 id="核心总结"><a href="#核心总结" class="headerlink" title="核心总结:"></a>核心总结:</h2><ul>
+<li>阻塞 I/O（blocking IO）: IO 两阶段都阻塞</li>
+<li>非阻塞 I/O（nonblocking IO）: <ul>
+<li>命名不精确, 精确定义应为: 部分阻塞,部分非阻塞</li>
+</ul>
+</li>
+<li>I/O 多路复用（ IO multiplexing）: <ul>
+<li>常说的 select，poll，epoll，有些地方也称这种IO方式为event driven IO</li>
+<li>关于 select:<ul>
+<li>select 相当于一个<code>代理中介</code>, 进程在调用 select()函数时,被 block, </li>
+<li>而之后 select(poll, epoll 等)函数 会不断的轮询所负责的所有socket，当某个socket有数据到达了，就通知用户进程。</li>
+</ul>
+</li>
+<li>select/epoll的优势并不是对于单个连接能处理得更快，而是在于能处理更多的连接。</li>
+<li>如果处理的连接数不是很高的话，使用select/epoll的web server不一定比使用multi-threading + blocking IO的web server性能更好，可能延迟还更大。</li>
+</ul>
+</li>
+<li>异步 I/O（asynchronous IO）:<ul>
+<li>linux下的asynchronous IO其实用得很少</li>
+</ul>
+</li>
+</ul>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别:"></a>区别:</h2><ul>
+<li>同步 IO(synchronous IO):<ul>
+<li>blocking IO，non-blocking IO，IO multiplexing都属于synchronous IO。</li>
+<li>关于non-blocking IO:<ul>
+<li>non-blocking IO 在执行recvfrom这个system call的时候，如果kernel的数据没有准备好，这时候不会block进程。</li>
+<li>但是，当kernel中数据准备好的时候，recvfrom会将数据从kernel拷贝到用户内存中，这个时候进程是被block了，在这段时间内，进程是被block的。</li>
+</ul>
+</li>
+<li>同步: 都是阻塞的,只是阻塞的阶段不同(部分阻塞 vs 完全阻塞)</li>
+</ul>
+</li>
+<li>异步 IO (AIO):<ul>
+<li>当进程发起IO 操作之后，就直接返回再也不理睬了，直到kernel发送一个信号，告诉进程说IO完成。</li>
+<li>在这整个过程中，进程完全没有被block。</li>
+<li>异步: 才是真正的非阻塞</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍 socket 编程最核心的概念区别.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://hhstore.github.io/categories/Tools/"/>
+    
+    
+      <category term="socket" scheme="http://hhstore.github.io/tags/socket/"/>
+    
+      <category term="select" scheme="http://hhstore.github.io/tags/select/"/>
+    
+      <category term="epoll" scheme="http://hhstore.github.io/tags/epoll/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SSH 使用 SSH-KEY 登录, 并禁用密码登录</title>
+    <link href="http://hhstore.github.io/2016/08/22/ssh-use-key/"/>
+    <id>http://hhstore.github.io/2016/08/22/ssh-use-key/</id>
+    <published>2016-08-22T14:55:32.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>SSH 使用 SSH-KEY 登录, 并禁用密码登录的配置方法.</p>
+<a id="more"></a>
+<h2 id="0-更改-SSH-登录的背景"><a href="#0-更改-SSH-登录的背景" class="headerlink" title="0. 更改 SSH 登录的背景:"></a>0. 更改 SSH 登录的背景:</h2><ul>
+<li>最近查看阿里云主机的后台监控日志, 发现有被攻击, 查了下 log 详情.</li>
+<li>发现有人在对主机 SSH 登录端口22, 做暴力验证, 已经攻击了几天了, 瞬间吓尿有木有.</li>
+<li>赶紧把 SSH 登录的口令方式禁掉, 切到 密钥对方式登录.</li>
+<li>安全意识, 还是要提高, 懒癌要不得. 果断把其他几台主机, 都改了.</li>
+</ul>
+<h2 id="1-SSH-登录方式"><a href="#1-SSH-登录方式" class="headerlink" title="1. SSH 登录方式:"></a>1. SSH 登录方式:</h2><ul>
+<li>密码口令登录: 简单, 但是不安全, 公网主机,容易被攻击.</li>
+<li>SSH-KEY 登录: 需要设置</li>
+</ul>
+<h2 id="2-使用-SSH-KEY-登录配置原理"><a href="#2-使用-SSH-KEY-登录配置原理" class="headerlink" title="2. 使用 SSH-KEY 登录配置原理:"></a>2. 使用 SSH-KEY 登录配置原理:</h2><ol>
+<li>本机(Mac or winPC), 生成 SSH-KEY(公钥 id_rsa.pub 和私钥 id_rsa)</li>
+<li>远程主机(Ubuntu), 创建目录和文件: ~/.ssh/authorized_keys</li>
+<li>将本机(Mac or winPC)公钥 id_rsa.pub 内容拷贝并添加到 远程主机(Ubuntu)的 authorized_keys 文件中</li>
+<li>本机, 使用 SSH 登录工具(如 ZOC), 输入用户名, 勾选本机 SSH-KEY 私钥, 连接远程主机.</li>
+</ol>
+<h2 id="3-配置过程"><a href="#3-配置过程" class="headerlink" title="3. 配置过程:"></a>3. 配置过程:</h2><h3 id="3-1-Mac-本机生成-SSH-KEY"><a href="#3-1-Mac-本机生成-SSH-KEY" class="headerlink" title="3.1 Mac 本机生成 SSH-KEY:"></a>3.1 Mac 本机生成 SSH-KEY:</h3><ul>
+<li>略</li>
+<li>路径: ~/.ssh/</li>
+<li>私钥: ~/.ssh/id_rsa</li>
+<li>公钥: ~/.ssh/id_rsa.pub</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># ssh-keygen:生成秘钥对</span></div><div class="line"><span class="comment"># 其中：</span></div><div class="line"><span class="comment">#  -t指定算法</span></div><div class="line"><span class="comment">#  -f 指定生成秘钥路径</span></div><div class="line"><span class="comment">#  -N 指定密码</span></div><div class="line">ssh-keygen -t rsa </div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 本地公钥, 上传到远程主机:</span></div><div class="line">scp ~/.ssh/id_rsa.pub root@192.168.1.3:~/.ssh/</div></pre></td></tr></table></figure>
+<h3 id="3-2-远程主机创建-ssh-目录"><a href="#3-2-远程主机创建-ssh-目录" class="headerlink" title="3.2 远程主机创建.ssh 目录"></a>3.2 远程主机创建.ssh 目录</h3><ul>
+<li>文件和目录的权限千万别设置成chmod 777.这个权限太大了，不安全，数字签名也不支持</li>
+<li>本机生成的rsa/dsa签名的公钥, 是给远程主机使用的. 公钥内容, 要拷贝到远程主机的.ssh/authorized_keys中</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 创建目录:</span></div><div class="line"><span class="built_in">cd</span> ~</div><div class="line">mkdir .ssh</div><div class="line">chmod 700 .ssh</div><div class="line"></div><div class="line"><span class="comment"># 创建文件:</span></div><div class="line"><span class="built_in">cd</span> .ssh</div><div class="line">touch authorized_keys</div><div class="line">chmod 600 authorized_keys</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 写入公钥内容:</span></div><div class="line"><span class="built_in">echo</span> <span class="string">'ssh-rsa public '</span> &gt;&gt; ~/.ssh/authorized_keys</div><div class="line"></div><div class="line"><span class="comment"># 写入方法2:(该公钥,是有本地主机, 上传到远程主机上的)</span></div><div class="line">cat ~/.ssh/id_dsa.pub &gt;&gt; ~/.ssh/authorized_keys</div></pre></td></tr></table></figure>
+<h3 id="3-3-本机SSH-连接远程主机"><a href="#3-3-本机SSH-连接远程主机" class="headerlink" title="3.3 本机SSH 连接远程主机:"></a>3.3 本机SSH 连接远程主机:</h3><ul>
+<li>ZOC 连接,设置步骤略.</li>
+<li>尝试连接, 若成功.则进行下一步,禁用密码登录方式.</li>
+</ul>
+<h3 id="3-4-禁用-SSH-的密码登录方式"><a href="#3-4-禁用-SSH-的密码登录方式" class="headerlink" title="3.4 禁用 SSH 的密码登录方式:"></a>3.4 禁用 SSH 的密码登录方式:</h3><ul>
+<li>修改: vim /etc/ssh/sshd_config</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">#禁用密码验证</span></div><div class="line">PasswordAuthentication no</div><div class="line"></div><div class="line"><span class="comment">#启用密钥验证</span></div><div class="line">RSAAuthentication yes</div><div class="line">PubkeyAuthentication yes</div><div class="line"></div><div class="line"><span class="comment">#指定公钥数据库文件</span></div><div class="line">AuthorsizedKeysFile .ssh/authorized_keys</div></pre></td></tr></table></figure>
+<ul>
+<li>重启 SSH 服务, 重新使用  SSH 口令方式登录远程主机, 验证是否已成功禁用</li>
+<li>若提示: [SSH] FAIL: Permission denied (publickey). 则表明禁用成功.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">#RHEL/CentOS系统</span></div><div class="line">service sshd restart</div><div class="line"></div><div class="line"><span class="comment">#ubuntu系统</span></div><div class="line">service ssh restart</div><div class="line"></div><div class="line"><span class="comment">#debian系统</span></div><div class="line">/etc/init.d/ssh restart</div></pre></td></tr></table></figure>
+<h2 id="4-参考"><a href="#4-参考" class="headerlink" title="4. 参考:"></a>4. 参考:</h2><ul>
+<li><a href="https://linux.cn/article-5776-1.html" target="_blank" rel="external">SSH 使用密钥登录并禁止口令登录实践</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;SSH 使用 SSH-KEY 登录, 并禁用密码登录的配置方法.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://hhstore.github.io/categories/Tools/"/>
+    
+    
+      <category term="Ubuntu" scheme="http://hhstore.github.io/tags/Ubuntu/"/>
+    
+      <category term="SSH" scheme="http://hhstore.github.io/tags/SSH/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>阿里云部署禅道系统步骤</title>
+    <link href="http://hhstore.github.io/2016/08/12/aliyun-deploy-zentao-manual/"/>
+    <id>http://hhstore.github.io/2016/08/12/aliyun-deploy-zentao-manual/</id>
+    <published>2016-08-12T22:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.961Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍 阿里云部署禅道系统.</p>
+<a id="more"></a>
+<h2 id="禅道系统介绍"><a href="#禅道系统介绍" class="headerlink" title="禅道系统介绍:"></a>禅道系统介绍:</h2><h2 id="部署主机环境"><a href="#部署主机环境" class="headerlink" title="部署主机环境:"></a>部署主机环境:</h2><ul>
+<li>阿里云: 2核/4G/1Mbps/500G 普通主机</li>
+<li>系统: Ubuntu 14.04, x64</li>
+</ul>
+<h2 id="下载安装包"><a href="#下载安装包" class="headerlink" title="下载安装包:"></a>下载安装包:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装:"></a>安装:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"># 运行:</div><div class="line">/opt/zbox/zbox start -ap 8080</div></pre></td></tr></table></figure>
+<ul>
+<li>浏览器访问: 170.100.100.1:8080 (阿里云主机 IP + 端口)</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍 阿里云部署禅道系统.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://hhstore.github.io/categories/Tools/"/>
+    
+    
+      <category term="aliyun" scheme="http://hhstore.github.io/tags/aliyun/"/>
+    
+      <category term="禅道" scheme="http://hhstore.github.io/tags/%E7%A6%85%E9%81%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Github + Hexo 搭建博客教程: 使用 Github 本身做图床</title>
+    <link href="http://hhstore.github.io/2016/08/12/github-as-blog-image-bed/"/>
+    <id>http://hhstore.github.io/2016/08/12/github-as-blog-image-bed/</id>
+    <published>2016-08-12T10:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍如何使用 github 做博客图床.</p>
+<a id="more"></a>
+<h2 id="1-参考文档"><a href="#1-参考文档" class="headerlink" title="1. 参考文档:"></a>1. 参考文档:</h2><ul>
+<li><a href="http://pein0119.github.io/2014/08/03/hexo%E4%BD%BF%E7%94%A8github%E4%BD%9C%E4%B8%BA%E5%9B%BE%E7%89%87%E9%93%BE%E6%8E%A5%E6%BA%90/" target="_blank" rel="external">hexo使用github作为图片链接源</a></li>
+</ul>
+<h2 id="2-图床常规选择"><a href="#2-图床常规选择" class="headerlink" title="2. 图床常规选择:"></a>2. 图床常规选择:</h2><ul>
+<li>微博</li>
+<li>七牛</li>
+<li>github 本身</li>
+</ul>
+<h2 id="3-使用-github-本身做图床"><a href="#3-使用-github-本身做图床" class="headerlink" title="3. 使用 github 本身做图床:"></a>3. 使用 github 本身做图床:</h2><ul>
+<li>考虑不喜欢用微博, 用七牛又嫌麻烦.</li>
+<li>博客配图比较少, 索性研究一下如何用 github 本身做图床.</li>
+<li>如下操作前提: 假定是用 github + hexo 搭建的博客.</li>
+</ul>
+<h3 id="3-1-创建图片目录"><a href="#3-1-创建图片目录" class="headerlink" title="3.1 创建图片目录:"></a>3.1 创建图片目录:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"># 博客目录, 终端命令行:</div><div class="line">hexo new page image</div></pre></td></tr></table></figure>
+<h3 id="3-2-并在此目录下-新建-2016-08-目录-并添加测试图片"><a href="#3-2-并在此目录下-新建-2016-08-目录-并添加测试图片" class="headerlink" title="3.2 并在此目录下, 新建: 2016/08 目录, 并添加测试图片."></a>3.2 并在此目录下, 新建: 2016/08 目录, 并添加测试图片.</h3><ul>
+<li>图片目录: images/2016/08</li>
+<li>图片引用 URL 头: <a href="https://github.com/hhstore/hhstore.github.io/blob/master/your-images-dir" target="_blank" rel="external">https://github.com/hhstore/hhstore.github.io/blob/master/your-images-dir</a><ul>
+<li>注意必须拼接: /blob/master, 至于为何是 blob, 暂时不明. </li>
+</ul>
+</li>
+<li>图片引用 URL 尾: ?raw=true  </li>
+<li>必须拼接 URL 尾巴, 否则无法正常显示</li>
+</ul>
+<p>示例图片 URL: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/08/20160812-001.jpg</div></pre></td></tr></table></figure>
+<h3 id="3-3-测试引用效果"><a href="#3-3-测试引用效果" class="headerlink" title="3.3 测试引用效果:"></a>3.3 测试引用效果:</h3><ul>
+<li>有效引用:<br><img src="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/08/20160812-001.jpg?raw=true" alt="测试图片"></li>
+</ul>
+<ul>
+<li>无效引用(缺少 ?raw=true 拼接):<br><img src="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/08/20160812-001.jpg" alt="测试图片"></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍如何使用 github 做博客图床.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Git" scheme="http://hhstore.github.io/categories/Git/"/>
+    
+    
+      <category term="Github" scheme="http://hhstore.github.io/tags/Github/"/>
+    
+      <category term="Hexo" scheme="http://hhstore.github.io/tags/Hexo/"/>
+    
+      <category term="Blog" scheme="http://hhstore.github.io/tags/Blog/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MongoDB 开发笔记</title>
+    <link href="http://hhstore.github.io/2016/06/25/mongodb-replica-set-config/"/>
+    <id>http://hhstore.github.io/2016/06/25/mongodb-replica-set-config/</id>
+    <published>2016-06-25T22:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍MongoDB 高可用配置和一些重要特性.</p>
+<a id="more"></a>
+<h2 id="MongoDB-高可用配置"><a href="#MongoDB-高可用配置" class="headerlink" title="MongoDB 高可用配置"></a>MongoDB 高可用配置</h2><ul>
+<li>使用pymongo</li>
+</ul>
+<p>参考文档:</p>
+<p>官方文档,必看, 看完,就可以配置.</p>
+<ul>
+<li><a href="https://api.mongodb.org/python/current/examples/high_availability.html" target="_blank" rel="external">High Availability and PyMongo</a></li>
+</ul>
+<ul>
+<li><a href="https://api.mongodb.org/python/current/api/pymongo/mongo_client.html" target="_blank" rel="external">MongoClient</a></li>
+</ul>
+<p>下面这个API可能要废弃, 因为MongoClient 已经包含 MongoReplicaSetClient() 全部功能</p>
+<ul>
+<li><a href="https://api.mongodb.org/python/current/api/pymongo/mongo_replica_set_client.html" target="_blank" rel="external">mongo_replica_set_client</a></li>
+</ul>
+<h2 id="两阶段提交2PC"><a href="#两阶段提交2PC" class="headerlink" title="两阶段提交2PC"></a>两阶段提交2PC</h2><p>四、缺陷<br>算法执行过程中，所有节点都处于阻塞状态，所有节点所持有的资源（例如数据库数据，本地文件等）都处于封锁状态。</p>
+<p>六、结论<br>2PC效率很低，分布式事务很难做。</p>
+<p><a href="http://chuansong.me/n/1928604" target="_blank" rel="external">http://chuansong.me/n/1928604</a></p>
+<h2 id="pool"><a href="#pool" class="headerlink" title="pool"></a>pool</h2><ul>
+<li><a href="http://api.mongodb.org/python/current/faq.html#how-does-connection-pooling-work-in-pymongo" target="_blank" rel="external">How does connection pooling work in PyMongo?</a></li>
+</ul>
+<h2 id="mongodb-不支持-事务-解决"><a href="#mongodb-不支持-事务-解决" class="headerlink" title="mongodb 不支持 事务, 解决:"></a>mongodb 不支持 事务, 解决:</h2><ul>
+<li><a href="http://www.uml.org.cn/sjjm/2014081111.asp?artid=10313" target="_blank" rel="external">五个解决方案让MongoDB拥有RDBMS的鲁棒性事务</a></li>
+</ul>
+<ul>
+<li><a href="https://coding.net/u/tuxpy/p/tmongo/git/blob/master/tmongo.py" target="_blank" rel="external">实现事务支持: 源码 - py</a></li>
+</ul>
+<ul>
+<li><a href="http://www.tuicool.com/articles/f6ZBjm" target="_blank" rel="external">MongoDB两阶段提交实现事务</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍MongoDB 高可用配置和一些重要特性.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="DB" scheme="http://hhstore.github.io/categories/DB/"/>
+    
+    
+      <category term="NoSQL" scheme="http://hhstore.github.io/tags/NoSQL/"/>
+    
+      <category term="mongodb" scheme="http://hhstore.github.io/tags/mongodb/"/>
+    
+      <category term="高可用" scheme="http://hhstore.github.io/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python实践 - 爬虫</title>
+    <link href="http://hhstore.github.io/2015/09/12/python-web-spider/"/>
+    <id>http://hhstore.github.io/2015/09/12/python-web-spider/</id>
+    <published>2015-09-12T19:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍 Python 爬虫相关的实践.</p>
+<a id="more"></a>
+<h3 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读."></a>扩展阅读.</h3><ul>
+<li>这篇示例不错.<a href="http://www.the5fire.com/take-a-glance-at-celery.html" target="_blank" rel="external">the5fire - Celery的安装和使用</a></li>
+<li>示例赞.<a href="http://www.the5fire.com/python-thread-pool.html" target="_blank" rel="external">the5fire - python线程池 </a></li>
+<li><a href="http://www.cnblogs.com/hymenz/p/3552157.html" target="_blank" rel="external">基于celery+RabbitMQ+tornado实现网络爬虫</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍 Python 爬虫相关的实践.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Python" scheme="http://hhstore.github.io/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://hhstore.github.io/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python 全栈工程师之路</title>
+    <link href="http://hhstore.github.io/2015/09/11/full-stack-python/"/>
+    <id>http://hhstore.github.io/2015/09/11/full-stack-python/</id>
+    <published>2015-09-11T17:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍Python全栈工程师必备技能.</p>
+<a id="more"></a>
+<h2 id="github站点巡航"><a href="#github站点巡航" class="headerlink" title="github站点巡航:"></a>github站点巡航:</h2><ul>
+<li><a href="https://github.com/jxqlovejava/PopularBlogSites" target="_blank" rel="external">流行技术博客站点收录</a></li>
+</ul>
+<h2 id="全栈工程师"><a href="#全栈工程师" class="headerlink" title="全栈工程师"></a>全栈工程师</h2><ul>
+<li>在线阅读:<ul>
+<li><a href="http://zh-google-styleguide.readthedocs.org/en/latest/google-python-styleguide/python_style_rules/" target="_blank" rel="external">PEP8风格规范</a></li>
+<li>推荐: <a href="https://pythonpedia.com/" target="_blank" rel="external">Python一站式学习</a></li>
+<li>推荐: <a href="http://www.fullstackpython.com/table-of-contents.html" target="_blank" rel="external">全栈Python工程师 - 技能树</a><ul>
+<li><a href="http://www.fullstackpython.com/task-queues.html" target="_blank" rel="external">Task queues</a></li>
+<li><a href="http://www.fullstackpython.com/api-creation.html" target="_blank" rel="external">API Creation</a></li>
+<li><a href="http://www.fullstackpython.com/no-sql-datastore.html" target="_blank" rel="external">NoSQL Data Stores</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍Python全栈工程师必备技能.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Python" scheme="http://hhstore.github.io/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://hhstore.github.io/tags/Python/"/>
+    
+      <category term="Full-Stack-Python" scheme="http://hhstore.github.io/tags/Full-Stack-Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python常用包 - requests</title>
+    <link href="http://hhstore.github.io/2015/09/02/python-lib-requests/"/>
+    <id>http://hhstore.github.io/2015/09/02/python-lib-requests/</id>
+    <published>2015-09-02T14:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍Python的 requests 包的使用方法.</p>
+<a id="more"></a>
+<h2 id="关于-requests-库"><a href="#关于-requests-库" class="headerlink" title="关于 requests 库."></a>关于 requests 库.</h2><ul>
+<li>requests是一个用于在程序中进行http协议下的get和post请求的库。</li>
+</ul>
+<h2 id="2-安装"><a href="#2-安装" class="headerlink" title="2. 安装"></a>2. 安装</h2><h2 id="3-使用"><a href="#3-使用" class="headerlink" title="3. 使用"></a>3. 使用</h2><h3 id="GET-请求"><a href="#GET-请求" class="headerlink" title="GET 请求:"></a>GET 请求:</h3><h3 id="POST-请求"><a href="#POST-请求" class="headerlink" title="POST 请求:"></a>POST 请求:</h3><h2 id="4-扩展阅读"><a href="#4-扩展阅读" class="headerlink" title="4. 扩展阅读."></a>4. 扩展阅读.</h2><ul>
+<li><a href="http://requests-docs-cn.readthedocs.org/zh_CN/latest/index.html" target="_blank" rel="external">Requests: 官方中文文档</a></li>
+<li>此在线书籍,很赞 <a href="http://python.xiaoleilu.com/400/401.html" target="_blank" rel="external">requests库</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍Python的 requests 包的使用方法.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Python" scheme="http://hhstore.github.io/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://hhstore.github.io/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python拾遗 - WSGI规范</title>
+    <link href="http://hhstore.github.io/2015/09/01/python-note-wsgi/"/>
+    <id>http://hhstore.github.io/2015/09/01/python-note-wsgi/</id>
+    <published>2015-09-01T17:12:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇介绍Python的 WSGI 规范.</p>
+<a id="more"></a>
+<h2 id="1-关于-WSGI-规范"><a href="#1-关于-WSGI-规范" class="headerlink" title="1. 关于 WSGI 规范."></a>1. 关于 WSGI 规范.</h2><h3 id="WSGI定义"><a href="#WSGI定义" class="headerlink" title="WSGI定义:"></a>WSGI定义:</h3><ul>
+<li>WSGI 全称是Web Server Gateway Interface，翻译是Python Web服务器网关接口。</li>
+<li>是一个描述Web服务器和Web应用之间如何通信的规范。</li>
+<li>定义了Web服务器如何与Python应用程序进行交互，使得使用Python写的Web应用程序可以和Web服务器对接起来。</li>
+<li>WSGI一开始是在PEP-0333中定义的，最新版本是在Python的PEP-3333定义的。</li>
+</ul>
+<h3 id="WSGI-和-CGI-FastCGI-SCGI-区别和联系"><a href="#WSGI-和-CGI-FastCGI-SCGI-区别和联系" class="headerlink" title="WSGI 和 CGI(FastCGI,SCGI) 区别和联系:"></a>WSGI 和 CGI(FastCGI,SCGI) 区别和联系:</h3><ul>
+<li>WSGI 是 Python Web 服务器网关接口，完成不同协议之间的转换工作。</li>
+<li>CGI（Common Gateway Interface）是Web应用程序和Web Server的底层通信协议，是Web开发过程中需要遵守的标准和规范，不同语言如PHP、Java、Python等完成的Web应用程序均依据此通信协议完成与Web Server的交互。</li>
+<li>CGI的设计存在性能缺陷，因为每次Web Server接受请求的时候总要重新开启一个CGI进程，进程的初始化既费时间又耗资源，对于少量请求的情况，可以容忍此开销，但是若遇到了大量的请求，服务器的性能则会非常低下。</li>
+<li>为了解决CGI的性能缺陷问题，后来出现了 FastCGI 和 SCGI，它们能够有效地解决服务器性能问题，FastCGI不同于CGI的设计之处在于FastCGI要求CGI处理进程常驻内存中，有请求时处理，没有请求时等待，免去了进程初始化带来的开销。SCGI即Simple  CGI，相对FastCGI来说是一种更加简单的实现。目前的Web底层通信机制已经被FastCGI和SCGI所取代。</li>
+<li>WSGI也是为了解决Web应用程序和Web Server之间的交互而提出的一种规范，不过这种规范是以CGI为基础（因为CGI是底层通信协议），位于CGI的上一层更好地去解决应用程序和服务器之间的配合问题。</li>
+</ul>
+<h2 id="2-WSGI-的用途"><a href="#2-WSGI-的用途" class="headerlink" title="2. WSGI 的用途:"></a>2. WSGI 的用途:</h2><ul>
+<li>WSGI相当于是Web服务器和Python应用程序之间的桥梁。</li>
+<li>让Web服务器,知道如何调用Python应用程序，并且把用户的请求,告诉应用程序。</li>
+<li>让Python应用程序,知道用户的具体请求是什么，以及如何返回结果,给Web服务器。</li>
+</ul>
+<h2 id="3-WSGI-的结构"><a href="#3-WSGI-的结构" class="headerlink" title="3. WSGI 的结构:"></a>3. WSGI 的结构:</h2><h3 id="3个角色"><a href="#3个角色" class="headerlink" title="3个角色:"></a>3个角色:</h3><ul>
+<li>Web服务器端 称为server或者gateway，</li>
+<li>WSGI Middleware（中间件）</li>
+<li>应用程序端 称为application或者framework</li>
+</ul>
+<h3 id="3者关系"><a href="#3者关系" class="headerlink" title="3者关系:"></a>3者关系:</h3><ul>
+<li>Server认为middleware是一个application。</li>
+<li>Application认为middleware是一个server。</li>
+<li>Middleware可以有多层。</li>
+</ul>
+<h3 id="3层解耦"><a href="#3层解耦" class="headerlink" title="3层解耦:"></a>3层解耦:</h3><ul>
+<li>Application/Framework层 只需要实现一个callable就可以了；</li>
+<li>Server/Gateway层，只需要把客户端的请求处理成environ，然后传给Application/Framework就可以了；</li>
+<li>Middleware 层，基本上相当于是一个装饰器，同样也是高内聚低耦合的。</li>
+<li>三个部分之间几乎没有依赖，使得使用Python开发和部署Web应用变得十分灵活。</li>
+</ul>
+<h3 id="WSGI的实现"><a href="#WSGI的实现" class="headerlink" title="WSGI的实现:"></a>WSGI的实现:</h3><ul>
+<li><p>Application端:</p>
+<ul>
+<li>实现一般是由Python的各种框架来实现的，比如Django, web.py等，</li>
+<li>一般开发者不需要关心WSGI的实现，框架会提供接口，让开发者获取HTTP请求的内容以及发送HTTP响应。</li>
+</ul>
+</li>
+<li><p>Server端:</p>
+<ul>
+<li>实现会比较复杂一点，这个主要是因为软件架构的原因。</li>
+<li>一般常用的Web服务器，如Apache和nginx，都不会内置WSGI的支持，而是通过扩展来完成。</li>
+<li>Apache服务器，会通过扩展模块mod_wsgi来支持WSGI。Apache和mod_wsgi之间通过程序内部接口传递信息，mod_wsgi会实现WSGI的server端、进程管理以及对application的调用。</li>
+<li>Nginx上一般是用proxy的方式，用nginx的协议将请求封装好，发送给应用服务器，比如uWSGI，应用服务器会实现WSGI的服务端、进程管理以及对application的调用。</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-扩展阅读"><a href="#4-扩展阅读" class="headerlink" title="4. 扩展阅读."></a>4. 扩展阅读.</h2><ul>
+<li>需要完整看完.<a href="https://github.com/mainframer/PEP333-zh-CN" target="_blank" rel="external">WSGI 规范 - PEP333 翻译</a></li>
+<li><a href="https://www.python.org/dev/peps/pep-0333/" target="_blank" rel="external">PEP 0333 – Python Web Server Gateway Interface v1.0</a></li>
+<li><a href="https://pep-3333-wsgi.readthedocs.org/en/latest/" target="_blank" rel="external">Python Web 服务器网关接口</a></li>
+<li><a href="http://wsgi.readthedocs.org/en/latest/" target="_blank" rel="external">WSGI - EN</a></li>
+<li>推荐<a href="http://segmentfault.com/a/1190000003069785" target="_blank" rel="external">WSGI简介</a></li>
+<li><a href="http://segmentfault.com/a/1190000002717571" target="_blank" rel="external">WSGI规范笔记</a></li>
+<li><a href="http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386832689740b04430a98f614b6da89da2157ea3efe2000" target="_blank" rel="external">廖雪峰 - WSGI接口</a></li>
+<li><a href="https://skyline75489.github.io/post/2014-9-8_python-wsgi-learning.html" target="_blank" rel="external">Python WSGI学习笔记</a></li>
+<li><a href="https://jasonlvhit.github.io/articles/wsgi/" target="_blank" rel="external">Python中的WSGI</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇介绍Python的 WSGI 规范.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Python" scheme="http://hhstore.github.io/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://hhstore.github.io/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python面试题汇总</title>
+    <link href="http://hhstore.github.io/2015/08/25/python-interview-test/"/>
+    <id>http://hhstore.github.io/2015/08/25/python-interview-test/</id>
+    <published>2015-08-25T21:22:10.000Z</published>
+    <updated>2016-12-05T08:11:13.965Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇汇总整理一些常见的Python面试题,找工作必备.</p>
+<a id="more"></a>
+<h1 id="面试专题学习"><a href="#面试专题学习" class="headerlink" title="面试专题学习"></a>面试专题学习</h1><ul>
+<li><a href="http://www.julyedu.com/" target="_blank" rel="external">七月算法-这个网站不错</a></li>
+<li><a href="http://www.julyedu.com/video/play?course=25" target="_blank" rel="external">面试求职试题精讲-10个视频-免费</a></li>
+<li><a href="http://www.julyedu.com/video/play?course=27" target="_blank" rel="external">实战coding-3个视频</a></li>
+<li><p><a href="http://www.julyedu.com/video/play?course=17" target="_blank" rel="external">算法公开课</a></p>
+</li>
+<li><p><a href="http://blog.csdn.net/v_july_v/article/details/7382693" target="_blank" rel="external">July的面试专题博客</a></p>
+</li>
+<li><a href="https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/Readme.md" target="_blank" rel="external">July写的书-github-《编程之法：面试和算法心得》</a></li>
+</ul>
+<h1 id="面试题索引"><a href="#面试题索引" class="headerlink" title="面试题索引"></a>面试题索引</h1><ul>
+<li><a href="http://www.douban.com/group/topic/21206826/?start=0" target="_blank" rel="external">Python-面试题大全-豆瓣</a></li>
+<li><a href="http://www.pythonclub.org/interview/start" target="_blank" rel="external">面试题收集</a></li>
+<li><a href="http://www.51itong.net/python-8337.html" target="_blank" rel="external">45个Python面试题汇总&amp;答案</a></li>
+<li><a href="http://segmentfault.com/a/1190000000618513" target="_blank" rel="external">5个很好的Python面试题</a></li>
+<li><p><a href="http://michaelyou.github.io/2015/05/19/%E7%BF%BB%E8%AF%91-python%E6%8B%9B%E8%81%98%E6%8C%87%E5%8D%97/" target="_blank" rel="external">Python招聘指南-译</a></p>
+</li>
+<li><p><a href="http://michaelyou.github.io/categories/%E9%9D%A2%E8%AF%95/" target="_blank" rel="external">面试收集整理</a></p>
+</li>
+<li><a href="http://michaelyou.github.io/2015/02/01/python%E8%AF%95%E9%A2%98/" target="_blank" rel="external">python试题</a></li>
+<li><a href="http://michaelyou.github.io/2015/05/19/%E7%BF%BB%E8%AF%91-7%E4%B8%AA%E7%BB%8F%E5%85%B8python%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_blank" rel="external">7个经典python面试题&amp;答案</a></li>
+<li><a href="http://www.cnblogs.com/goodhacker/p/3366618.html" target="_blank" rel="external">Python面试题&amp;答案</a></li>
+<li><a href="http://www.cnblogs.com/goodhacker/p/3387027.html" target="_blank" rel="external">Python面试题&amp;答案(二)</a></li>
+<li><a href="http://www.pythonclub.org/algorithm/start" target="_blank" rel="external">几个高质量的题目</a></li>
+<li><a href="http://www.pythonclub.org/" target="_blank" rel="external">值得参考的内容</a></li>
+<li><a href="http://www.pythonclub.org/python-network-application/observer-spider" target="_blank" rel="external">爬虫使用经验总结</a></li>
+<li><a href="http://www.pythonclub.org/python-network-application/start" target="_blank" rel="external">Python网络编程</a></li>
+<li><a href="http://www.pythonclub.org/python-files/start" target="_blank" rel="external">Python各种文件读写操作</a></li>
+<li><a href="http://my.oschina.net/zyzzy/blog/118265" target="_blank" rel="external">几道python笔试题</a></li>
+<li><a href="https://mengzhuo.org/blog/%E6%9C%80%E8%BF%91%E4%B8%80%E4%BA%9B%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%88python%EF%BC%89.html" target="_blank" rel="external">最近一些面试题（Python）</a></li>
+<li><a href="http://www.phperz.com/article/14/0924/14407.html" target="_blank" rel="external">一份拉勾网的python面试题</a></li>
+<li><a href="http://www.leafonsword.org/python/" target="_blank" rel="external">一道Python面试题</a></li>
+<li><a href="https://www.v2ex.com/t/65710" target="_blank" rel="external">v2ex-Python面试题</a></li>
+<li><a href="http://www.kanzhun.com/k-mianshitimu/pythonmianshiti/" target="_blank" rel="external">Python面试题整理合集</a></li>
+<li><a href="http://www.9325.org/archives/430" target="_blank" rel="external">这篇,质量也比较高</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本篇汇总整理一些常见的Python面试题,找工作必备.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Python" scheme="http://hhstore.github.io/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://hhstore.github.io/tags/Python/"/>
+    
+      <category term="interview" scheme="http://hhstore.github.io/tags/interview/"/>
+    
+  </entry>
+  
+</feed>

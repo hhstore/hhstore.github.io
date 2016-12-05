@@ -1,0 +1,993 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="alDgEpeIzoLpI3vCAsOEfs6B1RFOuiKueg8-tTxG8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="golang,mac," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="hhstore's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇介绍如何搭建 Golang 的开发环境, 以及推荐一些 go 的项目资源.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang 开发环境搭建">
+<meta property="og:url" content="http://hhstore.github.io/2016/09/01/go-mac-dev-env-config/index.html">
+<meta property="og:site_name" content="hhstore's blog">
+<meta property="og:description" content="本篇介绍如何搭建 Golang 的开发环境, 以及推荐一些 go 的项目资源.">
+<meta property="og:updated_time" content="2016-12-05T08:11:13.965Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Golang 开发环境搭建">
+<meta name="twitter:description" content="本篇介绍如何搭建 Golang 的开发环境, 以及推荐一些 go 的项目资源.">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Golang 开发环境搭建 | hhstore's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?50c15455e37f70aea674ff4a663eef27";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <!----------- add Fork me on Github ------------>
+    
+    <a href="https://github.com/hhstore"><img style="position: absolute; top: 500; left: 0; border: 0;" src="https://camo.githubusercontent.com/8b6b8ccc6da3aa5722903da7b58eb5ab1081adee/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png"></a>
+    
+    <!----------- add Fork me on Github ------------>   
+    
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">hhstore's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Python, Golang 开发</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-translations">
+          <a href="/translations" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            译文
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tools">
+          <a href="/tools" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            工具
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-projects">
+          <a href="/projects" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            项目
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'LvGMYBjz-8ZVB7BazNT_','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Golang 开发环境搭建
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-01T22:12:10+00:00" content="2016-09-01">
+              2016-09-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Tools/" itemprop="url" rel="index">
+                    <span itemprop="name">Tools</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/01/go-mac-dev-env-config/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/01/go-mac-dev-env-config/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇介绍如何搭建 Golang 的开发环境, 以及推荐一些 go 的项目资源.</p>
+<a id="more"></a>
+<h2 id="golang-简介"><a href="#golang-简介" class="headerlink" title="golang 简介:"></a>golang 简介:</h2><ul>
+<li><a href="https://golang.org/" target="_blank" rel="external">golang 官网</a></li>
+<li><a href="https://go-zh.org/" target="_blank" rel="external">golang 中文官网</a></li>
+<li><a href="https://go-zh.org/doc/install" target="_blank" rel="external">go 官方中文安装指南</a><ul>
+<li>参考此中文文档,基本不需要多介绍,就可以搭建好环境.</li>
+</ul>
+</li>
+<li><a href="https://github.com/golang/go" target="_blank" rel="external">go - github</a></li>
+<li>go 的一些安利:<ul>
+<li>go 是 C 语言他爸, 又一个儿子. C 他爸的设计水平,不用怀疑.<ul>
+<li>这里多说一句, 语言发明人本身的背景, 其实很关键.</li>
+<li>很多语言设计上先天不足, 都跟语言发明人的背景有关.</li>
+<li>比如 PHP, 发明人是个业余开发者, 缺少科学训练, 导致 PHP 早期设计上有很多缺陷, 靠后天打补丁, 是无法改变本质的不足的.</li>
+<li>比如 Python 他爸是搞数学的, 数学系的思维, 通常喜欢简化, 追求极简的解题思路, 喜欢追求最优解. 所以, Python 追求极简, 追求单一最优解.</li>
+<li>对比 Ruby 他爸是日本人, 喜欢炫技(茴香豆的茴有16种写法,这种无聊的事,爱干) 这些小聪明, 消磨太多人的精力, 除了自娱自乐, 与他人无益.</li>
+<li>c 语言, 自然不必多说, 工业级排第一位的应用, c++, java等都受其影响, 而 c 他爹是正经的科班博士, 贝尔实验室的大咖.由此可见.</li>
+<li>go 是 c 他爸, 几十年后又一发明, 其他几位合作者, 都是大咖中的大咖, 背靠 Google 这个大树, 还要说啥?</li>
+</ul>
+</li>
+<li>go 有 google 干爹.</li>
+<li>go 的 1.6 版本之后, 性能已优化到很好</li>
+<li>go 的设计理念: 更偏向工程的务实, 而不是学院派炫技.</li>
+<li>go 天然支持并发编程, 这方面 Python 先天缺陷</li>
+<li>go 现在在云计算领域很火, docker 等项目,多用 go</li>
+<li>国内企业实践: <ul>
+<li>七牛大量使用</li>
+<li>BAT 很多业务部门在用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>围观 go 的过程:<ul>
+<li>从2013年到今天(2016年), 围观了 go 多个版本, 以及国内很多公司的实践</li>
+<li>目前这个节点,切入 go,还是比较理想的.</li>
+<li>雨痕等菊苣, 多是2012年切入, 之所以现在切入, 差不少是精力投入成本最低的</li>
+<li>现在 go 的生态圈已比较完善, 各种中文资料也比较丰富, 开源的 go 项目也多</li>
+<li>在大量开发者使用 go 的过程中, 慢慢有了 go 的最佳实践,可供参考.</li>
+<li>所以, 吃瓜群众,决定入坑了.</li>
+</ul>
+</li>
+</ul>
+<h2 id="go-适合谁"><a href="#go-适合谁" class="headerlink" title="go 适合谁?"></a>go 适合谁?</h2><ul>
+<li>python 等脚本语言开发者:<ul>
+<li>崇尚简介, go 的实践理念跟 Python 一致</li>
+<li>不喜欢 c++ 的复杂</li>
+<li>讨厌 java 的冗长语法</li>
+<li>对 ruby 低性能, 又提不起兴致</li>
+<li>苦于 Python 的性能瓶颈</li>
+<li>所以, 学一门 go 防身, 是必要的</li>
+</ul>
+</li>
+<li>web 后端开发者:<ul>
+<li>未来 Python 更适合快速的原型创建</li>
+<li>性能瓶颈, 用 go 重写替代</li>
+</ul>
+</li>
+</ul>
+<h2 id="Mac-安装-golang"><a href="#Mac-安装-golang" class="headerlink" title="Mac 安装 golang:"></a>Mac 安装 golang:</h2><ul>
+<li>推荐 homebrew 方式安装:</li>
+<li>当前 golang 最新版本: 1.7.1</li>
+<li>设置 shell 环境变量:<ul>
+<li>本机是 zsh 环境.所以修改: ~/.zprofile 文件</li>
+<li>如果是 brew 方式安装, 不需要设置 GOROOT 环境变量值.</li>
+<li>添加GOPATH环境变量:<ul>
+<li>此环境变量用途: 是个人的 go 开发目录(必须)</li>
+<li>用来存放个人开发代码, 以及下载的 go 第三方包等</li>
+<li>我个人的 go 开发目录: ~/iGit/iGoSpace</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 初次安装 go:</span></div><div class="line">-&gt; % brew install go</div><div class="line"></div><div class="line"><span class="comment"># 查看过期安装包:</span></div><div class="line">-&gt; % brew outdated</div><div class="line">go (1.6.3) &lt; 1.7.1</div><div class="line"></div><div class="line"><span class="comment"># 更新 go 版本:</span></div><div class="line">-&gt; % brew upgrade go</div><div class="line"></div><div class="line">...</div><div class="line">You may wish to add the GOROOT-based install location to your PATH:</div><div class="line">  <span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/usr/<span class="built_in">local</span>/opt/go/libexec/bin</div><div class="line">==&gt; Summary</div><div class="line">🍺  /usr/<span class="built_in">local</span>/Cellar/go/1.7.1: 6,436 files, 250.6M</div><div class="line"></div><div class="line"><span class="comment"># 安装路径:如上</span></div><div class="line"></div><div class="line"><span class="comment"># 检查是否安装成功:</span></div><div class="line">-&gt; % go version</div><div class="line">go version go1.7.1 darwin/amd64</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#################################</span></div><div class="line"><span class="comment"># 配置环境变量:</span></div><div class="line"><span class="comment">#   - zsh: 修改 ~/.zprofile</span></div><div class="line"><span class="comment">#   - bash: 修改 ~/.bash_profile</span></div><div class="line"><span class="comment">#################################</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 添加 go 环境变量:</span></div><div class="line">vim ~/.zprofile</div><div class="line"></div><div class="line"><span class="comment">#################################</span></div><div class="line"><span class="comment"># 如下添加到 ~/.zprofile</span></div><div class="line"><span class="comment"># Golang Config:</span></div><div class="line"><span class="built_in">export</span> GOPATH=<span class="variable">$&#123;HOME&#125;</span>/iGit/iGoSpace</div><div class="line"></div><div class="line"><span class="comment">#################################</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 刷新环境变量:</span></div><div class="line"><span class="built_in">source</span> ~/.zprofile</div><div class="line"></div><div class="line"><span class="comment"># 查看环境变量是否生效:</span></div><div class="line">-&gt; % <span class="built_in">echo</span> <span class="variable">$GOPATH</span></div><div class="line">/Users/hhstore/iGit/iGoSpace</div><div class="line"></div><div class="line"><span class="comment"># 看到上面的路径, 可知已生效.</span></div></pre></td></tr></table></figure>
+<h2 id="Windows-安装-golang"><a href="#Windows-安装-golang" class="headerlink" title="Windows 安装 golang:"></a>Windows 安装 golang:</h2><ul>
+<li>参考: <a href="https://go-zh.org/doc/install" target="_blank" rel="external">go 官方中文安装指南</a></li>
+</ul>
+<h2 id="Go-开发-IDE-选择"><a href="#Go-开发-IDE-选择" class="headerlink" title="Go 开发 IDE 选择:"></a>Go 开发 IDE 选择:</h2><ul>
+<li>jetbrains 家 IDE 全家桶 + go 插件<ul>
+<li>我常用 pycharm + go 插件</li>
+<li>IDEA, PhpStorm, RubyMine等都可用</li>
+</ul>
+</li>
+<li>sublime text3 + go 插件</li>
+<li><a href="https://github.com/golang/go/wiki/IDEsAndTextEditorPlugins" target="_blank" rel="external">这有个IDE参考列表</a></li>
+<li>雨痕菊苣, 建议多用 命令行来编写,调试 go.深以为然,应该多多练习一下.</li>
+</ul>
+<h2 id="Go-学习资源"><a href="#Go-学习资源" class="headerlink" title="Go 学习资源:"></a>Go 学习资源:</h2><ul>
+<li><a href="https://go-zh.org/doc/" target="_blank" rel="external">官方中文文档</a><ul>
+<li><a href="https://go-tour-zh.appspot.com/welcome/1" target="_blank" rel="external">Go 指南 - 必读</a><ul>
+<li>这个指南, 可以在线编辑,运行 go 代码, 必读</li>
+</ul>
+</li>
+<li>go 官方中文文档,很完善, 对用户很友好</li>
+</ul>
+</li>
+<li><a href="https://github.com/astaxie/build-web-application-with-golang" target="_blank" rel="external">build-web-application-with-golang</a><ul>
+<li>中文教程</li>
+</ul>
+</li>
+<li><a href="https://github.com/qyuhen/book" target="_blank" rel="external">go 笔记 - 雨痕</a><ul>
+<li>必读, 高质量</li>
+</ul>
+</li>
+</ul>
+<h2 id="Go-热门项目"><a href="#Go-热门项目" class="headerlink" title="Go 热门项目:"></a>Go 热门项目:</h2><ul>
+<li>热门项目的价值:<ul>
+<li>学习语言本身</li>
+<li>学习最佳实践</li>
+<li>学习各种技术: 数据库, 并发, 网络等</li>
+</ul>
+</li>
+<li><a href="https://github.com/golang/go/wiki/Projects" target="_blank" rel="external">go-project-list</a></li>
+<li><a href="https://github.com/avelino/awesome-go" target="_blank" rel="external">awesome-go</a><ul>
+<li>列举了大量 go 项目, 可以在这里扒拉各种.</li>
+</ul>
+</li>
+<li>感兴趣的项目:<ul>
+<li><a href="https://github.com/astaxie/beego" target="_blank" rel="external">beego - github</a></li>
+<li><a href="http://beego.me/" target="_blank" rel="external">beego - 官网</a><ul>
+<li>用途: go web 框架</li>
+<li>作者:国人</li>
+</ul>
+</li>
+<li><a href="https://github.com/docker/docker" target="_blank" rel="external">docker - github</a><ul>
+<li>热门应用, 很喜欢用</li>
+</ul>
+</li>
+<li><a href="https://github.com/lunny/tango" target="_blank" rel="external">tango</a><ul>
+<li>用途: web 框架</li>
+<li>作者: 国人</li>
+</ul>
+</li>
+<li><a href="https://github.com/go-xorm/xorm" target="_blank" rel="external">xorm</a><ul>
+<li>用途: 数据库 ORM</li>
+<li>作者: 国人</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatpay.png" alt="hhstore WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/golang/" rel="tag">#golang</a>
+          
+            <a href="/tags/mac/" rel="tag">#mac</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/25/tornado-tips/" rel="next" title="Tornado 最佳实践">
+                <i class="fa fa-chevron-left"></i> Tornado 最佳实践
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/11/xampp-config-sub-domain/" rel="prev" title="Apache Web 服务器配置网站二级域名">
+                Apache Web 服务器配置网站二级域名 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/01/go-mac-dev-env-config/"
+           data-title="Golang 开发环境搭建" data-url="http://hhstore.github.io/2016/09/01/go-mac-dev-env-config/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="hhstore" />
+          <p class="site-author-name" itemprop="name">hhstore</p>
+          <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">61</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hhstore" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="selfrefactor@gmail.com" target="_blank" title="邮箱">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  邮箱
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/darkforce/" target="_blank" title="DouBan">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DouBan
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hhstore" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ZhiHu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#golang-简介"><span class="nav-number">1.</span> <span class="nav-text">golang 简介:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-适合谁"><span class="nav-number">2.</span> <span class="nav-text">go 适合谁?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mac-安装-golang"><span class="nav-number">3.</span> <span class="nav-text">Mac 安装 golang:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-安装-golang"><span class="nav-number">4.</span> <span class="nav-text">Windows 安装 golang:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-开发-IDE-选择"><span class="nav-number">5.</span> <span class="nav-text">Go 开发 IDE 选择:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-学习资源"><span class="nav-number">6.</span> <span class="nav-text">Go 学习资源:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-热门项目"><span class="nav-number">7.</span> <span class="nav-text">Go 热门项目:</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hhstore</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数 <i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量 <i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hhstore"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

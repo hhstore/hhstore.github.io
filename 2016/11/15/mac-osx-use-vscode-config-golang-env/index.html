@@ -1,0 +1,1016 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="alDgEpeIzoLpI3vCAsOEfs6B1RFOuiKueg8-tTxG8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Mac,vscode,Golang,IDE," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="hhstore's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇介绍 Mac 平台 使用 virtual studio code 搭建 golang 开发环境, 包含 debug 环境的配置.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac 平台: 使用 vscode 搭建 Golang 开发环境">
+<meta property="og:url" content="http://hhstore.github.io/2016/11/15/mac-osx-use-vscode-config-golang-env/index.html">
+<meta property="og:site_name" content="hhstore's blog">
+<meta property="og:description" content="本篇介绍 Mac 平台 使用 virtual studio code 搭建 golang 开发环境, 包含 debug 环境的配置.">
+<meta property="og:image" content="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161115-002.png?raw=true">
+<meta property="og:image" content="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161115-001.png?raw=true">
+<meta property="og:updated_time" content="2016-12-05T08:11:13.965Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mac 平台: 使用 vscode 搭建 Golang 开发环境">
+<meta name="twitter:description" content="本篇介绍 Mac 平台 使用 virtual studio code 搭建 golang 开发环境, 包含 debug 环境的配置.">
+<meta name="twitter:image" content="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161115-002.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Mac 平台: 使用 vscode 搭建 Golang 开发环境 | hhstore's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?50c15455e37f70aea674ff4a663eef27";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <!----------- add Fork me on Github ------------>
+    
+    <a href="https://github.com/hhstore"><img style="position: absolute; top: 500; left: 0; border: 0;" src="https://camo.githubusercontent.com/8b6b8ccc6da3aa5722903da7b58eb5ab1081adee/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png"></a>
+    
+    <!----------- add Fork me on Github ------------>   
+    
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">hhstore's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Python, Golang 开发</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-translations">
+          <a href="/translations" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            译文
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tools">
+          <a href="/tools" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            工具
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-projects">
+          <a href="/projects" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            项目
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'LvGMYBjz-8ZVB7BazNT_','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Mac 平台: 使用 vscode 搭建 Golang 开发环境
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-15T16:42:13+00:00" content="2016-11-15">
+              2016-11-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Tools/" itemprop="url" rel="index">
+                    <span itemprop="name">Tools</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/15/mac-osx-use-vscode-config-golang-env/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/15/mac-osx-use-vscode-config-golang-env/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇介绍 Mac 平台 使用 virtual studio code 搭建 golang 开发环境, 包含 debug 环境的配置.</p>
+<a id="more"></a>
+<h2 id="1-vscode-简介"><a href="#1-vscode-简介" class="headerlink" title="1. vscode 简介:"></a>1. vscode 简介:</h2><h3 id="1-1-vscode-亮点"><a href="#1-1-vscode-亮点" class="headerlink" title="1.1 vscode 亮点:"></a>1.1 vscode 亮点:</h3><ul>
+<li>Microsoft 开发, 高质量, 高颜值</li>
+<li>启动速度比 atom 快, 资源占用少</li>
+<li>插件比 atom 好用, 官方插件库下载安装快</li>
+<li>对 Python, golang 支持够好</li>
+<li>集成终端好用</li>
+<li>debug 功能好用(简直是 mini 的 IDE)</li>
+</ul>
+<h3 id="1-2-对比-IDE"><a href="#1-2-对比-IDE" class="headerlink" title="1.2 对比 IDE:"></a>1.2 对比 IDE:</h3><ul>
+<li>之前一直使用: pycharm + go 插件, 搭配开发 golang.</li>
+<li>优点: <ul>
+<li>go 插件的 debug 功能,比较强大</li>
+<li>pycharm 的有强大的代码跳转,补全功能.</li>
+</ul>
+</li>
+<li>缺点:<ul>
+<li>pycharm 每次建立项目索引比较慢.</li>
+<li>启动比较笨重, 有些时候只是写测试代码, 不太需要启动 IDE.</li>
+</ul>
+</li>
+<li>vscode 的优点, 刚好可以弥补 pycharm 的不足.</li>
+<li>以后搭配2者作开发.很方便.</li>
+</ul>
+<h3 id="1-3-技巧操作"><a href="#1-3-技巧操作" class="headerlink" title="1.3 技巧操作:"></a>1.3 技巧操作:</h3><ul>
+<li>列编辑模式: ultraedit 中特色功能<ul>
+<li>快捷键: <code>shift + alt + 鼠标左键</code></li>
+<li>vscode 版本 &gt; 1.2.0</li>
+</ul>
+</li>
+<li>Ctrl+P 模式: (Mac 是 <code>CMD+P</code>)<ul>
+<li>直接输入文件名，快速打开文件</li>
+<li><code>:</code> 跳转到<code>行数</code>，也可以<code>Ctrl+G</code>直接进入(Mac 是 <code>CMD+G</code>)</li>
+<li><code>@</code> 跳转到symbol（搜索变量或者函数），也可以Ctrl+Shift+O直接进入</li>
+<li><code>@:</code>根据分类跳转symbol，查找属性或函数，也可以Ctrl+Shift+O后输入:进入</li>
+<li><code>#</code> 根据名字查找symbol，也可以Ctrl+T</li>
+</ul>
+</li>
+<li>编辑:<ul>
+<li>上下移动一行： <code>Alt+Up</code> 或 <code>Alt+Down</code></li>
+<li>向上向下复制一行： <code>Shift+Alt+Up</code> 或 <code>Shift+Alt+Down</code></li>
+<li>代码格式化：<code>Shift+Alt+F</code>，或 <code>Ctrl+Shift+P</code> 后输入 <code>format code</code></li>
+<li>更改代码文件语言模式: 显示–&gt;状态栏显示.</li>
+</ul>
+</li>
+<li>代码重构:<ul>
+<li>跳转到定义处：<code>F12</code></li>
+<li>列出所有的引用：<code>Shift+F12</code></li>
+<li>重命名：比如要修改一个方法名，可以选中后按F2，输入新的名字，回车，会发现所有的文件都修改过了。</li>
+</ul>
+</li>
+<li>显示相关:<ul>
+<li>侧边栏显/隐：<code>Ctrl+B</code></li>
+<li>预览markdown: <code>Ctrl+Shift+V</code></li>
+<li>双栏对比: <code>Ctrl+\</code></li>
+</ul>
+</li>
+<li>皮肤预览:<ul>
+<li>f1后输入 theme 回车，然后上下键即可预览</li>
+</ul>
+</li>
+<li><a href="https://nshen.net/article/2015-11-20/vscode/" target="_blank" rel="external">学会用好 Visual Studio Code</a></li>
+<li><a href="http://geek.csdn.net/news/detail/94108" target="_blank" rel="external">VS Code tips and tricks 翻译</a></li>
+<li><a href="https://github.com/Microsoft/vscode-tips-and-tricks" target="_blank" rel="external">VS Code Tips and Tricks</a></li>
+</ul>
+<h2 id="2-vscode-安装"><a href="#2-vscode-安装" class="headerlink" title="2 vscode 安装:"></a>2 vscode 安装:</h2><ul>
+<li>官网下载安装: <a href="https://code.visualstudio.com/" target="_blank" rel="external">vscode 官网</a></li>
+<li>brew cask 安装:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 安装:</span></div><div class="line">brew cask install visual-studio-code</div><div class="line"></div><div class="line"><span class="comment"># 查看 vscode 信息:</span></div><div class="line">-&gt; % brew cask info visual-studio-code</div><div class="line"></div><div class="line">visual-studio-code: 1.3.1,e6b4afa53e9c0f54edef1673de9001e9f0f547ae</div><div class="line">Microsoft Visual Studio Code, VS Code</div><div class="line">https://code.visualstudio.com/</div><div class="line">Not installed</div><div class="line">https://github.com/caskroom/homebrew-cask/blob/master/Casks/visual-studio-code.rb</div><div class="line">==&gt; Contents</div><div class="line">  Visual Studio Code.app (app)</div><div class="line">  /Applications/Visual Studio Code.app/Contents/Resources/app/bin/code (binary)</div></pre></td></tr></table></figure>
+<h2 id="3-vscode-常用插件安装"><a href="#3-vscode-常用插件安装" class="headerlink" title="3 vscode 常用插件安装:"></a>3 vscode 常用插件安装:</h2><ul>
+<li>基础插件:<ul>
+<li>vscode-icons: 颜值, 彩色文件,目录</li>
+<li>Material Theme Kit: 编辑器 UI 主题</li>
+<li>visual studio code settings sync: 同步 vscode 配置文件</li>
+</ul>
+</li>
+<li>开发必备:<ul>
+<li>code runner: 执行 go, python,各种代码</li>
+<li>beautify : 格式化代码</li>
+<li>git history:</li>
+<li>go: 开发必备</li>
+<li>python: 开发必备</li>
+<li>docker support:</li>
+<li>debugger for chrome:</li>
+<li>bootstrap3 snippets: </li>
+<li>html snippets: 各种 补全用的 snippets, 官方插件库搜索添加.</li>
+</ul>
+</li>
+<li>补充: <a href="https://www.zhihu.com/question/40640654" target="_blank" rel="external">Visual Studio Code有哪些你常用的插件？- 知乎</a></li>
+</ul>
+<h2 id="4-vscode-配置-golang-开发环境"><a href="#4-vscode-配置-golang-开发环境" class="headerlink" title="4. vscode 配置 golang 开发环境:"></a>4. vscode 配置 golang 开发环境:</h2><h3 id="4-1-安装-golang"><a href="#4-1-安装-golang" class="headerlink" title="4.1 安装 golang:"></a>4.1 安装 golang:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 安装:</div><div class="line">brew install go</div><div class="line"></div><div class="line"># 查看安装成功:</div><div class="line">-&gt; % go version</div><div class="line">go version go1.7.3 darwin/amd64</div></pre></td></tr></table></figure>
+<h3 id="4-2-配置-golang-环境变量"><a href="#4-2-配置-golang-环境变量" class="headerlink" title="4.2 配置 golang 环境变量:"></a>4.2 配置 golang 环境变量:</h3><ul>
+<li><code>GOPATH</code> : 必须设置</li>
+<li><code>GOBIN</code>: 非必需, 但通常顺手设置.</li>
+<li>设置办法: 添加到 zsh 的配置文件: <code>~/.zprofile</code></li>
+<li>参考如下配置 <code>~/.zprofile</code>:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#######################################################</div><div class="line">#                 for Golang:</div><div class="line">#######################################################</div><div class="line"></div><div class="line">#-------------------------------</div><div class="line"># set GOPATH:</div><div class="line">#-------------------------------</div><div class="line"></div><div class="line"># go lib path:</div><div class="line">GO_LIB_PATH=$&#123;HOME&#125;/iGit/iSpace/iGo/libdir</div><div class="line"></div><div class="line"># go user workspace:</div><div class="line">GO_WORK_PATH=$&#123;HOME&#125;/iGit/iSpace/iGo/workdir</div><div class="line"></div><div class="line">export GOPATH=$&#123;GO_LIB_PATH&#125;:$&#123;GO_WORK_PATH&#125;</div><div class="line"></div><div class="line">#-------------------------------</div><div class="line"># set GOBIN:</div><div class="line">#-------------------------------</div><div class="line"></div><div class="line">export GOBIN=&quot;$&#123;GO_LIB_PATH&#125;/bin:$&#123;GO_WORK_PATH&#125;/bin&quot;</div><div class="line">export PATH=&quot;$&#123;PATH&#125;:$&#123;GOBIN&#125;&quot;</div></pre></td></tr></table></figure>
+<ul>
+<li>检查 golang 环境变量设置成功:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 查看环境变量:</span></div><div class="line"><span class="comment"># 关键看 GOPATH 和 GOBIN,  GOROOT</span></div><div class="line">-&gt; % go env</div><div class="line"></div><div class="line">GOARCH=<span class="string">"amd64"</span></div><div class="line">GOBIN=<span class="string">"/Users/hhstore/iGit/iSpace/iGo/libdir/bin:/Users/hhstore/iGit/iSpace/iGo/workdir/bin"</span></div><div class="line">GOEXE=<span class="string">""</span></div><div class="line">GOHOSTARCH=<span class="string">"amd64"</span></div><div class="line">GOHOSTOS=<span class="string">"darwin"</span></div><div class="line">GOOS=<span class="string">"darwin"</span></div><div class="line">GOPATH=<span class="string">"/Users/hhstore/iGit/iSpace/iGo/libdir:/Users/hhstore/iGit/iSpace/iGo/workdir"</span></div><div class="line">GORACE=<span class="string">""</span></div><div class="line">GOROOT=<span class="string">"/usr/local/Cellar/go/1.7.3/libexec"</span></div><div class="line">GOTOOLDIR=<span class="string">"/usr/local/Cellar/go/1.7.3/libexec/pkg/tool/darwin_amd64"</span></div><div class="line">CC=<span class="string">"clang"</span></div><div class="line">GOGCCFLAGS=<span class="string">"-fPIC -m64 -pthread -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -gno-record-gcc-switches -fno-common"</span></div><div class="line">CXX=<span class="string">"clang++"</span></div><div class="line">CGO_ENABLED=<span class="string">"1"</span></div></pre></td></tr></table></figure>
+<h3 id="4-3-配置-golang-开发-debug-模式"><a href="#4-3-配置-golang-开发-debug-模式" class="headerlink" title="4.3 配置 golang 开发 debug 模式:"></a>4.3 配置 golang 开发 debug 模式:</h3><h4 id="4-3-1-安装-golang-debug-插件-delve"><a href="#4-3-1-安装-golang-debug-插件-delve" class="headerlink" title="4.3.1 安装 golang debug 插件 delve:"></a>4.3.1 安装 golang debug 插件 delve:</h4><ul>
+<li>golang 调试工具: delve</li>
+<li>安装 <code>delve</code>: <a href="https://github.com/derekparker/delve/blob/master/Documentation/installation/osx/install.md" target="_blank" rel="external">Installation on OSX</a></li>
+<li>Mac 平台: <ul>
+<li><code>必须用 brew 安装</code>, </li>
+<li><code>不要直接使用 go get 安装</code>, 会出现签名, 权限问题, 导致 无法使用 <code>dlv</code> 调试工具.</li>
+</ul>
+</li>
+<li>请严格参考 <code>delve</code> 项目官方安装文档.这一步最容易出问题.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 安装 delev 工具:</span></div><div class="line">brew install go-delve/delve/delve</div></pre></td></tr></table></figure>
+<ul>
+<li>查看安装情况:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 查看安装路径: (go get 安装路径, 必然不是这个)</span></div><div class="line">-&gt; % <span class="built_in">which</span> dlv</div><div class="line">/usr/<span class="built_in">local</span>/bin/dlv</div><div class="line"></div><div class="line"><span class="comment"># 查看 dlv 版本:</span></div><div class="line">-&gt; % dlv version</div><div class="line">Delve Debugger</div><div class="line">Version: 0.11.0-alpha</div><div class="line">Build: v0.11.0</div><div class="line"></div><div class="line"><span class="comment"># 查看安装情况:</span></div><div class="line">-&gt; % brew info delve</div><div class="line"></div><div class="line">go-delve/delve/delve: stable 0.11.0, HEAD</div><div class="line">Debugger <span class="keyword">for</span> the Go programming language.</div><div class="line">https://github.com/derekparker/delve</div><div class="line">/usr/<span class="built_in">local</span>/Cellar/delve/0.11.0 (6 files, 7.4M) *</div><div class="line">  Built from <span class="built_in">source</span> on 2016-11-15 at 14:14:07</div><div class="line">From: https://github.com/go-delve/homebrew-delve/blob/master/Formula/delve.rb</div><div class="line">==&gt; Dependencies</div><div class="line">Build: go ✔</div><div class="line">==&gt; Caveats</div><div class="line">If you get <span class="string">"could not launch process: could not fork/exec"</span>, you need to try</div><div class="line"><span class="keyword">in</span> a new terminal.</div><div class="line"></div><div class="line">When uninstalling, to remove the dlv-cert certificate, run this <span class="built_in">command</span>:</div><div class="line"></div><div class="line">    $ sudo security delete-certificate -t -c dlv-cert /Library/Keychains/System.keychain</div><div class="line"></div><div class="line">Alternatively, you may want to delete from the Keychain (with the Imported private key).</div></pre></td></tr></table></figure>
+<ul>
+<li>配置问题解决:<ul>
+<li>error: could not launch process: could not fork/exec<ul>
+<li>原因: 没有使用 brew 安装, 请使用 brew 安装, </li>
+</ul>
+</li>
+<li>error: <a href="https://github.com/derekparker/delve/issues/159" target="_blank" rel="external">delve/issues/159</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="4-3-2-使用-vscode-自动安装-debug-必备的插件"><a href="#4-3-2-使用-vscode-自动安装-debug-必备的插件" class="headerlink" title="4.3.2 使用 vscode 自动安装 debug 必备的插件:"></a>4.3.2 使用 vscode 自动安装 debug 必备的插件:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># 如下工具: vscode 会自动安装:</span></div><div class="line"><span class="comment"># 基本不会出现问题:</span></div><div class="line">go get -u -v github.com/nsf/gocode</div><div class="line">go get -u -v github.com/rogpeppe/godef</div><div class="line">go get -u -v github.com/golang/lint/golint</div><div class="line">go get -u -v github.com/lukehoban/go-outline</div><div class="line">go get -u -v sourcegraph.com/sqs/goreturns</div><div class="line">go get -u -v golang.org/x/tools/cmd/gorename</div><div class="line">go get -u -v github.com/tpng/gopkgs</div><div class="line">go get -u -v github.com/newhook/go-symbols</div><div class="line">go get -u -v golang.org/x/tools/cmd/guru</div></pre></td></tr></table></figure>
+<h4 id="4-3-3-自定义配置-vscode"><a href="#4-3-3-自定义配置-vscode" class="headerlink" title="4.3.3 自定义配置 vscode:"></a>4.3.3 自定义配置 vscode:</h4><ul>
+<li>修改: 首选项/用户设置:</li>
+<li>添加如下配置:<ul>
+<li><code>settings.json</code></li>
+</ul>
+</li>
+<li>关键修改: <ul>
+<li><code>go.gopath</code></li>
+<li><code>go.goroot</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">// 将设置放入此文件中以覆盖默认设置</div><div class="line">&#123;</div><div class="line">    &quot;files.autoSave&quot;: &quot;afterDelay&quot;,</div><div class="line">    // 以像素为单位控制字号。</div><div class="line">    &quot;editor.fontSize&quot;: 14,</div><div class="line"></div><div class="line">    // 自定义要在 OS X 上运行的终端应用程序。</div><div class="line">    &quot;terminal.external.osxExec&quot;: &quot;iterm.app&quot;,</div><div class="line"></div><div class="line"></div><div class="line">// Go configuration</div><div class="line">    // Specifies the GOPATH to use when no environment variable is set.</div><div class="line">    // 这是我个人的 GOPATH, 设置2个, 首个为 lib 路径, 次个为个人开发工作区</div><div class="line">    &quot;go.gopath&quot;: &quot;/Users/hhstore/iGit/iSpace/iGo/libdir:/Users/hhstore/iGit/iSpace/iGo/workdir&quot;,</div><div class="line">     // Specifies the GOROOT to use when no environment variable is set.</div><div class="line">    &quot;go.goroot&quot;: &quot;/usr/local/Cellar/go/1.7.3/libexec&quot;,</div><div class="line"></div><div class="line">    &quot;workbench.statusBar.visible&quot;: false</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="4-3-4-测试-golang-debug-效果"><a href="#4-3-4-测试-golang-debug-效果" class="headerlink" title="4.3.4 测试 golang debug 效果:"></a>4.3.4 测试 golang debug 效果:</h4><ul>
+<li>修改: launch.json<ul>
+<li>此文件在执行 debug 时, 会根据提示, 自动生成.</li>
+<li>生成在项目根目录下: <code>/Users/hhstore/iGit/iSpace/iGo/.vscode/launch.json</code></li>
+</ul>
+</li>
+<li>根据具体情况, 修改: <code>program</code> 参数值.</li>
+<li><p>具体参考如下图示.</p>
+</li>
+<li><p>debug 代码目录:<br><img src="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161115-002.png?raw=true" alt="测试图片"></p>
+</li>
+</ul>
+<ul>
+<li>debug 断点效果图:<br><img src="https://github.com/hhstore/hhstore.github.io/blob/master/images/2016/11/20161115-001.png?raw=true" alt="测试图片"></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatpay.png" alt="hhstore WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Mac/" rel="tag">#Mac</a>
+          
+            <a href="/tags/vscode/" rel="tag">#vscode</a>
+          
+            <a href="/tags/Golang/" rel="tag">#Golang</a>
+          
+            <a href="/tags/IDE/" rel="tag">#IDE</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/01/github-fast-host/" rel="next" title="Github 国内加速访问">
+                <i class="fa fa-chevron-left"></i> Github 国内加速访问
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/15/github-hexo-update-shits/" rel="prev" title="Hexo 部署博客踩坑记录">
+                Hexo 部署博客踩坑记录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/15/mac-osx-use-vscode-config-golang-env/"
+           data-title="Mac 平台: 使用 vscode 搭建 Golang 开发环境" data-url="http://hhstore.github.io/2016/11/15/mac-osx-use-vscode-config-golang-env/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="hhstore" />
+          <p class="site-author-name" itemprop="name">hhstore</p>
+          <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">61</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hhstore" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="selfrefactor@gmail.com" target="_blank" title="邮箱">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  邮箱
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/darkforce/" target="_blank" title="DouBan">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DouBan
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hhstore" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ZhiHu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-vscode-简介"><span class="nav-number">1.</span> <span class="nav-text">1. vscode 简介:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-vscode-亮点"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 vscode 亮点:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-对比-IDE"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 对比 IDE:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-技巧操作"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 技巧操作:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-vscode-安装"><span class="nav-number">2.</span> <span class="nav-text">2 vscode 安装:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-vscode-常用插件安装"><span class="nav-number">3.</span> <span class="nav-text">3 vscode 常用插件安装:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-vscode-配置-golang-开发环境"><span class="nav-number">4.</span> <span class="nav-text">4. vscode 配置 golang 开发环境:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-安装-golang"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 安装 golang:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-配置-golang-环境变量"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 配置 golang 环境变量:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-配置-golang-开发-debug-模式"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 配置 golang 开发 debug 模式:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-1-安装-golang-debug-插件-delve"><span class="nav-number">4.3.1.</span> <span class="nav-text">4.3.1 安装 golang debug 插件 delve:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-2-使用-vscode-自动安装-debug-必备的插件"><span class="nav-number">4.3.2.</span> <span class="nav-text">4.3.2 使用 vscode 自动安装 debug 必备的插件:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-3-自定义配置-vscode"><span class="nav-number">4.3.3.</span> <span class="nav-text">4.3.3 自定义配置 vscode:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-4-测试-golang-debug-效果"><span class="nav-number">4.3.4.</span> <span class="nav-text">4.3.4 测试 golang debug 效果:</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hhstore</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数 <i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量 <i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hhstore"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

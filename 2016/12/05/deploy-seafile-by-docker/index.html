@@ -1,0 +1,897 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="alDgEpeIzoLpI3vCAsOEfs6B1RFOuiKueg8-tTxG8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Docker,Seafile," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="hhstore's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇介绍: 通过 Docker 部署 Seafile.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Docker 部署 Seafile">
+<meta property="og:url" content="http://hhstore.github.io/2016/12/05/deploy-seafile-by-docker/index.html">
+<meta property="og:site_name" content="hhstore's blog">
+<meta property="og:description" content="本篇介绍: 通过 Docker 部署 Seafile.">
+<meta property="og:updated_time" content="2016-12-05T08:11:13.965Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用 Docker 部署 Seafile">
+<meta name="twitter:description" content="本篇介绍: 通过 Docker 部署 Seafile.">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 使用 Docker 部署 Seafile | hhstore's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?50c15455e37f70aea674ff4a663eef27";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <!----------- add Fork me on Github ------------>
+    
+    <a href="https://github.com/hhstore"><img style="position: absolute; top: 500; left: 0; border: 0;" src="https://camo.githubusercontent.com/8b6b8ccc6da3aa5722903da7b58eb5ab1081adee/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png"></a>
+    
+    <!----------- add Fork me on Github ------------>   
+    
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">hhstore's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Python, Golang 开发</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-translations">
+          <a href="/translations" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            译文
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tools">
+          <a href="/tools" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            工具
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-projects">
+          <a href="/projects" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            项目
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'LvGMYBjz-8ZVB7BazNT_','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用 Docker 部署 Seafile
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-05T15:12:10+00:00" content="2016-12-05">
+              2016-12-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/05/deploy-seafile-by-docker/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/05/deploy-seafile-by-docker/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇介绍: 通过 Docker 部署 Seafile.</p>
+<a id="more"></a>
+<h2 id="Seafile-简介"><a href="#Seafile-简介" class="headerlink" title="Seafile 简介:"></a>Seafile 简介:</h2><ul>
+<li><a href="https://www.seafile.com/home/" target="_blank" rel="external">Seafile 官网</a><ul>
+<li><a href="https://www.seafile.com/download/" target="_blank" rel="external">download</a></li>
+<li><a href="http://download-cn.seafile.com/seafile-client-6.0.0.dmg" target="_blank" rel="external">Mac 客户端</a></li>
+<li><a href="https://manual-cn.seafile.com/" target="_blank" rel="external">seafile 帮助文档</a></li>
+</ul>
+</li>
+<li>海文云盘：安全、可靠、快速的企业文件云存储</li>
+<li>Seafile 服务器内核由 C 语言编写。运行起来小巧快速。</li>
+</ul>
+<h2 id="使用-docker-部署"><a href="#使用-docker-部署" class="headerlink" title="使用 docker 部署:"></a>使用 docker 部署:</h2><h3 id="拉取-docker-镜像"><a href="#拉取-docker-镜像" class="headerlink" title="拉取 docker 镜像:"></a>拉取 docker 镜像:</h3><ul>
+<li><a href="https://github.com/JensErat/docker-seafile" target="_blank" rel="external">JensErat/docker-seafile</a></li>
+<li><a href="https://hub.docker.com/r/jenserat/seafile/" target="_blank" rel="external">seafile - DockerHub</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull jenserat/seafile</div></pre></td></tr></table></figure>
+<h3 id="容器启动"><a href="#容器启动" class="headerlink" title="容器启动:"></a>容器启动:</h3><ul>
+<li>新建容器共享目录: <code>/iDockerShare/seafile</code></li>
+<li>当前 seafile 官网最新服务器端版本: seafile-server-6.0.6</li>
+<li>关键细节:<ul>
+<li>此容器本身并未打包 seafile 代码.</li>
+<li>容器启动后, 需手动执行命令, 去 seafile 官网拉取最新代码.</li>
+<li>容器中, 执行安装命令, 配置服务器.</li>
+<li>容器中, 手动添加 admin 用户帐号, 密码.</li>
+<li>当前版本, 8082 端口, 不可随便映射, 否则上传时会出错.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div></pre></td><td class="code"><pre><div class="line">#</div><div class="line"># -v : 目录映射:</div><div class="line"># -p 8000:8000 服务访问端口</div><div class="line"># -p 8082:8082 此端口, 不可随便映射, 因为代码写死的, 映射成其他端口, 无法上传文件</div><div class="line"># 建议都使用默认的端口映射, 防止出错.</div><div class="line">docker run -d \</div><div class="line">  --name seafile-server \</div><div class="line">  -p 10001:10001 \</div><div class="line">  -p 12001:12001 \</div><div class="line">  -p 8900:8000 \</div><div class="line">  -p 8980:8080 \</div><div class="line">  -p 8082:8082 \</div><div class="line">  -v /iDockerShare/seafile:/opt/seafile \</div><div class="line">  -e autostart=true \</div><div class="line">  jenserat/seafile</div><div class="line"></div><div class="line"></div><div class="line"># 登录容器配置:</div><div class="line">docker exec -it seafile-server /bin/bash</div><div class="line"></div><div class="line">################################################</div><div class="line">#         如下部分, 在 docker 容器中操作</div><div class="line">################################################</div><div class="line"></div><div class="line"># 下载最新代码:</div><div class="line">docker &gt;: download-seafile</div><div class="line"></div><div class="line"># 执行安装:</div><div class="line">docker &gt;: /opt/seafile/seafile-server-5.*/setup-seafile.sh</div><div class="line">docker &gt;: /opt/seafile/seafile-server-6.*/setup-seafile.sh</div><div class="line"></div><div class="line"># 安装日志:</div><div class="line">root@11f5e9ad841a:/opt/seafile/seafile-server-6.0.6#  ./setup-seafile.sh</div><div class="line">-----------------------------------------------------------------</div><div class="line">This script will guide you to config and setup your seafile server.</div><div class="line"></div><div class="line">Make sure you have read seafile server manual at</div><div class="line"></div><div class="line">	https://github.com/haiwen/seafile/wiki</div><div class="line"></div><div class="line">Note: This script will guide your to setup seafile server using sqlite3,</div><div class="line">which may have problems if your disk is on a NFS/CIFS/USB.</div><div class="line">In these cases, we sugguest you setup seafile server using MySQL.</div><div class="line"></div><div class="line">Press [ENTER] to continue</div><div class="line">-----------------------------------------------------------------</div><div class="line"></div><div class="line"></div><div class="line">Checking packages needed by seafile ...</div><div class="line"></div><div class="line">Checking python on this machine ...</div><div class="line">Find python: python2.7</div><div class="line"></div><div class="line">  Checking python module: setuptools ... Done.</div><div class="line">  Checking python module: python-imaging ... Done.</div><div class="line">  Checking python module: python-sqlite3 ... Done.</div><div class="line"></div><div class="line">Checking for sqlite3 ...Done.</div><div class="line"></div><div class="line">Checking Done.</div><div class="line"></div><div class="line"></div><div class="line">What would you like to use as the name of this seafile server?</div><div class="line">Your seafile users will be able to see the name in their seafile client.</div><div class="line">You can use a-z, A-Z, 0-9, _ and -, and the length should be 3 ~ 15</div><div class="line">[server name]: jolly-seafile</div><div class="line"></div><div class="line">What is the ip or domain of this server?</div><div class="line">For example, www.mycompany.com, or, 192.168.1.101</div><div class="line"></div><div class="line">[This server&apos;s ip or domain]: 192.168.0.100</div><div class="line"></div><div class="line">Where would you like to store your seafile data?</div><div class="line">Note: Please use a volume with enough free space.</div><div class="line">[default: /opt/seafile/seafile-data ]</div><div class="line"></div><div class="line">What tcp port do you want to use for seafile fileserver?</div><div class="line">8082 is the recommended port.</div><div class="line">[default: 8082 ]</div><div class="line"></div><div class="line"></div><div class="line">This is your config information:</div><div class="line"></div><div class="line">server name:        jolly-seafile</div><div class="line">server ip/domain:   192.168.0.100</div><div class="line">seafile data dir:   /opt/seafile/seafile-data</div><div class="line">fileserver port:    8082</div><div class="line"></div><div class="line">If you are OK with the configuration, press [ENTER] to continue.</div><div class="line"></div><div class="line">Generating ccnet configuration in /opt/seafile/ccnet...</div><div class="line"></div><div class="line">done</div><div class="line">Successly create configuration dir /opt/seafile/ccnet.</div><div class="line"></div><div class="line">Generating seafile configuration in /opt/seafile/seafile-data ...</div><div class="line"></div><div class="line">Done.</div><div class="line"></div><div class="line">-----------------------------------------------------------------</div><div class="line">Seahub is the web interface for seafile server.</div><div class="line">Now let&apos;s setup seahub configuration. Press [ENTER] to continue</div><div class="line">-----------------------------------------------------------------</div><div class="line"></div><div class="line">Creating seahub database now, it may take one minute, please wait...</div><div class="line"></div><div class="line">Done.</div><div class="line"></div><div class="line">creating seafile-server-latest symbolic link ... done</div><div class="line"></div><div class="line"></div><div class="line">-----------------------------------------------------------------</div><div class="line">Your seafile server configuration has been completed successfully.</div><div class="line">-----------------------------------------------------------------</div><div class="line"></div><div class="line">run seafile server:     ./seafile.sh &#123; start | stop | restart &#125;</div><div class="line">run seahub  server:     ./seahub.sh  &#123; start &lt;port&gt; | stop | restart &lt;port&gt; &#125;</div><div class="line"></div><div class="line">-----------------------------------------------------------------</div><div class="line">If the server is behind a firewall, remember to open these tcp ports:</div><div class="line">-----------------------------------------------------------------</div><div class="line"></div><div class="line">port of seafile fileserver:   8082</div><div class="line">port of seahub:               8000</div><div class="line"></div><div class="line">When problems occur, refer to</div><div class="line"></div><div class="line">      https://github.com/haiwen/seafile/wiki</div><div class="line"></div><div class="line">for more information.</div><div class="line"></div><div class="line"></div><div class="line"># 容器中启动服务: start the seafile controller process.</div><div class="line">docker &gt;: /opt/seafile/seafile-server-6.*/seafile.sh start</div><div class="line"></div><div class="line">root@11f5e9ad841a:/opt/seafile/seafile-server-6.0.6# /opt/seafile/seafile-server-6.*/seafile.sh start</div><div class="line"></div><div class="line">Seafile controller is already running, pid 1935</div><div class="line"></div><div class="line"></div><div class="line"># 容器中启动服务: for configuring the web UI.</div><div class="line">docker &gt;: /opt/seafile/seafile-server-6.*/seahub.sh start</div><div class="line"></div><div class="line">root@11f5e9ad841a:/opt/seafile/seafile-server-6.0.6# /opt/seafile/seafile-server-6.*/seahub.sh start</div><div class="line"></div><div class="line">LANG is not set in ENV, set to en_US.UTF-8</div><div class="line">LC_ALL is not set in ENV, set to en_US.UTF-8</div><div class="line">Seahub is already running.</div><div class="line"></div><div class="line"></div><div class="line"># 设置管理员帐号:(重置用户)</div><div class="line">docker &gt;: /opt/seafile/seafile-server-6.*/reset-admin.sh</div><div class="line"></div><div class="line">root@11f5e9ad841a:/opt/seafile/seafile-server-6.0.6# ./reset-admin.sh</div><div class="line">E-mail address: admin@admin.com</div><div class="line">Password:</div><div class="line">Password (again):</div><div class="line">Superuser created successfully.</div><div class="line"></div><div class="line"></div><div class="line"># 配置完成, 退出容器:</div><div class="line">docker &gt;: exit</div><div class="line"></div><div class="line"># 浏览器访问:</div><div class="line"># localhost:8900</div></pre></td></tr></table></figure>
+<h3 id="浏览器登录访问"><a href="#浏览器登录访问" class="headerlink" title="浏览器登录访问:"></a>浏览器登录访问:</h3><ul>
+<li><a href="http://0.0.0.0:8900/accounts/login/?next=/" target="_blank" rel="external">0.0.0.0:8900</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># 查看容器状态:</div><div class="line">-&gt; % docker ps</div><div class="line">CONTAINER ID        IMAGE                           COMMAND                  CREATED             STATUS              PORTS                                                                                                                        NAMES</div><div class="line">11f5e9ad841a        jenserat/seafile                &quot;/sbin/my_init&quot;          3 hours ago         Up 3 hours          0.0.0.0:10001-&gt;10001/tcp, 0.0.0.0:12001-&gt;12001/tcp, 0.0.0.0:8900-&gt;8000/tcp, 0.0.0.0:8980-&gt;8080/tcp, 0.0.0.0:8982-&gt;8082/tcp   seafile-server</div><div class="line"></div><div class="line"># 关闭容器:</div><div class="line">-&gt; % docker stop seafile-server</div><div class="line"></div><div class="line"># 启动容器:</div><div class="line">-&gt; % docker start seafile-server</div></pre></td></tr></table></figure>
+<h3 id="常用配置参数修改"><a href="#常用配置参数修改" class="headerlink" title="常用配置参数修改:"></a>常用配置参数修改:</h3><ul>
+<li><a href="https://manual-cn.seafile.com/config/seafile-conf.html" target="_blank" rel="external">seafile.conf 配置 </a></li>
+<li>/opt/seafile/conf/seafile.conf</li>
+</ul>
+<ul>
+<li>上传/下载大小限制：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">[fileserver]</div><div class="line">port=8082</div><div class="line">#port=10062</div><div class="line"></div><div class="line">###################################</div><div class="line"></div><div class="line">[history]</div><div class="line"># 文件修改历史保存期限（单位为“天”）</div><div class="line">keep_days = 150</div><div class="line"></div><div class="line"></div><div class="line">[quota]</div><div class="line"># 用户默认空间上限</div><div class="line"># 单位为 GB</div><div class="line">default = 20</div><div class="line"></div><div class="line"></div><div class="line">[fileserver]</div><div class="line"># 上传文件最大为2000M.</div><div class="line">max_upload_size=2000</div><div class="line"></div><div class="line"># 最大下载目录限制为2000M.</div><div class="line">max_download_dir_size=2000</div></pre></td></tr></table></figure>
+<ul>
+<li>邮件通知配置:</li>
+<li><a href="https://manual-cn.seafile.com/config/sending_email.html" target="_blank" rel="external">发送邮件提醒</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"># QQ 邮箱示例:</div><div class="line"></div><div class="line">EMAIL_USE_TLS = False</div><div class="line">EMAIL_HOST = &apos;smtp.exmail.qq.com&apos;</div><div class="line">EMAIL_HOST_USER = &apos;username@domain.com&apos;</div><div class="line">EMAIL_HOST_PASSWORD = &apos;password&apos;</div><div class="line">EMAIL_PORT = &apos;25&apos;</div><div class="line">DEFAULT_FROM_EMAIL = EMAIL_HOST_USER</div><div class="line">SERVER_EMAIL = EMAIL_HOST_USER</div></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考:"></a>参考:</h2><ul>
+<li><a href="http://www.jianshu.com/p/bd4b55b6d0cd" target="_blank" rel="external">云服务器之个人云存储的搭建(docker+seafile)</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatpay.png" alt="hhstore WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag">#Docker</a>
+          
+            <a href="/tags/Seafile/" rel="tag">#Seafile</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/21/deploy-opengrok-by-docker/" rel="next" title="使用 Docker 部署 opengrok">
+                <i class="fa fa-chevron-left"></i> 使用 Docker 部署 opengrok
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/05/deploy-seafile-by-docker/"
+           data-title="使用 Docker 部署 Seafile" data-url="http://hhstore.github.io/2016/12/05/deploy-seafile-by-docker/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="hhstore" />
+          <p class="site-author-name" itemprop="name">hhstore</p>
+          <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">61</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hhstore" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="selfrefactor@gmail.com" target="_blank" title="邮箱">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  邮箱
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/darkforce/" target="_blank" title="DouBan">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DouBan
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hhstore" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ZhiHu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Seafile-简介"><span class="nav-number">1.</span> <span class="nav-text">Seafile 简介:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-docker-部署"><span class="nav-number">2.</span> <span class="nav-text">使用 docker 部署:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#拉取-docker-镜像"><span class="nav-number">2.1.</span> <span class="nav-text">拉取 docker 镜像:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器启动"><span class="nav-number">2.2.</span> <span class="nav-text">容器启动:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浏览器登录访问"><span class="nav-number">2.3.</span> <span class="nav-text">浏览器登录访问:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用配置参数修改"><span class="nav-number">2.4.</span> <span class="nav-text">常用配置参数修改:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考:</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hhstore</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数 <i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量 <i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hhstore"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,900 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="alDgEpeIzoLpI3vCAsOEfs6B1RFOuiKueg8-tTxG8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Ubuntu,Docker,Linode,EC2," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="hhstore's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇介绍ubuntu环境安装Docker详细配置过程.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu14.04安装Docker详细教程">
+<meta property="og:url" content="http://hhstore.github.io/2015/07/07/Ubuntu14.04-install-docker/index.html">
+<meta property="og:site_name" content="hhstore's blog">
+<meta property="og:description" content="本篇介绍ubuntu环境安装Docker详细配置过程.">
+<meta property="og:updated_time" content="2016-12-05T08:11:13.961Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu14.04安装Docker详细教程">
+<meta name="twitter:description" content="本篇介绍ubuntu环境安装Docker详细配置过程.">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Ubuntu14.04安装Docker详细教程 | hhstore's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?50c15455e37f70aea674ff4a663eef27";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <!----------- add Fork me on Github ------------>
+    
+    <a href="https://github.com/hhstore"><img style="position: absolute; top: 500; left: 0; border: 0;" src="https://camo.githubusercontent.com/8b6b8ccc6da3aa5722903da7b58eb5ab1081adee/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png"></a>
+    
+    <!----------- add Fork me on Github ------------>   
+    
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">hhstore's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Python, Golang 开发</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-translations">
+          <a href="/translations" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            译文
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tools">
+          <a href="/tools" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            工具
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-projects">
+          <a href="/projects" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            项目
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'LvGMYBjz-8ZVB7BazNT_','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ubuntu14.04安装Docker详细教程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-07-07T21:21:50+00:00" content="2015-07-07">
+              2015-07-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/07/07/Ubuntu14.04-install-docker/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/07/Ubuntu14.04-install-docker/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇介绍ubuntu环境安装Docker详细配置过程.</p>
+<a id="more"></a>
+<ul>
+<li><a href="https://docs.docker.com/installation/ubuntulinux/" target="_blank" rel="external">官方文档</a></li>
+</ul>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
+<li>最近项目重新部署,要重新安装docker,发现docker官网更新版本,添加一些新的功能.故写此文档,以备复查.</li>
+<li>安装docker推荐ubuntu环境,包括centos,Mac 我都尝试过,还是ubuntu最不容易出错.</li>
+<li>这里只记录ubuntu的安装配置过程.其他版本,请参考官方文档.</li>
+</ul>
+<h2 id="1-推荐安装环境"><a href="#1-推荐安装环境" class="headerlink" title="1.推荐安装环境:"></a>1.推荐安装环境:</h2><h3 id="1-云服务器安装Docker-推荐"><a href="#1-云服务器安装Docker-推荐" class="headerlink" title="1. 云服务器安装Docker.(推荐)"></a>1. 云服务器安装Docker.(推荐)</h3><ul>
+<li>1.推荐使用亚马逊云,Linode,阿里云等方式安装.</li>
+<li>2.之前Docker的image源被墙,国内要采用镜像站点更新,很不稳定.</li>
+<li>3.先在云主机上,安装ubuntu14.04.(要求如下)</li>
+</ul>
+<h3 id="1-2-宿主机要求"><a href="#1-2-宿主机要求" class="headerlink" title="1.2 宿主机要求:"></a>1.2 宿主机要求:</h3><ul>
+<li>1.Linux系统: 64位版本的ubuntu14.04 LTS系统.(64位,为必要条件)</li>
+<li>2.Linux内核版本号: 3.10以上.(内核版本号,为必要条件)</li>
+</ul>
+<h2 id="2-安装Docker"><a href="#2-安装Docker" class="headerlink" title="2.安装Docker:"></a>2.安装Docker:</h2><h3 id="2-1-查看内核版本号"><a href="#2-1-查看内核版本号" class="headerlink" title="2.1 查看内核版本号:"></a>2.1 查看内核版本号:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">uname -r   <span class="comment"># 返回: 3.11.0-15-generic</span></div></pre></td></tr></table></figure>
+<h3 id="2-2-准备工作"><a href="#2-2-准备工作" class="headerlink" title="2.2 准备工作:"></a>2.2 准备工作:</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">1. 更新apt-get</div><div class="line">    sudo apt-get update</div><div class="line">    </div><div class="line">2. 更新依赖</div><div class="line">    sudo apt-get install linux-image-generic-lts-trusty</div><div class="line"></div><div class="line">3. 重启</div><div class="line">    sudo reboot</div><div class="line"></div><div class="line">4. 系统重启后,开始安装docker</div></pre></td></tr></table></figure>
+<h3 id="2-3-安装"><a href="#2-3-安装" class="headerlink" title="2.3 安装"></a>2.3 安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">1. 查看是否已安装wget.(这是一个下载工具)</div><div class="line">    <span class="built_in">which</span> wget  </div><div class="line"></div><div class="line">2. 安装wget.</div><div class="line">    sudo apt-get update</div><div class="line">    sudo apt-get install wget</div><div class="line"></div><div class="line">3. 下载并安装docker.</div><div class="line">    wget -qO- https://get.docker.com/ | sh</div><div class="line"></div><div class="line">4. 确认docker安装成功.</div><div class="line">    sudo docker run hello-world</div></pre></td></tr></table></figure>
+<h2 id="3-配置Docker"><a href="#3-配置Docker" class="headerlink" title="3.配置Docker"></a>3.配置Docker</h2><h3 id="3-1-创建Docker用户组"><a href="#3-1-创建Docker用户组" class="headerlink" title="3.1 创建Docker用户组."></a>3.1 创建Docker用户组.</h3><ul>
+<li>为避免每次操作,都加上sudo提权.故创建docker用户组.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">1. 以具有sudo权限的用户账号,登录.</div><div class="line"></div><div class="line">2. 创建docker用户组,并添加该用户账号至docker用户组.</div><div class="line">    sudo usermod <span class="_">-a</span>G docker ubuntu</div><div class="line"></div><div class="line">    示例:</div><div class="line">    sudo usermod <span class="_">-a</span>G docker bingwei   <span class="comment"># 登录用户为bingwei</span></div><div class="line">    &gt; sent invalidate(passwd) request, exiting</div><div class="line">    &gt; sent invalidate(group) request, exiting</div><div class="line">    &gt; sent invalidate(passwd) request, exiting</div><div class="line">    &gt; sent invalidate(group) request, exiting</div><div class="line"></div><div class="line">3. 退出登录,再次重新登录该用户账号.</div><div class="line"></div><div class="line">4. 测试用户组,生效.</div><div class="line">    docker run hello-world  <span class="comment"># 不带sudo前缀.若成功,则说明OK.</span></div></pre></td></tr></table></figure>
+<h3 id="3-2-重启Docker"><a href="#3-2-重启Docker" class="headerlink" title="3.2 重启Docker"></a>3.2 重启Docker</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo restart docker</div></pre></td></tr></table></figure>
+<h2 id="4-升级Docker"><a href="#4-升级Docker" class="headerlink" title="4. 升级Docker"></a>4. 升级Docker</h2><ul>
+<li>与安装一样.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget -qO- https://get.docker.com/ | sh</div></pre></td></tr></table></figure>
+<h2 id="5-卸载Docker"><a href="#5-卸载Docker" class="headerlink" title="5. 卸载Docker"></a>5. 卸载Docker</h2><h3 id="5-1-卸载docker软件包"><a href="#5-1-卸载docker软件包" class="headerlink" title="5.1 卸载docker软件包"></a>5.1 卸载docker软件包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get autoremove --purge lxc-docker</div></pre></td></tr></table></figure>
+<h3 id="5-2-删除docker已安装的images"><a href="#5-2-删除docker已安装的images" class="headerlink" title="5.2 删除docker已安装的images"></a>5.2 删除docker已安装的images</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm -rf /var/lib/docker</div></pre></td></tr></table></figure>
+<h2 id="6-常用操作命令"><a href="#6-常用操作命令" class="headerlink" title="6. 常用操作命令"></a>6. 常用操作命令</h2><ul>
+<li><a href="https://docs.docker.com/userguide/dockerimages/" target="_blank" rel="external">参考</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">sudo docker images          <span class="comment"># 查看已安装image</span></div><div class="line">sudo docker search sinatra  <span class="comment"># 搜索某image</span></div><div class="line">sudo docker pull XXXX       <span class="comment"># 下载安装image</span></div></pre></td></tr></table></figure>
+<h2 id="7-创建自己的image"><a href="#7-创建自己的image" class="headerlink" title="7. 创建自己的image"></a>7. 创建自己的image</h2><ul>
+<li><a href="https://docs.docker.com/userguide/dockerimages/" target="_blank" rel="external">参考</a></li>
+<li>待补充更新.</li>
+</ul>
+<ol>
+<li>We can update a container created from an image and commit the results to an image.</li>
+<li>We can use a Dockerfile to specify instructions to create an image.</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatpay.png" alt="hhstore WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Ubuntu/" rel="tag">#Ubuntu</a>
+          
+            <a href="/tags/Docker/" rel="tag">#Docker</a>
+          
+            <a href="/tags/Linode/" rel="tag">#Linode</a>
+          
+            <a href="/tags/EC2/" rel="tag">#EC2</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/04/python-lib-threading/" rel="next" title="Python 常用包 - threading 多线程">
+                <i class="fa fa-chevron-left"></i> Python 常用包 - threading 多线程
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/05/mac-osx-iterm2-tmux-config/" rel="prev" title="Mac配置iTerm2+tumx+zsh">
+                Mac配置iTerm2+tumx+zsh <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/07/07/Ubuntu14.04-install-docker/"
+           data-title="Ubuntu14.04安装Docker详细教程" data-url="http://hhstore.github.io/2015/07/07/Ubuntu14.04-install-docker/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="hhstore" />
+          <p class="site-author-name" itemprop="name">hhstore</p>
+          <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">61</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hhstore" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="selfrefactor@gmail.com" target="_blank" title="邮箱">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  邮箱
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/darkforce/" target="_blank" title="DouBan">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DouBan
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hhstore" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ZhiHu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-推荐安装环境"><span class="nav-number">2.</span> <span class="nav-text">1.推荐安装环境:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-云服务器安装Docker-推荐"><span class="nav-number">2.1.</span> <span class="nav-text">1. 云服务器安装Docker.(推荐)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-宿主机要求"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 宿主机要求:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-安装Docker"><span class="nav-number">3.</span> <span class="nav-text">2.安装Docker:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-查看内核版本号"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 查看内核版本号:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-准备工作"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 准备工作:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-安装"><span class="nav-number">3.3.</span> <span class="nav-text">2.3 安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-配置Docker"><span class="nav-number">4.</span> <span class="nav-text">3.配置Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-创建Docker用户组"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 创建Docker用户组.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-重启Docker"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 重启Docker</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-升级Docker"><span class="nav-number">5.</span> <span class="nav-text">4. 升级Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-卸载Docker"><span class="nav-number">6.</span> <span class="nav-text">5. 卸载Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-卸载docker软件包"><span class="nav-number">6.1.</span> <span class="nav-text">5.1 卸载docker软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-删除docker已安装的images"><span class="nav-number">6.2.</span> <span class="nav-text">5.2 删除docker已安装的images</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-常用操作命令"><span class="nav-number">7.</span> <span class="nav-text">6. 常用操作命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-创建自己的image"><span class="nav-number">8.</span> <span class="nav-text">7. 创建自己的image</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hhstore</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数 <i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量 <i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hhstore"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

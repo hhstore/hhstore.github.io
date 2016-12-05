@@ -1,0 +1,948 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="alDgEpeIzoLpI3vCAsOEfs6B1RFOuiKueg8-tTxG8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,Pythonic," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="hhstore's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇准备整理各种Python的编程规范,以及比较Pythonic的代码技巧.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pythonic - 用优雅的方式写Python代码">
+<meta property="og:url" content="http://hhstore.github.io/2015/08/20/python-write-python-in-pythonic-way/index.html">
+<meta property="og:site_name" content="hhstore's blog">
+<meta property="og:description" content="本篇准备整理各种Python的编程规范,以及比较Pythonic的代码技巧.">
+<meta property="og:updated_time" content="2016-12-05T08:11:13.965Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pythonic - 用优雅的方式写Python代码">
+<meta name="twitter:description" content="本篇准备整理各种Python的编程规范,以及比较Pythonic的代码技巧.">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Pythonic - 用优雅的方式写Python代码 | hhstore's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?50c15455e37f70aea674ff4a663eef27";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <!----------- add Fork me on Github ------------>
+    
+    <a href="https://github.com/hhstore"><img style="position: absolute; top: 500; left: 0; border: 0;" src="https://camo.githubusercontent.com/8b6b8ccc6da3aa5722903da7b58eb5ab1081adee/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png"></a>
+    
+    <!----------- add Fork me on Github ------------>   
+    
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">hhstore's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Python, Golang 开发</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-translations">
+          <a href="/translations" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            译文
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tools">
+          <a href="/tools" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            工具
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-projects">
+          <a href="/projects" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            项目
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'LvGMYBjz-8ZVB7BazNT_','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Pythonic - 用优雅的方式写Python代码
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-08-20T17:12:10+00:00" content="2015-08-20">
+              2015-08-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/08/20/python-write-python-in-pythonic-way/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/20/python-write-python-in-pythonic-way/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇准备整理各种Python的编程规范,以及比较Pythonic的代码技巧.</p>
+<a id="more"></a>
+<h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h2><ul>
+<li>写Python也比较久了,感觉有必要认真总结一下常用的Pythonic技巧.</li>
+<li>Python是一门很优雅的语言,对日常代码,有各种”推荐写法”.特别适合各种”强迫症”.</li>
+<li>官方有PEP8规范,强迫你按推荐”姿势”写代码.如果你的姿势不优雅,会被认为很low.</li>
+<li>初级的PEP8规范: 空格缩进,变量,函数,类命名规范,空行,注释规范.好在pycharm会自动提示.</li>
+<li>中级的代码推荐写法: 各种优雅的代码,越简洁明了,越推荐.杜绝各种”冗长代码”. &lt;<python cookbook="">&gt;里有很多技巧.<ul>
+<li>列表解析</li>
+<li>装饰器</li>
+<li>解包</li>
+<li>with语句</li>
+<li>yield语句</li>
+</ul>
+</python></li>
+<li>高级点的: 个人理解是充分理解Python的内部实现机制,正确合理选择适合的数据结构和算法,以及库和框架.做到物尽其用.<ul>
+<li>充分使用标准库(减少重复造轮子)</li>
+<li>正确的姿势使用第三方库</li>
+<li>优雅的使用框架</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-什么是Pythonic"><a href="#2-什么是Pythonic" class="headerlink" title="2. 什么是Pythonic?"></a>2. 什么是Pythonic?</h2><p>对于这个词,我个人的理解是: </p>
+<ul>
+<li>请尽可能的用更优雅的方式写Python.</li>
+<li>请尽可能的使用Python标准写法.</li>
+<li>请尽可能的使用Python推荐写法.</li>
+<li>请杜绝丑陋的其他语言惯性的写法.</li>
+</ul>
+<p>更详细的解读,参考用google检索Pythonic,所找的的高质量的文章.</p>
+<ul>
+<li><a href="http://blog.startifact.com/posts/older/what-is-pythonic.html" target="_blank" rel="external">What is Pythonic?</a></li>
+<li><a href="http://blog.csdn.net/gzlaiyonghao/article/details/2762251" target="_blank" rel="external">赖勇浩: Pythonic到底是什么玩意儿？</a></li>
+<li><a href="http://www.zhihu.com/question/20336475" target="_blank" rel="external">知乎提问:初学 Python，有哪些 Pythonic 的源码推荐阅读？</a></li>
+<li><a href="http://wuzhiwei.net/be_pythonic/" target="_blank" rel="external">让你的python代码更加pythonic</a></li>
+<li><a href="http://www.pythonpub.com/article/1483" target="_blank" rel="external">写地道的PYTHON</a></li>
+<li><a href="http://www.codefrom.com/c/214" target="_blank" rel="external">十个我希望早点知道的python方法</a></li>
+<li><a href="http://michaelyou.github.io/2015/04/16/%E4%B8%80%E4%BA%9Bpythonic%E4%BB%A3%E7%A0%81%E7%9A%84%E4%BE%8B%E5%AD%90/" target="_blank" rel="external">一些pythonic代码的例子</a></li>
+<li><a href="http://justjavac.com/python/2012/04/13/pythoner-handout.html" target="_blank" rel="external">Python实用技巧-成为Pythoner必经之路</a></li>
+<li><a href="http://justjavac.com/python/2012/07/27/python-a-few-things-to-remember.html" target="_blank" rel="external">Python 编码时应该注意的几件事情</a></li>
+<li><a href="https://github.com/lzjun567/note/blob/master/note/python/useful_features.md" target="_blank" rel="external">Python 实用技巧</a></li>
+<li><a href="http://justjavac.com/python/2013/06/11/a-guide-to-pythons-magic-methods.html" target="_blank" rel="external">干货: Python 的神奇方法指南</a></li>
+</ul>
+<p>在Python解释器中,执行: import this 回车,会显示如下信息:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">import this</div><div class="line"></div><div class="line">The Zen of Python, by Tim Peters</div><div class="line"></div><div class="line">Beautiful is better than ugly.</div><div class="line">Explicit is better than implicit.</div><div class="line">Simple is better than complex.</div><div class="line">Complex is better than complicated.</div><div class="line">Flat is better than nested.</div><div class="line">Sparse is better than dense.</div><div class="line">Readability counts.</div><div class="line">Special cases aren't special enough to break the rules.</div><div class="line">Although practicality beats purity.</div><div class="line">Errors should never pass silently.</div><div class="line">Unless explicitly silenced.</div><div class="line">In the face of ambiguity, refuse the temptation to guess.</div><div class="line">There should be one-- and preferably only one --obvious way to do it.</div><div class="line">Although that way may not be obvious at first unless you're Dutch.</div><div class="line">Now is better than never.</div><div class="line">Although never is often better than *right* now.</div><div class="line">If the implementation is hard to explain, it's a bad idea.</div><div class="line">If the implementation is easy to explain, it may be a good idea.</div><div class="line">Namespaces are one honking great idea -- let's do more of those!</div></pre></td></tr></table></figure>
+<p>这首小诗,说明了Python的代码哲学.值得好好体会.</p>
+<h2 id="3-更-Pythonic-的代码技巧清单"><a href="#3-更-Pythonic-的代码技巧清单" class="headerlink" title="3. 更 Pythonic 的代码技巧清单"></a>3. 更 Pythonic 的代码技巧清单</h2><h3 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h3><ul>
+<li>tip01. 对换变量值.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">a = <span class="number">1</span></div><div class="line">b = <span class="number">2</span></div><div class="line"></div><div class="line"><span class="comment"># Pythonic, 使用元组的unpack技巧,一行代码解决.</span></div><div class="line">a, b = b, a</div><div class="line">(a, b) =  (b, a)</div><div class="line"></div><div class="line"><span class="comment"># Not-Pythonic, 典型的C语言思维.</span></div><div class="line">temp = b</div><div class="line">b = a</div><div class="line">a = temp</div></pre></td></tr></table></figure>
+<ul>
+<li>tip02. 链式比较</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">a = <span class="number">1</span></div><div class="line">b = <span class="number">5</span></div><div class="line"></div><div class="line"><span class="comment"># Pythonic</span></div><div class="line"><span class="number">1</span> &lt;= a &lt;= b &lt;<span class="number">10</span>                <span class="comment"># True</span></div><div class="line"></div><div class="line"><span class="comment"># Not-Pythonic</span></div><div class="line">a &gt;= <span class="number">1</span> <span class="keyword">and</span> a &lt;=b <span class="keyword">and</span> b &lt; <span class="number">10</span>    <span class="comment"># True</span></div></pre></td></tr></table></figure>
+<ul>
+<li><p>tip03. 真值测试</p>
+<ul>
+<li><p>为真条件: </p>
+<ul>
+<li>True值  </li>
+<li>任意(非空字符串, 非0数字, 非空容器)</li>
+<li>其他任意非False值</li>
+</ul>
+</li>
+<li><p>为假条件:</p>
+<ul>
+<li>False值</li>
+<li>空字符串: “”, ‘’</li>
+<li>数字0</li>
+<li>None</li>
+<li>空容器,包括 [], (,), {}, set()</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># Pythonic</span></div><div class="line"><span class="keyword">if</span> 真:</div><div class="line">    <span class="keyword">print</span> 真</div><div class="line">    </div><div class="line"></div><div class="line"><span class="comment"># Not-Pythonic</span></div><div class="line"><span class="keyword">if</span> 真 == 真:</div><div class="line">    <span class="keyword">print</span> 真</div></pre></td></tr></table></figure>
+<ul>
+<li>tip04. 字符串反转</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 原始串: ABC</span></div><div class="line"><span class="comment"># 反转串: CBA</span></div><div class="line"></div><div class="line"><span class="comment"># Pythonic</span></div><div class="line">s1 = <span class="string">"ABC"</span></div><div class="line">s2 = s1[::<span class="number">-1</span>]</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">reverse</span><span class="params">(s)</span>:</span></div><div class="line">    <span class="keyword">return</span> s[::<span class="number">-1</span>]  <span class="comment"># 反转</span></div><div class="line"></div><div class="line"><span class="comment"># Not-Pythonic</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">reverse</span><span class="params">(s)</span>:</span></div><div class="line">    temp = <span class="string">""</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(s)<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</div><div class="line">        temp = <span class="string">"&#123;0&#125;&#123;1&#125;"</span>.format(temp, s[i])  <span class="comment"># 逐个字母反转拼接</span></div><div class="line">    <span class="keyword">return</span> temp</div></pre></td></tr></table></figure>
+<ul>
+<li>tip05. 回文检测</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 应用上例技巧实现</span></div><div class="line"><span class="comment"># 回文串: AAABAAA (对称) // AAABBAAA</span></div><div class="line"></div><div class="line"><span class="comment"># Pythonic</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_palindrome</span><span class="params">(s)</span>:</span></div><div class="line">    <span class="keyword">return</span> bool(s == s[::<span class="number">-1</span>])    <span class="comment"># return True or False</span></div><div class="line"></div><div class="line"><span class="comment"># Not-Pythonic</span></div><div class="line"><span class="comment"># 各种尝试首尾单一字符比较判断的思路.</span></div><div class="line">    </div><div class="line"><span class="comment"># 回文检测: 递归版本</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_palindrome_recursion</span><span class="params">(s)</span>:</span></div><div class="line">    <span class="keyword">if</span> len(s) &lt;= <span class="number">1</span>:</div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="keyword">return</span> s[<span class="number">0</span>] == s[<span class="number">-1</span>] <span class="keyword">and</span> is_palindrome_recursion(s[<span class="number">1</span>:<span class="number">-1</span>])</div><div class="line">    </div><div class="line"><span class="comment"># 回文检测: 循环版本</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_palindrome</span><span class="params">(s)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(s)/<span class="number">2</span>):</div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> s[i] == s[len(s)-i<span class="number">-1</span>]:</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">True</span></div></pre></td></tr></table></figure>
+<ul>
+<li>tip06. 字符串列表连接(join函数应用)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 使用场景: 常见于 路径拼接</span></div><div class="line"><span class="comment"># 示例: str_list = ["c:", "users", "xiaoming", "hello.txt"]</span></div><div class="line"></div><div class="line"><span class="comment"># Pythonic</span></div><div class="line">file_path = [<span class="string">"c:"</span>, <span class="string">"users"</span>, <span class="string">"xiaoming"</span>, <span class="string">"hello.txt"</span>]</div><div class="line">result = <span class="string">"/"</span>.join(file_path)  <span class="comment"># result = "c:/users/xiaoming/hello.txt"</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">join_str</span><span class="params">(sources, sep)</span>:</span>  </div><div class="line">    <span class="keyword">return</span> sep.join(sources)   <span class="comment"># 简单包裹join函数: </span></div><div class="line">                               <span class="comment"># sep:连接符</span></div><div class="line">                               <span class="comment"># sources: 可迭代序列(可以是字符串,列表,元组)</span></div><div class="line"></div><div class="line"><span class="comment"># Not-Pythonic</span></div><div class="line"><span class="comment"># 根据join函数特点,简单实现了一个同样效果版本.</span></div><div class="line"><span class="comment"># 初步测试效果同join(),由于没看join()的实现源码,可能不完善.</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">join_str_ex</span><span class="params">(sources, sep)</span>:</span></div><div class="line">    result = <span class="string">""</span></div><div class="line">    <span class="keyword">if</span> isinstance(sources, (str, list, tuple)):</div><div class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> sources:</div><div class="line">            result = <span class="string">"&#123;0&#125;&#123;1&#125;&#123;2&#125;"</span>.format(result, item, sep)</div><div class="line">        result = result[<span class="number">0</span>:(len(result) - len(sep))]  <span class="comment"># 保持拼接效果完全一致</span></div><div class="line">    <span class="keyword">elif</span> isinstance(sources, dict):</div><div class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> sources.iteritems():</div><div class="line">            result = <span class="string">"&#123;0&#125;&#123;1&#125;&#123;2&#125;"</span>.format(result, key, sep)</div><div class="line">        result = result[<span class="number">0</span>:(len(result) - len(sep))]</div><div class="line">    <span class="keyword">return</span> result</div></pre></td></tr></table></figure>
+<ul>
+<li>tip06. 列表内置函数应用(sum, max, min)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对数组元素,求和,寻找最大值,最小值,是常见需求.</span></div><div class="line"><span class="comment"># Python的list,已经内置了处理函数.无需自己写.</span></div><div class="line"></div><div class="line"><span class="comment"># Pythonic</span></div><div class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> mul</div><div class="line">nums = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">-1</span>]</div><div class="line"><span class="keyword">print</span> sum(nums), max(nums), min(nums), reduce(mul, nums, <span class="number">1</span>)   <span class="comment"># return 20, 6, -1, -720(乘积)</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Not-Pythonic</span></div><div class="line"></div><div class="line">sum_all = <span class="number">0</span></div><div class="line">max_num = -float(<span class="string">'inf'</span>)</div><div class="line">min_num = float(<span class="string">'inf'</span>)</div><div class="line">mul_all = <span class="number">1</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> num <span class="keyword">in</span> nums:</div><div class="line">    <span class="keyword">if</span> num &gt; max_num:</div><div class="line">        max_num = num</div><div class="line">    <span class="keyword">if</span> num &lt; min_num:</div><div class="line">        min_num = num</div><div class="line">    sum_all += num</div><div class="line">    mul_all *= num</div><div class="line"><span class="keyword">print</span> sum_all, max_num, min_num, mul_all</div><div class="line"></div><div class="line"><span class="comment"># 简单测试，在numList的长度为10000000时，对列表求和，</span></div><div class="line"><span class="comment"># Pythonic 耗时0.6s，Not-Pythonic 耗时1.3s，将近两倍的差距。</span></div></pre></td></tr></table></figure>
+<ul>
+<li>tip07. 待更新补充.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment"># Pythonic</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># Not-Pythonic</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatpay.png" alt="hhstore WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+            <a href="/tags/Pythonic/" rel="tag">#Pythonic</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/14/mac-osx-vagrant-config/" rel="next" title="Mac配置Vagrant">
+                <i class="fa fa-chevron-left"></i> Mac配置Vagrant
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/21/python-lib-argparse/" rel="prev" title="Python常用包 - argparse总结">
+                Python常用包 - argparse总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/08/20/python-write-python-in-pythonic-way/"
+           data-title="Pythonic - 用优雅的方式写Python代码" data-url="http://hhstore.github.io/2015/08/20/python-write-python-in-pythonic-way/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="hhstore" />
+          <p class="site-author-name" itemprop="name">hhstore</p>
+          <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">61</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hhstore" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="selfrefactor@gmail.com" target="_blank" title="邮箱">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  邮箱
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/darkforce/" target="_blank" title="DouBan">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DouBan
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hhstore" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ZhiHu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1. 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-什么是Pythonic"><span class="nav-number">2.</span> <span class="nav-text">2. 什么是Pythonic?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-更-Pythonic-的代码技巧清单"><span class="nav-number">3.</span> <span class="nav-text">3. 更 Pythonic 的代码技巧清单</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tips"><span class="nav-number">3.1.</span> <span class="nav-text">tips</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hhstore</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数 <i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量 <i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hhstore"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

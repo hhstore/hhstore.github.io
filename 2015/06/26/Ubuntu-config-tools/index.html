@@ -1,0 +1,916 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="alDgEpeIzoLpI3vCAsOEfs6B1RFOuiKueg8-tTxG8xw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Ubuntu,Linux," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="hhstore's blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本篇介绍重装Ubuntu后所需要作的完整配置过程,非常详尽,并持续更新.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ubuntu安装配置软件">
+<meta property="og:url" content="http://hhstore.github.io/2015/06/26/Ubuntu-config-tools/index.html">
+<meta property="og:site_name" content="hhstore's blog">
+<meta property="og:description" content="本篇介绍重装Ubuntu后所需要作的完整配置过程,非常详尽,并持续更新.">
+<meta property="og:updated_time" content="2016-12-05T08:11:13.961Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ubuntu安装配置软件">
+<meta name="twitter:description" content="本篇介绍重装Ubuntu后所需要作的完整配置过程,非常详尽,并持续更新.">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> ubuntu安装配置软件 | hhstore's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?50c15455e37f70aea674ff4a663eef27";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <!----------- add Fork me on Github ------------>
+    
+    <a href="https://github.com/hhstore"><img style="position: absolute; top: 500; left: 0; border: 0;" src="https://camo.githubusercontent.com/8b6b8ccc6da3aa5722903da7b58eb5ab1081adee/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png"></a>
+    
+    <!----------- add Fork me on Github ------------>   
+    
+
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">hhstore's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Python, Golang 开发</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-translations">
+          <a href="/translations" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            译文
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tools">
+          <a href="/tools" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            工具
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-projects">
+          <a href="/projects" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            项目
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书单
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            链接
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'LvGMYBjz-8ZVB7BazNT_','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ubuntu安装配置软件
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-06-26T21:59:03+00:00" content="2015-06-26">
+              2015-06-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ubuntu/" itemprop="url" rel="index">
+                    <span itemprop="name">Ubuntu</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/06/26/Ubuntu-config-tools/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/06/26/Ubuntu-config-tools/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇介绍重装Ubuntu后所需要作的完整配置过程,非常详尽,并持续更新.</p>
+<a id="more"></a>
+<h2 id="0-初始化设置"><a href="#0-初始化设置" class="headerlink" title="0. 初始化设置"></a>0. 初始化设置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1. 设置语言</div><div class="line">2. 设置分辨率</div><div class="line">3. 设置输入法</div><div class="line">4. 设置内存,磁盘,CPU等</div></pre></td></tr></table></figure>
+<h3 id="0-1-更改root密码"><a href="#0-1-更改root密码" class="headerlink" title="0.1 更改root密码"></a>0.1 更改root密码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">默认root密码是随机的，即每次开机,都有一个新的root密码。</div><div class="line"></div><div class="line">修改方式:</div><div class="line">sudo passwd  <span class="comment"># 提示输入当前用户密码.</span></div><div class="line">enter后,提示我们输入新的密码并确认,此密码即为root密码.</div><div class="line">su root  <span class="comment"># 切换root用户</span></div></pre></td></tr></table></figure>
+<h2 id="1-更改下载源"><a href="#1-更改下载源" class="headerlink" title="1. 更改下载源"></a>1. 更改下载源</h2><ul>
+<li><a href="http://wiki.ubuntu.org.cn/%E6%BA%90%E5%88%97%E8%A1%A8" target="_blank" rel="external">源列表</a></li>
+</ul>
+<h3 id="1-更改源列表"><a href="#1-更改源列表" class="headerlink" title="1. 更改源列表"></a>1. 更改源列表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">1. 首先备份源列表(<span class="keyword">for</span> sure):</div><div class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup</div><div class="line"></div><div class="line">2. 而后用gedit或其他编辑器打开:</div><div class="line">sudo gedit /etc/apt/sources.list</div></pre></td></tr></table></figure>
+<h3 id="2-源列表内容"><a href="#2-源列表内容" class="headerlink" title="2. 源列表内容"></a>2. 源列表内容</h3><ul>
+<li><p>补充: 香港的源,速度也挺快(广东这边可选)</p>
+</li>
+<li><p>1.阿里云更新服务器（北京万网/浙江杭州阿里云服务器双线接入）</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ utopic main restricted universe multiverse</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ utopic-security main restricted universe multiverse</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ utopic-updates main restricted universe multiverse</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ utopic-proposed main restricted universe multiverse</div><div class="line">deb http://mirrors.aliyun.com/ubuntu/ utopic-backports main restricted universe multiverse</div><div class="line">deb-src http://mirrors.aliyun.com/ubuntu/ utopic main restricted universe multiverse</div><div class="line">deb-src http://mirrors.aliyun.com/ubuntu/ utopic-security main restricted universe multiverse</div><div class="line">deb-src http://mirrors.aliyun.com/ubuntu/ utopic-updates main restricted universe multiverse</div><div class="line">deb-src http://mirrors.aliyun.com/ubuntu/ utopic-proposed main restricted universe multiverse</div><div class="line">deb-src http://mirrors.aliyun.com/ubuntu/ utopic-backports main restricted universe multiverse</div></pre></td></tr></table></figure>
+<ul>
+<li>2.网易163更新服务器（广东广州电信/联通千兆双线接入）</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">deb http://mirrors.163.com/ubuntu/ utopic main restricted universe multiverse</div><div class="line">deb http://mirrors.163.com/ubuntu/ utopic-security main restricted universe multiverse</div><div class="line">deb http://mirrors.163.com/ubuntu/ utopic-updates main restricted universe multiverse</div><div class="line">deb http://mirrors.163.com/ubuntu/ utopic-proposed main restricted universe multiverse</div><div class="line">deb http://mirrors.163.com/ubuntu/ utopic-backports main restricted universe multiverse</div><div class="line">deb-src http://mirrors.163.com/ubuntu/ utopic main restricted universe multiverse</div><div class="line">deb-src http://mirrors.163.com/ubuntu/ utopic-security main restricted universe multiverse</div><div class="line">deb-src http://mirrors.163.com/ubuntu/ utopic-updates main restricted universe multiverse</div><div class="line">deb-src http://mirrors.163.com/ubuntu/ utopic-proposed main restricted universe multiverse</div><div class="line">deb-src http://mirrors.163.com/ubuntu/ utopic-backports main restricted universe multiverse</div></pre></td></tr></table></figure>
+<h2 id="2-安装常用软件"><a href="#2-安装常用软件" class="headerlink" title="2. 安装常用软件"></a>2. 安装常用软件</h2><h3 id="2-1-安装deb包"><a href="#2-1-安装deb包" class="headerlink" title="2.1 安装deb包"></a>2.1 安装deb包</h3><ul>
+<li><a href="">搜狗输入法</a></li>
+</ul>
+<h3 id="2-1-apt-get安装"><a href="#2-1-apt-get安装" class="headerlink" title="2.1 apt-get安装"></a>2.1 apt-get安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">    sudo apt-get update</div><div class="line">    sudo apt-get install -y vim zsh git curl wget nginx</div><div class="line"></div><div class="line"> </div><div class="line">    sudo apt-get install -y docky    <span class="comment"># 类似Mac的dock效果</span></div><div class="line">    sudo apt-get install -y python-pip</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment"># java8, pycharm</span></div><div class="line">    sudo add-apt-repository ppa:webupd8team/java</div><div class="line">    sudo apt-get update</div><div class="line">    sudo apt-get install -y oracle-java8-installer</div><div class="line"></div><div class="line"></div><div class="line">3. ab</div></pre></td></tr></table></figure>
+<h3 id="2-3-删除unity-安装Mate-Desktop-Gnome-x2分支"><a href="#2-3-删除unity-安装Mate-Desktop-Gnome-x2分支" class="headerlink" title="2.3 删除unity,安装Mate Desktop(Gnome x2分支)"></a>2.3 删除unity,安装Mate Desktop(Gnome x2分支)</h3><ul>
+<li><a href="http://www.tecmint.com/remove-unity-and-install-cinnamon-and-mate-desktop-in-ubuntu-14-10/" target="_blank" rel="external">参考文档</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">1. 删除unity(可以不删除,只执行安装步骤)</div><div class="line"></div><div class="line">sudo apt-get remove unity unity-asset-pool unity-control-center unity-control-center-signon unity-gtk-module-common unity-lens* unity-services unity-settings-daemon unity-webapps* unity-voice-service</div><div class="line"></div><div class="line">2. 安装Mate </div><div class="line"></div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install mate-desktop-environment-core</div><div class="line"></div><div class="line"></div><div class="line">3. 安装Mate插件</div><div class="line">sudo apt-get install mate-desktop-environment-extra    <span class="comment"># 安装插件</span></div><div class="line"></div><div class="line"></div><div class="line">4. 安装结束后,<span class="string">"注销"</span>系统,在登录窗口,注意<span class="string">"选择登录GUI"</span>,选择mate,输入密码登录即可.</div></pre></td></tr></table></figure>
+<h2 id="3-配置开发环境"><a href="#3-配置开发环境" class="headerlink" title="3. 配置开发环境"></a>3. 配置开发环境</h2><h3 id="3-1安装配置zsh-替换系统bash"><a href="#3-1安装配置zsh-替换系统bash" class="headerlink" title="3.1安装配置zsh,替换系统bash"></a>3.1安装配置zsh,替换系统bash</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">1.安装zsh,git,wget</div><div class="line">sudo apt-get install zsh git wget</div><div class="line"></div><div class="line">2.获取并自动安装oh-my-zsh</div><div class="line">wget --no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh</div><div class="line"></div><div class="line">3.替换bash为zsh</div><div class="line">chsh <span class="_">-s</span> /bin/zsh</div><div class="line"></div><div class="line">4.修改zsh配置文件.(略)</div><div class="line"></div><div class="line">5.重启系统后,更改默认shell为zsh</div><div class="line">sudo reboot</div><div class="line"></div><div class="line">6.显示当前使用的shell版本,确认已启用.</div><div class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></div></pre></td></tr></table></figure>
+<ul>
+<li>切换到用户根目录下。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~</div><div class="line">vim .zshrc</div></pre></td></tr></table></figure>
+<ul>
+<li>.zshrc文件内容修改：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 修改 zsh 主题</span></div><div class="line">ZSH_THEME=<span class="string">"maran"</span></div><div class="line"></div><div class="line"><span class="comment"># 插件高亮效果</span></div><div class="line">plugins=(python pep8 pip ruby docker brew brew-cask bundler git git-flow gnu-utils osx gem perl rails rvm mercurial svn macports osx virtualenvwrapper django)</div></pre></td></tr></table></figure>
+<h3 id="3-2配置由宿主Mac机通过SSH登录VMware中的ubuntu"><a href="#3-2配置由宿主Mac机通过SSH登录VMware中的ubuntu" class="headerlink" title="3.2配置由宿主Mac机通过SSH登录VMware中的ubuntu"></a>3.2配置由宿主Mac机通过SSH登录VMware中的ubuntu</h3><ul>
+<li><a href="https://www.daydreamqian.cc/macosx%E4%B8%8B%E9%80%9A%E8%BF%87ssh%E8%BF%9E%E6%8E%A5vmware%E4%B8%ADlinux%E7%9A%84%E8%99%9A%E6%8B%9F%E6%9C%BA/" target="_blank" rel="external">参考文档</a></li>
+</ul>
+<h4 id="1-ubuntu下配置"><a href="#1-ubuntu下配置" class="headerlink" title="1.ubuntu下配置"></a>1.ubuntu下配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">1. 确认ubuntu下已安装openssh-server</div><div class="line">sudo apt-get install openssh-server</div><div class="line"></div><div class="line">2.查看SSH服务是否打开.</div><div class="line">ps <span class="_">-e</span> | grep ssh    <span class="comment"># 如果看到sshd说明ssh服务已经打开</span></div><div class="line"></div><div class="line">3.如无sshd服务,输入如下命令启动服务.再次输入上述命令查看.</div><div class="line">sudo /etc/init.d/ssh start</div><div class="line"></div><div class="line">4.输入ifconfig命令,查看虚拟机IP.</div><div class="line">ifconfig  <span class="comment"># 回车显示: eth0 中 inet地址:172.16.2.132 即为虚拟机IP.</span></div></pre></td></tr></table></figure>
+<h4 id="2-Mac下配置"><a href="#2-Mac下配置" class="headerlink" title="2.Mac下配置"></a>2.Mac下配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">1.在Mac的终端下.PING此虚拟机IP.</div><div class="line">ping 172.16.2.132  <span class="comment"># Mac终端中,提示ping的通.即为OK.</span></div><div class="line"></div><div class="line">2.在Mac终端下,通过ssh访问linux虚拟机，输入如下命令:</div><div class="line">ssh ubuntu-username@172.16.2.132    <span class="comment"># ubuntu-username 替换为:虚拟机用户名.</span></div><div class="line"></div><div class="line">如果用户名和IP无误,首次会提示<span class="string">"是否确认要连接该IP主机"</span>,输入<span class="string">"y"</span>.</div><div class="line">确认后,提示输入ubuntu主机密码.密码正确,就可以登录ubuntu的主机,进行操作.</div><div class="line">(只有第一次要确认,以后只需输入虚拟机ubuntu账号密码.)</div></pre></td></tr></table></figure>
+<h3 id="3-3更新-Python-的pip-源"><a href="#3-3更新-Python-的pip-源" class="headerlink" title="3.3更新 Python 的pip 源"></a>3.3更新 Python 的pip 源</h3><ul>
+<li><p>安装 pip</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install python-pip</div></pre></td></tr></table></figure>
+</li>
+<li><p>更改 pip 源镜像为阿里云。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># 阿里云,添加pip阿里云镜像pypi.</div><div class="line">mkdir -p ~/.pip</div><div class="line">touch ~/.pip/pip.conf</div></pre></td></tr></table></figure>
+<p>在pip.conf文件中,添加如下配置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">trusted-host = mirrors.aliyun.com</div><div class="line">index-url = http://mirrors.aliyun.com/pypi/simple/</div></pre></td></tr></table></figure>
+<h3 id="3-4配置python开发环境"><a href="#3-4配置python开发环境" class="headerlink" title="3.4配置python开发环境"></a>3.4配置python开发环境</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">sudo pip install flask</div><div class="line">sudo pip install tornado</div></pre></td></tr></table></figure>
+<h2 id="4-查看并kill进程"><a href="#4-查看并kill进程" class="headerlink" title="4. 查看并kill进程"></a>4. 查看并kill进程</h2><ul>
+<li><a href="http://blog.csdn.net/wojiaopanpan/article/details/7286430" target="_blank" rel="external">命令收藏,全面</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">ps <span class="_">-e</span>                <span class="comment"># 查看所有进程</span></div><div class="line">pgrep  firefox       <span class="comment"># 查看僵死进程ID</span></div><div class="line"></div><div class="line">sudo <span class="built_in">kill</span> PID         <span class="comment"># 杀死进程</span></div><div class="line">sudo <span class="built_in">kill</span> APP_NAME    <span class="comment"># 采用软件名称,杀死</span></div><div class="line">sudo <span class="built_in">kill</span> -9 PID      <span class="comment"># 强力杀死</span></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">1、ps                                             </div><div class="line">显示进程信息，参数可省略 </div><div class="line">-aux    以BSD风格显示进程 常用</div><div class="line">-efH    以System V风格显示进程</div><div class="line"><span class="_">-e</span> , -A 显示所有进程</div><div class="line">a         显示终端上所有用户的进程</div><div class="line">x         显示无终端进程</div><div class="line">u         显示详细信息</div><div class="line">f          树状显示</div><div class="line">w        完整显示信息</div><div class="line">l          显示长列表</div></pre></td></tr></table></figure>
+<h2 id="5-添加-Linux-用户-并赋予管理员权限"><a href="#5-添加-Linux-用户-并赋予管理员权限" class="headerlink" title="5. 添加 Linux 用户,并赋予管理员权限"></a>5. 添加 Linux 用户,并赋予管理员权限</h2><ul>
+<li>添加用户:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">sudo adduser hhstore</div><div class="line"></div><div class="line">提示输入用户密码:</div><div class="line">输入后,回车</div><div class="line"></div><div class="line">提示输入用户资料: 一路回车即可.</div><div class="line"></div><div class="line">这个信息是否正确？ [Y/n] y</div></pre></td></tr></table></figure>
+<ul>
+<li>给用户添加管理员权限:</li>
+</ul>
+<p>修改文件如下：<br>sudo vim /etc/sudoers</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># User privilege specification</div><div class="line">root    ALL=(ALL) ALL</div><div class="line">hhstore ALL=(ALL) ALL    # 新增用户</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechatpay.png" alt="hhstore WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Ubuntu/" rel="tag">#Ubuntu</a>
+          
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/06/25/rpc-vs-mq/" rel="next" title="RPC(分布式远程过程调用) 和 MQ(消息队列) 的对比">
+                <i class="fa fa-chevron-left"></i> RPC(分布式远程过程调用) 和 MQ(消息队列) 的对比
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/06/27/sqlite-sql/" rel="prev" title="Sqlite常用SQL语句">
+                Sqlite常用SQL语句 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/06/26/Ubuntu-config-tools/"
+           data-title="ubuntu安装配置软件" data-url="http://hhstore.github.io/2015/06/26/Ubuntu-config-tools/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="hhstore" />
+          <p class="site-author-name" itemprop="name">hhstore</p>
+          <p class="site-description motion-element" itemprop="description">个人技术博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">61</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hhstore" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="selfrefactor@gmail.com" target="_blank" title="邮箱">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  邮箱
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/darkforce/" target="_blank" title="DouBan">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DouBan
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hhstore" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ZhiHu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-初始化设置"><span class="nav-number">1.</span> <span class="nav-text">0. 初始化设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-1-更改root密码"><span class="nav-number">1.1.</span> <span class="nav-text">0.1 更改root密码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-更改下载源"><span class="nav-number">2.</span> <span class="nav-text">1. 更改下载源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-更改源列表"><span class="nav-number">2.1.</span> <span class="nav-text">1. 更改源列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-源列表内容"><span class="nav-number">2.2.</span> <span class="nav-text">2. 源列表内容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-安装常用软件"><span class="nav-number">3.</span> <span class="nav-text">2. 安装常用软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-安装deb包"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 安装deb包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-apt-get安装"><span class="nav-number">3.2.</span> <span class="nav-text">2.1 apt-get安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-删除unity-安装Mate-Desktop-Gnome-x2分支"><span class="nav-number">3.3.</span> <span class="nav-text">2.3 删除unity,安装Mate Desktop(Gnome x2分支)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-配置开发环境"><span class="nav-number">4.</span> <span class="nav-text">3. 配置开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1安装配置zsh-替换系统bash"><span class="nav-number">4.1.</span> <span class="nav-text">3.1安装配置zsh,替换系统bash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2配置由宿主Mac机通过SSH登录VMware中的ubuntu"><span class="nav-number">4.2.</span> <span class="nav-text">3.2配置由宿主Mac机通过SSH登录VMware中的ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-ubuntu下配置"><span class="nav-number">4.2.1.</span> <span class="nav-text">1.ubuntu下配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Mac下配置"><span class="nav-number">4.2.2.</span> <span class="nav-text">2.Mac下配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3更新-Python-的pip-源"><span class="nav-number">4.3.</span> <span class="nav-text">3.3更新 Python 的pip 源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4配置python开发环境"><span class="nav-number">4.4.</span> <span class="nav-text">3.4配置python开发环境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-查看并kill进程"><span class="nav-number">5.</span> <span class="nav-text">4. 查看并kill进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-添加-Linux-用户-并赋予管理员权限"><span class="nav-number">6.</span> <span class="nav-text">5. 添加 Linux 用户,并赋予管理员权限</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hhstore</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数 <i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量 <i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hhstore"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
